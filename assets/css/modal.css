@@ -1,0 +1,33 @@
+.infinitum-modal {
+	position: fixed;
+	z-index: 100000;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding-top: var(--wp--style--root--padding-top);
+	padding-right: var(--wp--style--root--padding-right);
+	padding-bottom: var(--wp--style--root--padding-bottom);
+	padding-left: var(--wp--style--root--padding-left);
+	display: block;
+	background-color: #fff;
+	opacity: 0;
+	overflow-y: auto;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 500ms, visibility 500ms;
+}
+.is-infinitum-modal-open {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: all;
+}
+.has-infinitum-modal-open {
+	overflow:hidden;
+}
+
+@media (min-width: 783px) {
+	.admin-bar .infinitum-modal {
+		top: 32px;
+	}
+}

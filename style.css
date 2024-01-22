@@ -1,0 +1,76 @@
+/*
+Theme Name: Infinitum
+Theme URI: https://store.johnrussell.dev/product/infinitum/
+Author: John Russell
+Author URI: https://www.johnrussell.dev
+Description: A starter theme and a framework that uses the full site editor capabilities of WordPress
+Tags: 
+Version: 0.0.0infinitum
+Requires at least: 6.3
+Tested up to: 6.3
+Requires PHP: 7.0
+License: GNU General Public License v2 or Later
+License URI: http://www.gnu.org/license/gpl-2.0.html
+Text Domain: infinitum
+*/
+
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.has-1000-font-size,
+.has-900-font-size,
+.has-800-font-size,
+.has-700-font-size,
+.has-600-font-size,
+.has-500-font-size,
+.has-400-font-size,
+.has-300-font-size,
+.has-200-font-size {
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+.has-1000-font-size,
+.has-900-font-size,
+.has-800-font-size,
+.has-700-font-size,
+.has-600-font-size,
+.has-500-font-size,
+.has-400-font-size,
+.has-300-font-size,
+.has-200-font-size {
+	line-height: var(--wp--custom--infinitum--typography--heading-line-height);
+}
+
+.has-sub-heading-font-size {
+	font-size: var(--wp--custom--infinitum--typography--font-size-sub-heading);
+}
+
+/**
+ * Thumbnail Image
+ */
+ .wp-block-post-featured-image img {
+	aspect-ratio: var(--wp--custom--infinitum--featured-image-thumbnail-display-ratio);
+	object-fit: var(--wp--custom--infinitum--featured-image-thumbnail-display-fit);
+}
+
+/**
+ * Featured Image
+ */
+.infinitum-post-header-image img {
+	aspect-ratio: var(--wp--custom--infinitum--featured-image-display-ratio);
+	object-fit: var(--wp--custom--infinitum--featured-image-display-fit);
+}
+
+/**
+ * Comments
+ */
+.infinitum-comments-avatar img {
+	width: 100%;
+	height: auto;
+}

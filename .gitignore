@@ -1,0 +1,36 @@
+#Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+#Mac OS X
+.DS_Store
+._*
+
+#Archives
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+#PHPStorm
+/.idea
+.idea/workspace.xml
+
+#Atom Remote-FTP
+.ftpconfig
+
+#VSCode
+.vscode
+
+#NPM
+node_modules
+
+#Composer
+vendor
+
+#WP ENV
+.wp-env.json
+.htaccess

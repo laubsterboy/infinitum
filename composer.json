@@ -1,0 +1,34 @@
+{
+	"name": "johnrusselldev/infinitum",
+	"type": "package",
+	"description": "A WordPress block theme with fluid layout and typography",
+	"keywords": [
+		"WordPress",
+		"Themes",
+		"Fluid",
+		"Responsive"
+	],
+	"homepage": "https://store.johnrussell.dev/products/infinitum/",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "John Russell",
+			"homepage": "https://www.johnrussell.dev"
+		}
+	],
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+		"wptrt/wpthemereview": "^0.2.1"
+	},
+	"config": {
+		"allowed-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}

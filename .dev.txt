@@ -1,0 +1,53 @@
+REQUIRED FEATURES
+	Header
+		[!] Styles
+			[!] Background color
+			[!] Padding
+		[!] Locations (left, middle, right, etc)
+			This should almost entirely be handled by the Block editor being able to
+				add/remove Group, Row, Stack, Column blocks
+	Navigation
+		[!] Drawers: Ability to create drawer (custom post type) menus, OR at minimum 
+			need to be able to create "mega" menus that are full screen
+	Featured Image
+		[!] Add a second "Featured Image" called "Header Image" that only displays on the top
+			of "single" pages/posts
+		[!] Add a theme customizable featured image ratio for the full size image and the thumbnail
+	Footer
+		Everything with the footer can be handled by the "Editor"
+		[!] Styles
+			[!] Background color
+			[!] Spacing
+			[!] Alignment
+		[!] Locations
+			These are no longer needed, but some content displayed in the footer may need to be
+				converted into new blocks
+	Template Tags
+		May need to create some custom blocks to replace some template Tags
+			or carry over some template tags that cannot be recreated as blocks
+		[+] tag
+		[+] tag
+	Styles
+		This should be a replacement for "dependencies" that are compiled PHP files into CSS/JS.
+		CSS variables will be critical to replace the need for PHP to generate dynamic CSS
+	Blocks
+		[+] Breadcrumbs
+			A dynamic block to display breadcrumbs on content such as pages
+		[!] Drawer
+			May be able to just use the WP Navigation Block (with the "Overlay Menu" set to "Always").
+			Navigation block wasn't enough, so a custom Drawer block was created. Its features may
+				need to evolve over time to adjust things like font colors, and background colors
+			[!] Need to make the drawer display properly within the Editor (only show the Open button and icon)
+		[+] Hook
+			A block to trigger WP PHP actions or filters so plugins can output content
+				in specific locations on templates, template parts, or page/post content
+		[+] Social Icons
+			This may be able to be done with existing blocks
+		[+] Social Share Links
+	Templates
+		[+] 
+	Patterns / Template Parts
+		[+] 
+	Hooks
+		Add to this list all of the filters and actions that will be needed throughout
+			various areas of the theme to maintain backward compatibility

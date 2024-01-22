@@ -1,0 +1,46 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "infinitum/drawer",
+	"version": "0.0.1",
+	"title": "Drawer",
+	"category": "theme",
+	"icon": "",
+	"description": "A modal to display the contents of a selected drawer.",
+	"supports": {
+		"html": false,
+		"color": {
+			"enableContrastChecker": true,
+			"background": true,
+			"gradients": true,
+			"link": false,
+			"text": true
+		}
+	},
+	"textdomain": "infinitum",
+	"editorScript": "file:./block.js",
+	"viewScript": "file:./view.js",
+	"style": ["infinitum-modal-css", "file:./style.css"],
+	"attributes": {
+		"drawerID": {
+			"type": "string",
+			"default": "0"
+		},
+		"labelClose": {
+			"type": "string",
+			"default": "Close"
+		},
+		"labelOpen": {
+			"type": "string",
+			"default": "Open"
+		},
+		"showIconClose": {
+			"type": "boolean",
+			"default": true
+		},
+		"showIconOpen": {
+			"type": "boolean",
+			"default": true
+		}
+	}
+}

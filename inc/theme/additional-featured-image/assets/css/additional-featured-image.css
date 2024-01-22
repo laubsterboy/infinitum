@@ -1,0 +1,60 @@
+.jrd-additional-featured-image-meta-box {
+	position: relative;
+}
+.jrd-additional-featured-image-meta-box > a,
+.jrd-additional-featured-image-meta-box > button {
+	margin: 1em 0;
+	border: none;
+	padding: 0;
+	display: block;
+	background-color: transparent;
+}
+.jrd-additional-featured-image-meta-box button:hover {
+	cursor: pointer;
+}
+button.jrd-additional-featured-image__set {
+	box-sizing: border-box;
+	margin-bottom: 0;
+	border-radius: 2px;
+    padding: 8px 0;
+    width: 100%;
+	min-height: 90px;
+    line-height: 20px;
+    text-align: center;
+    background-color: #f0f0f0;
+}
+button.jrd-additional-featured-image__set:focus,
+button.jrd-additional-featured-image__set:hover {
+	background-color: #dddddd;
+}
+.jrd-additional-featured-image__preview {
+	margin: 0;
+	padding: 0;
+	border-radius: 2px;
+	overflow: hidden;
+}
+.jrd-additional-featured-image__preview img {
+	margin: 0;
+	padding: 0;
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.jrd-additional-featured-image__actions {
+	position: absolute;
+	bottom: 0;
+	padding: 8px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 8px;
+	opacity: 0;
+	box-sizing: border-box;
+}
+.jrd-additional-featured-image-meta-box:focus .jrd-additional-featured-image__actions,
+.jrd-additional-featured-image-meta-box:focus-within .jrd-additional-featured-image__actions,
+.jrd-additional-featured-image-meta-box:hover .jrd-additional-featured-image__actions {
+	opacity:1;
+}

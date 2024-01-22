@@ -1,0 +1,58 @@
+.editor-styles-wrapper div.wp-block-infinitum-drawer {
+	color: inherit !important;
+	background: transparent !important;
+}
+
+.infinitum-block-drawer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.infinitum-block-drawer__button--close-container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: flex-end;
+}
+.infinitum-block-drawer__button {
+	border:none;
+	display: flex;
+	color: inherit;
+	flex-direction: column;
+	align-items: center;
+	background-color:transparent;
+}
+.infinitum-block-drawer__button:focus,
+.infinitum-block-drawer__button:hover {
+	cursor: pointer;
+}
+
+.infinitum-block-drawer__button-icon {
+	display: block;
+	fill: currentColor;
+}
+
+.infinitum-block-drawer__button-label {
+	display: inline-block;
+}
+
+.infinitum-block-drawer__modal {
+	padding-top: var(--wp--preset--spacing--1);
+	padding-bottom: var(--wp--preset--spacing--1);
+}
+.editor-styles-wrapper .infinitum-block-drawer__modal {
+	display:none;
+}
+
+.infinitum-block-drawer__modal .wp-block-navigation__container,
+.infinitum-block-drawer__modal .wp-block-navigation__submenu-container {
+	row-gap: 0;
+}
+.infinitum-block-drawer__modal .wp-block-navigation-item__content {
+	padding: var(--wp--preset--spacing--1-4) 0;
+}
+.infinitum-block-drawer__modal .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+	padding: var(--wp--preset--spacing--1-4);
+}
