@@ -1,1 +1,19 @@
+# Default Line Endings
 * text eol=lf
+
+# Documents
+*.pdf -text
+
+# Fonts
+*.eot -text
+*.ttf -text
+*.woff -text
+*.woff2 -text
+
+# Images
+*.gif -text
+*.ico -text
+*.jpg -text
+*.png -text
+*.psd -text
+*.webp -text
