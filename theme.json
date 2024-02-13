@@ -195,6 +195,7 @@
 			]
         },
         "typography": {
+			"defaultFontSizes": false,
 			"dropCap": false,
             "fontFamilies": [
 				{
