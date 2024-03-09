@@ -14,6 +14,32 @@ License URI: http://www.gnu.org/license/gpl-2.0.html
 Text Domain: infinitum
 */
 
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+	display: block;
+	max-width: 100%;
+}
+
+input, button, textarea, select {
+	font: inherit;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
 p,
 li,
 h1,
@@ -44,7 +70,7 @@ h6,
 .has-400-font-size,
 .has-300-font-size,
 .has-200-font-size {
-	line-height: var(--wp--custom--infinitum--typography--heading-line-height);
+	line-height: var(--wp--custom--infinitum--typography--line-height);
 }
 
 .has-sub-heading-font-size {
