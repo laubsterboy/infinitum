@@ -73,6 +73,15 @@ class Theme {
 	protected $current_singular_post_id = 0;
 
 	/**
+	 * Integrations
+	 * 
+	 * @since 0.0.1
+	 * @access protected
+	 * @var Integrations $integrations
+	 */
+	protected $integrations = null;
+
+	/**
 	 * URI
 	 * 
 	 * @since 0.0.1
@@ -87,14 +96,15 @@ class Theme {
 	 * @since 0.0.1
 	 */
     protected function __construct() {
-		$this->dir = get_template_directory();
-		$this->uri = get_template_directory_uri();
+		$this->dir = trailingslashit(get_template_directory());
+		$this->uri = trailingslashit(get_template_directory_uri());
 
 		// Load dependencies
 		$this->load();
 
-		$this->additional_featured_image = new theme\additional_featured_image\Additional_Featured_Image(null, $this->dir . '/inc/theme/additional-featured-image/', $this->uri . '/inc/theme/additional-featured-image/');
-		$this->drawers = new theme\drawers\Drawers($this->dir . '/inc/theme/drawers/', $this->uri . '/inc/theme/drawers/');
+		$this->additional_featured_image = new theme\additional_featured_image\Additional_Featured_Image(null, $this->dir . 'inc/theme/additional-featured-image/', $this->uri . 'inc/theme/additional-featured-image/');
+		$this->drawers = new theme\drawers\Drawers($this->dir . 'inc/theme/drawers/', $this->uri . 'inc/theme/drawers/');
+		$this->integrations = new theme\integrations\Integrations($this, $this->dir . 'inc/theme/integrations/', $this->uri . 'inc/theme/integrations/');
 
         $this->set_hooks();
     }
@@ -190,6 +200,12 @@ class Theme {
 
 
 
+	public function get_text_domain() {
+		return $this->text_domain;
+	}
+
+
+
 	/**
 	 * Get a custom setting from the theme.json file
 	 * 
@@ -253,6 +269,7 @@ class Theme {
 	protected function load() {
 		require_once get_theme_file_path('inc/theme/additional-featured-image/additional-featured-image.php');
 		require_once get_theme_file_path('inc/theme/drawers/drawers.php');
+		require_once get_theme_file_path('inc/theme/integrations/integrations.php');
 	}
 
 
@@ -342,12 +359,20 @@ class Theme {
 
 
 	protected function set_image_size_names($size_names) {
-		$full = $size_names['full'];
+		$full = null;
 
-		unset($size_names['full']);
+		if (array_key_exists('full', $size_names)) {
+			$full = $size_names['full'];
+
+			unset($size_names['full']);
+		}
+		
 
 		$size_names['infinitum-extra-large'] = __('Extra Large', $this->text_domain);
-		$size_names['full'] = $full;
+
+		if (!empty($full)) {
+			$size_names['full'] = $full;
+		}
 
 		return $size_names;
 	}
