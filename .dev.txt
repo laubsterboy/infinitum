@@ -43,11 +43,17 @@ REQUIRED FEATURES
 				in specific locations on templates, template parts, or page/post content
 		[+] Social Icons
 			This may be able to be done with existing blocks
+			[+] Social Icons for showing links for specific accounts
+			[+] Social Share Icons/Links to be able to drop into Templates/Patterns for things like posts/events/etc
 		[+] Social Share Links
 	Templates
 		[+] 
 	Patterns / Template Parts
 		[+] 
 	Hooks
-		Add to this list all of the filters and actions that will be needed throughout
-			various areas of the theme to maintain backward compatibility
+		[+] Add to this list all of the filters and actions that will be needed throughout
+			various areas of the theme to maintain backward compatibility/functionality
+	Integrations
+		Beaver Builder
+			[!] Custom "Advanced" tab settings for "Margin" and "Padding" that use the WP Theme preset values (1, 2, 3, 4, etc)
+			[!] Customize the "Font" settings to remove the font size and add in the WP Theme preset (80, 90, 100, 200, 300, etc)
