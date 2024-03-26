@@ -7,8 +7,8 @@ Description: A starter theme and a framework that uses the full site editor capa
 Tags: 
 Version: 0.0.0infinitum
 Requires at least: 6.3
-Tested up to: 6.3
-Requires PHP: 7.0
+Tested up to: 6.5
+Requires PHP: 8.1
 License: GNU General Public License v2 or Later
 License URI: http://www.gnu.org/license/gpl-2.0.html
 Text Domain: infinitum
@@ -76,6 +76,19 @@ h6,
 .has-sub-heading-font-size {
 	font-size: var(--wp--custom--infinitum--typography--font-size-sub-heading);
 }
+
+/**
+ * Shadows
+ */
+.has-small-soft-shadow {box-shadow: var(--wp--preset--shadow--small-soft);}
+.has-small-glass-shadow {box-shadow: var(--wp--preset--shadow--small-glass);}
+.has-small-solid-shadow {box-shadow: var(--wp--preset--shadow--small-solid);}
+.has-medium-soft-shadow {box-shadow: var(--wp--preset--shadow--medium-soft);}
+.has-medium-glass-shadow {box-shadow: var(--wp--preset--shadow--medium-glass);}
+.has-medium-solid-shadow {box-shadow: var(--wp--preset--shadow--medium-solid);}
+.has-large-soft-shadow {box-shadow: var(--wp--preset--shadow--large-soft);}
+.has-large-glass-shadow {box-shadow: var(--wp--preset--shadow--large-glass);}
+.has-large-solid-shadow {box-shadow: var(--wp--preset--shadow--large-solid);}
 
 /**
  * Thumbnail Image
