@@ -19,40 +19,31 @@ class Theme {
     protected static $instance = null;
 
 	/**
-	 * Text Domain
-	 * 
-	 * @since 0.0.1
-	 * @access protected
-	 * @var string $text_domain
-	 */
-	protected $text_domain = 'infinitum';
-
-	/**
-	 * Version
-	 * 
-	 * @since 0.0.1
-	 * @access protected
-	 * @var string $version
-	 */
-	protected $version = '0.0.0infinitum';
-
-	/**
 	 * Additional Featured Image
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var Additional_Featured_Image $additional_featured_image
 	 */
-	protected $additional_featured_image = null;
+	public readonly theme\additional_featured_image\Additional_Featured_Image $additional_featured_image;
+
+	/**
+	 * Breadcrumbs
+	 * 
+	 * @since 0.0.1
+	 * @access public
+	 * @var Breadcrumbs $breadcrumbs
+	 */
+	public readonly theme\breadcrumbs\Breadcrumbs $breadcrumbs;
 	
 	/**
 	 * Drawers
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var Drawers $drawers
 	 */
-	protected $drawers = null;
+	public readonly theme\drawers\Drawers $drawers;
 
 	/**
 	 * Dir
@@ -61,7 +52,7 @@ class Theme {
 	 * @access protected
 	 * @var string $dir
 	 */
-	protected $dir = '';
+	public readonly string $dir;
 
 	/**
 	 * Current singular post ID
@@ -76,10 +67,19 @@ class Theme {
 	 * Integrations
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var Integrations $integrations
 	 */
-	protected $integrations = null;
+	public readonly integrations\Integrations $integrations;
+
+	/**
+	 * Text Domain
+	 * 
+	 * @since 0.0.1
+	 * @access protected
+	 * @var string $text_domain
+	 */
+	public readonly string $text_domain;
 
 	/**
 	 * URI
@@ -88,7 +88,25 @@ class Theme {
 	 * @access protected
 	 * @var string $uri
 	 */
-	protected $uri = '';
+	public readonly string $uri;
+
+	/**
+	 * Updator
+	 * 
+	 * @since 0.0.1
+	 * @access protected
+	 * @var EDD_Theme_Updater_Admin $updater
+	 */
+	protected $updater;
+
+	/**
+	 * Version
+	 * 
+	 * @since 0.0.1
+	 * @access protected
+	 * @var string $version
+	 */
+	public readonly string $version;
 
 	/**
 	 * The Theme construct method
@@ -96,16 +114,23 @@ class Theme {
 	 * @since 0.0.1
 	 */
     protected function __construct() {
+		$this->text_domain = 'infinitum';
+		$this->version = '0.0.0infinitum';
 		$this->dir = trailingslashit(get_template_directory());
 		$this->uri = trailingslashit(get_template_directory_uri());
 
 		// Load dependencies
 		$this->load();
 
+		// Initiate core theme features
 		$this->additional_featured_image = new theme\additional_featured_image\Additional_Featured_Image(null, $this->dir . 'inc/theme/additional-featured-image/', $this->uri . 'inc/theme/additional-featured-image/');
+		$this->breadcrumbs = new theme\breadcrumbs\Breadcrumbs($this->dir . 'inc/theme/breadcrumbs/', $this->uri . 'inc/theme/breadcrumbs/');
 		$this->drawers = new theme\drawers\Drawers($this->dir . 'inc/theme/drawers/', $this->uri . 'inc/theme/drawers/');
-		$this->integrations = new theme\integrations\Integrations($this, $this->dir . 'inc/theme/integrations/', $this->uri . 'inc/theme/integrations/');
 
+		// Initiate 3rd party integrations
+		$this->integrations = new integrations\Integrations($this, $this->dir . 'inc/integrations/', $this->uri . 'inc/integrations/');
+
+		// Set hooks
         $this->set_hooks();
     }
 
@@ -188,6 +213,22 @@ class Theme {
 
 
 
+	public function get_dir() {
+		return $this->dir;
+	}
+
+
+
+	public static function get_instance() {
+        if (is_null(static::$instance)) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
+    }
+
+
+
 	protected function get_post_header_image_id($thumbnail_id, $post) {
 		$header_image_attachment_id = $this->additional_featured_image->get_attachment_id($post, 'header-image');
 
@@ -256,20 +297,22 @@ class Theme {
 
 
 
-    public static function instance() {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
-
-
-
 	protected function load() {
 		require_once get_theme_file_path('inc/theme/additional-featured-image/additional-featured-image.php');
+		require_once get_theme_file_path('inc/theme/breadcrumbs/breadcrumbs.php');
 		require_once get_theme_file_path('inc/theme/drawers/drawers.php');
-		require_once get_theme_file_path('inc/theme/integrations/integrations.php');
+
+		if (!class_exists('EDD_Theme_Updater_Admin')) {
+			require_once get_theme_file_path('inc/theme/updater/theme-updater-admin.php');
+		}
+
+		require_once get_theme_file_path('inc/integrations/integrations.php');
+	}
+
+
+
+	public function get_uri() {
+		return $this->uri;
 	}
 
 
@@ -406,6 +449,102 @@ class Theme {
 
 
 
+	/**
+	 * Set the page template (attribute on hierarchical post types) on a given post
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param int|WP_Post	$post_id	The post to update the template
+	 * @param string		$template	The new template name to use
+	 * @param array			$allowed_previous_template	An array of previous values that should be overridden with the new template. Any current template values not found in this array will not allow the page template to be set. Set to an empty array for all values to be overridden.
+	 * @return bool
+	 */
+	public function set_page_template($post_id, $template, $allowed_previous_template = array()): bool {
+		$post = get_post($post_id);
+		$post_type = get_post_type($post);
+
+		// Check if $post is real
+		if (!is_a($post, '\WP_Post')) return false;
+
+		// Check if the post type supports templates (get post type and check if 'hierarchical' is true)
+		if (!post_type_supports($post_type, 'page-attributes')) return false;
+
+		// Check if the $template is a string and one of the currently available templates
+		if (!is_string($template) || !array_key_exists($template, wp_get_theme()->get_page_templates($post, $post_type))) return false;
+		
+		$current_template = get_post_meta($post->ID, '_wp_page_template', true);
+
+		// Check if the current template meta value should be changed
+		if (empty($allowed_previous_template) || (is_array($allowed_previous_template) && in_array($current_template, $allowed_previous_template, true))) {
+			if ($template == $current_template) return false;
+
+			// Update the page template
+			return update_post_meta($post->ID, '_wp_page_template', $template);
+		}
+
+		return false;
+	}
+
+
+
+	/**
+	 * Configure the EDD Updater Admin
+	 * 
+	 * @since 0.0.1
+	 * @return void
+	 */
+	protected function set_updater_config(): void {
+		$theme = wp_get_theme('infinitum');
+		$author = $theme->exists() ? $theme->get('Author') : '';
+
+		$this->updater = new \EDD_Theme_Updater_Admin(array(
+			'remote_api_url'	=> 'https://store.johnrussell.dev',
+			'item_name'			=> 'Infinitum Theme',
+			'theme_slug'		=> 'infinitum',
+			'version'			=> $this->version,
+			'author'			=> $author,
+			'download_id'		=> '',
+			'renew_url'			=> '',
+			'beta'				=> false,
+			'item_id'			=> ''
+		),
+		array(
+			'theme-license'             => __('Theme License', $this->text_domain),
+			'enter-key'                 => __('Enter your theme license key.', $this->text_domain),
+			'license-key'               => __('License Key', $this->text_domain),
+			'license-action'            => __('License Action', $this->text_domain),
+			'deactivate-license'        => __('Deactivate License', $this->text_domain),
+			'activate-license'          => __('Activate License', $this->text_domain),
+			'status-unknown'            => __('License status is unknown.', $this->text_domain),
+			'renew'                     => __('Renew?', $this->text_domain),
+			'unlimited'                 => __('unlimited', $this->text_domain),
+			'license-key-is-active'     => __('License key is active.', $this->text_domain),
+			/* translators: the license expiration date */
+			'expires%s'                 => __('Expires %s.', $this->text_domain),
+			'expires-never'             => __('Lifetime License.', $this->text_domain),
+			/* translators: 1. the number of sites activated 2. the total number of activations allowed. */
+			'%1$s/%2$-sites'            => __('You have %1$s / %2$s sites activated.', $this->text_domain),
+			'activation-limit'          => __('Your license key has reached its activation limit.', $this->text_domain),
+			/* translators: the license expiration date */
+			'license-key-expired-%s'    => __('License key expired %s.', $this->text_domain),
+			'license-key-expired'       => __('License key has expired.', $this->text_domain),
+			/* translators: the license expiration date */
+			'license-expired-on'        => __('Your license key expired on %s.', $this->text_domain),
+			'license-keys-do-not-match' => __('License keys do not match.', $this->text_domain),
+			'license-is-inactive'       => __('License is inactive.', $this->text_domain),
+			'license-key-is-disabled'   => __('License key is disabled.', $this->text_domain),
+			'license-key-invalid'       => __('Invalid license.', $this->text_domain),
+			'site-is-inactive'          => __('Site is inactive.', $this->text_domain),
+			/* translators: the theme name */
+			'item-mismatch'             => __('This appears to be an invalid license key for %s.', $this->text_domain),
+			'license-status-unknown'    => __('License status is unknown.', $this->text_domain),
+			'update-notice'             => __("Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", $this->text_domain),
+			'error-generic'             => __('An error occurred, please try again.', $this->text_domain),
+		));
+	}
+
+
+
     public function theme_activation($old_theme_name = null, $old_theme = null) {
 		$content_width = $this->get_theme_setting('contentWidth');
 		$content_width_wide_ratio = $this->get_theme_setting('contentWidthWideRatio');
@@ -432,6 +571,7 @@ class Theme {
 
     public function wp_hook_after_setup_theme() {
         $this->enqueue_block_styles();
+		$this->set_updater_config();
     }
 
 
