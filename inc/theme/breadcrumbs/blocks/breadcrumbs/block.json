@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "infinitum/breadcrumbs",
+	"version": "0.0.1",
+	"title": "Breadcrumbs",
+	"category": "theme",
+	"icon": "",
+	"description": "Show the breadcrumbs for the current post or page.",
+	"supports": {
+		"align": true,
+		"color": {
+			"enableContrastChecker": true,
+			"background": true,
+			"gradients": true,
+			"link": false,
+			"text": true
+		},
+		"customClassName": true,
+		"dimensions": {
+			"minHeight": true
+		},
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": false
+		}
+	},
+	"textdomain": "infinitum",
+	"editorScript": "file:./block.js",
+	"viewScript": "file:./view.js",
+	"style": "file:./style.css",
+	"attributes": {
+		"separator": {
+			"type": "string",
+			"default": "&raquo;"
+		}
+	}
+}
