@@ -7,7 +7,7 @@ class InfinitumModal {
 			modalElement: null
 		}, settings);
 
-		this.focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]';
+		this.focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex]:not([tabindex="-1"]), *[contenteditable]';
 		this.firstFocusableElement = null;
 		this.lastFocusableElement = null;
 		this.shiftKeyDown = false;
