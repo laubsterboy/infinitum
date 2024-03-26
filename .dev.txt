@@ -1,4 +1,7 @@
 REQUIRED FEATURES
+	Theme Config (theme.json)
+		[!] Add shadow presets
+		[+] Add duotones and gradients
 	Header
 		[!] Styles
 			[!] Background color
@@ -31,8 +34,9 @@ REQUIRED FEATURES
 		This should be a replacement for "dependencies" that are compiled PHP files into CSS/JS.
 		CSS variables will be critical to replace the need for PHP to generate dynamic CSS
 	Blocks
-		[+] Breadcrumbs
+		[!] Breadcrumbs
 			A dynamic block to display breadcrumbs on content such as pages
+			[!] Add a Beaver Builder Module that uses the render_breadcrumbs method so that it can be added
 		[!] Drawer
 			May be able to just use the WP Navigation Block (with the "Overlay Menu" set to "Always").
 			Navigation block wasn't enough, so a custom Drawer block was created. Its features may
@@ -57,3 +61,7 @@ REQUIRED FEATURES
 		Beaver Builder
 			[!] Custom "Advanced" tab settings for "Margin" and "Padding" that use the WP Theme preset values (1, 2, 3, 4, etc)
 			[!] Customize the "Font" settings to remove the font size and add in the WP Theme preset (80, 90, 100, 200, 300, etc)
+			[!] Automatically set the page template to "Blank Full Width" when activating Beaver Builder so the full content space can be utilized
+			[+] Filter the available fonts and add the theme.json fonts so they're the only ones that can be selected (or add to the "Theme Typography" field)
+		Auto Updates
+			[!] Integrate EDD to distribute updates using integrated methods
