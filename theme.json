@@ -38,6 +38,9 @@
 			"custom": true,
 			"customDuotone": true,
 			"customGradient": true,
+			"defaultDuotone": false,
+			"defaultGradients": false,
+			"defaultPalette": false,
 			"link": true,
 			"palette": [
                 {
@@ -76,10 +79,7 @@
                     "color": "#F5006E"
                 }
             ],
-			"text": true,
-			"defaultDuotone": false,
-			"defaultGradients": false,
-			"defaultPalette": false
+			"text": true
 		},
 		"custom": {
 			"infinitum": {
@@ -116,10 +116,64 @@
 				}
 			}
 		},
+		"dimensions": {
+			"aspectRatio": true,
+			"minHeight": true
+		},
         "layout": {
             "contentSize": "max(var(--wp--custom--infinitum--content-width-px), 62.5vw)",
             "wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), 75vw)"
         },
+		"shadow": {
+			"defaultPresets": false,
+			"presets": [
+				{
+					"name": "Small Soft",
+					"shadow": "0 0 var(--wp--preset--spacing--1-4) 0 rgba(0, 0, 0, 0.25), 0 0 calc(var(--wp--preset--spacing--1-4) / 2) 0 rgba(0, 0, 0, 0.1)",
+					"slug": "small-soft"
+				},
+				{
+					"name": "Small Glass",
+					"shadow": "var(--wp--preset--spacing--1-4) var(--wp--preset--spacing--1-4) 0 0 rgba(0, 0, 0, 0.15)",
+					"slug": "small-glass"
+				},
+				{
+					"name": "Small Solid",
+					"shadow": "var(--wp--preset--spacing--1-4) var(--wp--preset--spacing--1-4) 0 0 rgba(0, 0, 0, 1)",
+					"slug": "small-solid"
+				},
+				{
+					"name": "Medium Soft",
+					"shadow": "0 0 var(--wp--preset--spacing--1-2) 0 rgba(0, 0, 0, 0.25), 0 0 calc(var(--wp--preset--spacing--1-2) / 2) 0 rgba(0, 0, 0, 0.1)",
+					"slug": "medium-soft"
+				},
+				{
+					"name": "Medium Glass",
+					"shadow": "var(--wp--preset--spacing--1-2) var(--wp--preset--spacing--1-2) 0 0 rgba(0, 0, 0, 0.15)",
+					"slug": "medium-glass"
+				},
+				{
+					"name": "Medium Solid",
+					"shadow": "var(--wp--preset--spacing--1-2) var(--wp--preset--spacing--1-2) 0 0 rgba(0, 0, 0, 1)",
+					"slug": "medium-solid"
+				},
+				{
+					"name": "Large Soft",
+					"shadow": "0 0 var(--wp--preset--spacing--3-4) 0 rgba(0, 0, 0, 0.25), 0 0 calc(var(--wp--preset--spacing--3-4) / 2) 0 rgba(0, 0, 0, 0.1)",
+					"slug": "large-soft"
+				},
+				{
+					"name": "Large Glass",
+					"shadow": "var(--wp--preset--spacing--3-4) var(--wp--preset--spacing--3-4) 0 0 rgba(0, 0, 0, 0.15)",
+					"slug": "large-glass"
+				},
+				{
+					"name": "Large Solid",
+					"shadow": "var(--wp--preset--spacing--3-4) var(--wp--preset--spacing--3-4) 0 0 rgba(0, 0, 0, 1)",
+					"slug": "large-solid"
+				}
+			]
+		},
         "spacing": {
             "margin": true,
             "padding": true,
@@ -127,11 +181,6 @@
                 "steps": 0
             },
 			"spacingSizes": [
-				{
-					"name": "0",
-					"size": "0",
-					"slug": "0"
-				},
 				{
 					"name": "1 / 4",
 					"size": "calc(var(--wp--style--block-gap) * 0.25)",
