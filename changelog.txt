@@ -1,4 +1,0 @@
-<h4>0.0.1 - 8/24/2022</h4>
-<ul>
-    <li>Initial release of the Infinitum theme</li>
-</ul>
