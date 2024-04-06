@@ -35,12 +35,55 @@
 			"width": true
 		},
 		"color": {
+			"background": true,
+			"button": true,
+			"caption": true,
 			"custom": true,
 			"customDuotone": true,
 			"customGradient": true,
 			"defaultDuotone": false,
 			"defaultGradients": false,
 			"defaultPalette": false,
+			"duotone": [
+				{
+					"colors": ["#000000", "#ffffff"],
+					"name": "Black and White",
+					"slug": "black-and-white"
+				},
+				{
+					"colors": ["#350CF5", "#ffffff"],
+					"name": "Primary and White",
+					"slug": "primary-and-white"
+				},
+				{
+					"colors": ["#F5006E", "#ffffff"],
+					"name": "Accent and White",
+					"slug": "accent-and-white"
+				}
+			],
+			"gradients": [
+				{
+					"gradient": "linear-gradient(0deg, var(--wp--preset--color--primary) 0%, var(--wp--preset--color--base) 100%)",
+					"name": "Base to Primary",
+					"slug": "base-primary"
+				},
+				{
+					"gradient": "linear-gradient(0deg, var(--wp--preset--color--accent) 0%, var(--wp--preset--color--base) 100%)",
+					"name": "Base to Accent",
+					"slug": "base-accent"
+				},
+				{
+					"gradient": "linear-gradient(0deg, var(--wp--preset--color--accent) 0%, var(--wp--preset--color--primary) 50%, var(--wp--preset--color--base) 100%)",
+					"name": "Base to Primary to Accent",
+					"slug": "base-primary-accent"
+				},
+				{
+					"gradient": "linear-gradient(0deg, var(--wp--preset--color--accent) 0%, var(--wp--preset--color--primary) 100%)",
+					"name": "Primary to Accent",
+					"slug": "primary-accent"
+				}
+			],
+			"heading": true,
 			"link": true,
 			"palette": [
                 {
@@ -263,27 +306,27 @@
 				{
                     "fontFace": [
                         {
-                            "fontFamily": "Noto Serif",
+                            "fontFamily": "Raleway",
                             "fontStretch": "normal",
                             "fontStyle": "normal",
                             "fontWeight": "100 900",
                             "src": [
-                                "file:./assets/fonts/noto-serif/NotoSerif-VariableFont_wdth,wght.ttf"
+                                "file:./assets/fonts/raleway/Raleway-VariableFont_wght.ttf"
                             ]
                         },
                         {
-                            "fontFamily": "Noto Serif",
+                            "fontFamily": "Raleway",
                             "fontStretch": "normal",
                             "fontStyle": "italic",
                             "fontWeight": "100 900",
                             "src": [
-                                "file:./assets/fonts/open-sans/NotoSerif-Italic-VariableFont_wdth,wght.ttf"
+                                "file:./assets/fonts/raleway/Raleway-Italic-VariableFont_wdth.ttf"
                             ]
                         }
                     ],
-                    "fontFamily": "\"Noto Serif\", serif",
-                    "name": "Noto Serif",
-                    "slug": "heading-option-1"
+                    "fontFamily": "\"Raleway\", serif",
+                    "name": "Raleway",
+                    "slug": "sans-serif-1"
                 },
 				{
                     "fontFace": [
@@ -308,7 +351,23 @@
                     ],
                     "fontFamily": "\"Open Sans\", serif",
                     "name": "Open Sans",
-                    "slug": "body"
+                    "slug": "sans-serif-2"
+                },
+				{
+                    "fontFace": [
+                        {
+                            "fontFamily": "Dancing Script",
+                            "fontStretch": "normal",
+                            "fontStyle": "normal",
+                            "fontWeight": "400 700",
+                            "src": [
+                                "file:./assets/fonts/dancing-script/DancingScript-VariableFont_wght.ttf"
+                            ]
+                        }
+                    ],
+                    "fontFamily": "\"Dancing Script\", serif",
+                    "name": "Dancing Script",
+                    "slug": "script-1"
                 },
                 {
                     "fontFace": [
@@ -333,7 +392,32 @@
                     ],
                     "fontFamily": "\"Source Serif 4\", serif",
                     "name": "Source Serif 4",
-                    "slug": "heading-option-2"
+                    "slug": "serif-1"
+                },
+				{
+                    "fontFace": [
+                        {
+                            "fontFamily": "Noto Serif",
+                            "fontStretch": "normal",
+                            "fontStyle": "normal",
+                            "fontWeight": "100 900",
+                            "src": [
+                                "file:./assets/fonts/noto-serif/NotoSerif-VariableFont_wdth,wght.ttf"
+                            ]
+                        },
+                        {
+                            "fontFamily": "Noto Serif",
+                            "fontStretch": "normal",
+                            "fontStyle": "italic",
+                            "fontWeight": "100 900",
+                            "src": [
+                                "file:./assets/fonts/open-sans/NotoSerif-Italic-VariableFont_wdth,wght.ttf"
+                            ]
+                        }
+                    ],
+                    "fontFamily": "\"Noto Serif\", serif",
+                    "name": "Noto Serif",
+                    "slug": "serif-2"
                 }
             ],
 			"fontSizes": [
@@ -455,6 +539,11 @@
 					}
 				}
 			},
+			"core/site-title": {
+				"typography": {
+					"lineHeight": "1"
+				}
+			},
 			"core/template-part": {
 				"spacing": {
 					"margin": {
@@ -493,8 +582,8 @@
 			},
 			"heading": {
 				"typography": {
-					"fontFamily": "var(--wp--preset--font-family--heading-option-1)",
-					"lineHeight": "1.1"
+					"fontFamily": "var(--wp--preset--font-family--sans-serif-1)",
+					"lineHeight": "1.2"
 				},
 				"spacing": {
 					"margin": {
@@ -581,7 +670,7 @@
 			}
         },
 		"typography": {
-			"fontFamily": "var(--wp--preset--font-family--body)",
+			"fontFamily": "var(--wp--preset--font-family--sans-serif-1)",
 			"fontSize": "var(--wp--preset--font-size--100)",
 			"lineHeight": "var(--wp--custom--infinitum--typography--line-height)"
 		}
