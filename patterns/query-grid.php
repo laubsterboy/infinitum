@@ -3,9 +3,10 @@
  * Title: Query Grid
  * Slug: infinitum/query-grid
  * Block Types: core/query
- * Categories: posts infinitum
- * Keywords: query grid
+ * Categories: posts, infinitum
+ * Keywords: query, grid
  * Source: theme
+ * Viewport Width: 400
  */
 ?>
 <!-- wp:query {"query":{"perPage":"12","pages":0,"offset":"1","postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"displayLayout":{"type":"flex","columns":3},"layout":{"type":"constrained"}} -->

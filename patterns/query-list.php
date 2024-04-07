@@ -3,9 +3,10 @@
  * Title: Query List
  * Slug: infinitum/query-list
  * Block Types: core/query
- * Categories: posts infinitum
- * Keywords: query list
+ * Categories: posts, infinitum
+ * Keywords: query, list
  * Source: theme
+ * Viewport Width: 400
  */
 ?>
 <!-- wp:query {"query":{"perPage":"12","pages":0,"offset":"1","postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"displayLayout":{"type":"flex","columns":1},"layout":{"type":"constrained"}} -->

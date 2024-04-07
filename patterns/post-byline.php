@@ -2,8 +2,8 @@
 /**
  * Title: Post Byline
  * Slug: infinitum/post-byline
- * Categories: posts infinitum
- * Keywords: post byline date author
+ * Categories: posts, infinitum
+ * Keywords: post, byline, date, author
  * Source: theme
  * Viewport Width: 400
  */

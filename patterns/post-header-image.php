@@ -3,8 +3,8 @@
 /**
  * Title: Post Header Image
  * Slug: infinitum/post-header-image
- * Categories: posts infinitum
- * Keywords: post featured header image
+ * Categories: posts, infinitum
+ * Keywords: post, featured, header, image
  * Source: theme
  */
 

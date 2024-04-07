@@ -2,8 +2,8 @@
 /**
  * Title: Post Summary
  * Slug: infinitum/post-summary
- * Categories: posts infinitum
- * Keywords: Query grid post summary
+ * Categories: posts, infinitum
+ * Keywords: Query, grid, post, summary
  * Source: theme
  * Viewport Width: 400
  */

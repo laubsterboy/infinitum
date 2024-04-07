@@ -2,8 +2,8 @@
 /**
  * Title: Post Meta
  * Slug: infinitum/post-meta
- * Categories: posts infinitum
- * Keywords: post meta date author
+ * Categories: posts, infinitum
+ * Keywords: post, meta, date, author
  * Source: theme
  * Viewport Width: 400
  */
