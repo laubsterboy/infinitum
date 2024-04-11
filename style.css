@@ -6,7 +6,7 @@ Author URI: https://www.johnrussell.dev
 Description: A starter theme and a framework that uses the full site editor capabilities of WordPress
 Tags: 
 Version: 0.0.0infinitum
-Requires at least: 6.3
+Requires at least: 6.4
 Tested up to: 6.5
 Requires PHP: 8.1
 License: GNU General Public License v2 or Later
@@ -38,6 +38,10 @@ input, button, textarea, select {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+:where(.wp-site-blocks) > main {
+	margin-block-start: 0;
 }
 
 p,
@@ -104,6 +108,13 @@ h6,
 .infinitum-post-header-image img {
 	aspect-ratio: var(--wp--custom--infinitum--featured-image-display-ratio);
 	object-fit: var(--wp--custom--infinitum--featured-image-display-fit);
+}
+
+/**
+ * wp:columns
+ */
+.wp-block-post .wp-block-column:empty {
+	display: none;
 }
 
 /**
