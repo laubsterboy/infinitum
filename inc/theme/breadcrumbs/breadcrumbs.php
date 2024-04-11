@@ -8,7 +8,7 @@
 
 namespace infinitum\inc\theme\breadcrumbs;
 
-class Breadcrumbs {
+class Breadcrumbs extends \infinitum\inc\classes\Addon {
 	public readonly array $defaults;
 	public readonly string $dir;
 	public readonly string $uri;

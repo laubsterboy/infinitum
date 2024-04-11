@@ -21,6 +21,7 @@
 			"minHeight": true
 		},
 		"html": false,
+		"interactivity": true,
 		"spacing": {
 			"margin": true,
 			"padding": true
@@ -33,6 +34,7 @@
 	"textdomain": "infinitum",
 	"editorScript": "file:./block.js",
 	"viewScript": "file:./view.js",
+	"viewScriptModule": "",
 	"style": "file:./style.css",
 	"attributes": {
 		"separator": {
