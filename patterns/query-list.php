@@ -15,9 +15,7 @@
 	<!-- wp:columns -->
 	<div class="wp-block-columns">
 		<!-- wp:column {"width":"33.3333%"} -->
-		<div class="wp-block-column" style="flex-basis:33.3333%">
-		<!-- wp:post-featured-image {"isLink":true} /-->
-		</div>
+		<div class="wp-block-column" style="flex-basis:33.3333%"><!-- wp:post-featured-image {"isLink":true} /--></div>
 		<!-- /wp:column -->
 		
 		<!-- wp:column {"verticalAlignment":"center","width":"66.6666%"} -->

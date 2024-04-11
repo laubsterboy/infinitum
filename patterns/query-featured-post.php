@@ -8,7 +8,7 @@
  * Source: theme
  */
 ?>
-<!-- wp:query {"query":{"perPage":"1","pages":0,"offset":0,"postType":"post","categoryIds":[],"tagIds":[],"order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"exclude"}, "align":"full", "layout":{"type":"constrained"}} -->
+<!-- wp:query {"query":{"perPage":"1","pages":0,"offset":0,"postType":"post","categoryIds":[],"tagIds":[],"order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"exclude"},"layout":{"type":"constrained"}} -->
 <div class="wp-block-query alignnone">
 	<!-- wp:post-template -->
 	<?php // TODO: conditionally display the column layout based on if there is a featured image or not ?>
