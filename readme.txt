@@ -1,20 +1,40 @@
 === Infinitum ===
 Contributors: laubsterboy
-Requires at least: 6.3
+Requires at least: 6.5
 Requires PHP: 8.1
 Stable tag: 0.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+
+
 == Description ==
 
 A clean and elegant starter theme, or framework, used to build beautiful websites. Infinitum also fully supports the Beaver Builder page builder plugin.
 
+
+
 == Changelog ==
+
+= 0.0.1-alpha-2 - 2024-03-27 =
+
+* Added: front-page.html template with the page meta data (featured image, title, and breadcrumb) hidden.
+* Added: Basic duotones and gradients to the theme config (theme.json)
+* Added: A theme method to remove some theme supports (core-block-patterns and starter-content)
+* Added: Integrations and Theme Features (all "Addon" classes) now have the option to hook into the theme_activation and theme_deactivation methods to perform tasks, such as set or cleanup options.
+* Added: "Dancing Script" and "Raleway" font faces and set "Raleway" as the default.
+* Added: Theme logo and mark images
+* Added: Theme screenshot so it can be seen in the list of "Themes"
+* Updated: The Drawer block now defaults to showing the first created Drawer post, which after the theme is activated is the "Header" drawer that is automatically created.
+* Updated: The Drawer block now has very basic support for the Interactivity API so other blocks could communicate. This is not yet finalized.
+* Fixed: Beaver Builder CSS that makes layouts using the Block Editor and Beaver Builder uniform was removing padding on mobile devices and has been re-written.
+* Fixed: Beaver Builder global defaults were setting many values to 0 that were otherwise blank and it caused undesired side effects with responsive layout.
 
 = 0.0.1-alpha-1 - 2024-03-26 =
 
 * Initial release
+
+
 
 == Upgrade Notice ==
 
@@ -22,7 +42,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 * Initial release
 
+
+
 == Copyright ==
 
-Infinitum WordPress Theme, (C) 2023 John Russell.
+Infinitum WordPress Theme, (C) 2023-2024 John Russell.
 Infinitum is distributed under the terms of the GNU GPL.
