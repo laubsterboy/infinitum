@@ -252,6 +252,10 @@ class InfinitumModal {
 			this.focus();
 
 			this.isOpen = true;
+		}).catch(error => {
+			if (error.name === 'AbortError') {
+				// Modal open promise was aborted before the animations finished
+			}
 		});
 	}
 
