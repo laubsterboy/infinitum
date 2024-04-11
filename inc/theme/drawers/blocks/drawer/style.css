@@ -3,20 +3,20 @@
 	background: transparent !important;
 }
 
-.infinitum-block-drawer {
+.wp-block-infinitum-drawer {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
 }
 
-.infinitum-block-drawer__button--close-container {
+.wp-block-infinitum-drawer__button--close-container {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
 	align-items: flex-end;
 }
-.infinitum-block-drawer__button {
+.wp-block-infinitum-drawer__button {
 	border:none;
 	display: flex;
 	color: inherit;
@@ -24,35 +24,39 @@
 	align-items: center;
 	background-color:transparent;
 }
-.infinitum-block-drawer__button:focus,
-.infinitum-block-drawer__button:hover {
+.wp-block-infinitum-drawer__button:focus,
+.wp-block-infinitum-drawer__button:hover {
 	cursor: pointer;
 }
 
-.infinitum-block-drawer__button-icon {
+.wp-block-infinitum-drawer__button-icon {
 	display: block;
 	fill: currentColor;
 }
 
-.infinitum-block-drawer__button-label {
+.wp-block-infinitum-drawer__button-label {
 	display: inline-block;
 }
 
-.infinitum-block-drawer__modal {
+.wp-block-infinitum-drawer__modal {
 	padding-top: var(--wp--preset--spacing--1);
 	padding-bottom: var(--wp--preset--spacing--1);
+	color: initial;
 }
-.editor-styles-wrapper .infinitum-block-drawer__modal {
+.wp-block-infinitum-drawer__modal :where(a) {
+	color: initial;
+}
+.editor-styles-wrapper .wp-block-infinitum-drawer__modal {
 	display:none;
 }
 
-.infinitum-block-drawer__modal .wp-block-navigation__container,
-.infinitum-block-drawer__modal .wp-block-navigation__submenu-container {
+.wp-block-infinitum-drawer__modal .wp-block-navigation__container,
+.wp-block-infinitum-drawer__modal .wp-block-navigation__submenu-container {
 	row-gap: 0;
 }
-.infinitum-block-drawer__modal .wp-block-navigation-item__content {
+.wp-block-infinitum-drawer__modal .wp-block-navigation-item__content {
 	padding: var(--wp--preset--spacing--1-4) 0;
 }
-.infinitum-block-drawer__modal .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+.wp-block-infinitum-drawer__modal .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
 	padding: var(--wp--preset--spacing--1-4);
 }

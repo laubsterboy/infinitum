@@ -16,14 +16,14 @@ class InfinitumDrawers {
 
 
 	init() {
-		var drawers = document.querySelectorAll('.infinitum-block-drawer');
+		var drawers = document.querySelectorAll('.wp-block-infinitum-drawer');
 
 		drawers.forEach((drawer) => {
-			let buttonOpen = drawer.querySelector('.infinitum-block-drawer__button--open');
-			let buttonClose = drawer.querySelector('.infinitum-block-drawer__button--close');
-			let modal = drawer.querySelector('.infinitum-block-drawer__modal');
+			let buttonOpen = drawer.querySelector('.wp-block-infinitum-drawer__button--open');
+			let buttonClose = drawer.querySelector('.wp-block-infinitum-drawer__button--close');
+			let modal = drawer.querySelector('.wp-block-infinitum-drawer__modal');
 
-			new InfinitumModal({
+			let modalObject = new InfinitumModal({
 				closeElement: buttonClose,
 				openElement: buttonOpen,
 				modalElement: modal

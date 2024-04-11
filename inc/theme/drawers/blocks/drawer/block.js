@@ -23,13 +23,13 @@
 			let options = [];
 
 			if (drawerPosts) {
-				options.push({value: 0, label: 'None'});
+				options.push({value: 0, label: 'Auto'});
 
 				drawerPosts.forEach((drawer) => {
 					options.push({value: drawer.id, label: drawer.title.rendered});
 				});
 			} else {
-				options.push({value: 0, label: 'Loading...'});
+				options.push({value: 0, label: 'Auto'});
 			}
 
             return [

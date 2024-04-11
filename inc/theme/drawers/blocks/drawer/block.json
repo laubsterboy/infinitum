@@ -15,11 +15,13 @@
 			"gradients": true,
 			"link": false,
 			"text": true
-		}
+		},
+		"interactivity": true
 	},
 	"textdomain": "infinitum",
 	"editorScript": "file:./block.js",
 	"viewScript": "file:./view.js",
+	"viewScriptModule": "file:./view-module.js",
 	"style": ["infinitum-modal-css", "file:./style.css"],
 	"attributes": {
 		"drawerID": {
