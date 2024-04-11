@@ -24,6 +24,106 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 
 	/**
+	 * An activation process to be ran internally the first time Beaver Builder is detected
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	protected function beaver_builder_activated(): void {
+		if ($this->is_beaver_builder_installed() && !$this->is_beaver_builder_activated()) {
+			// Do tasks when Beaver Builder is first enabled
+			$this->disable_google_fonts();
+
+			update_option('infinitum_integrations_beaver_builder_activated', true, true);
+		}
+	}
+
+
+
+	/**
+	 * A deactivation process to be ran internally the first time Beaver Builder is detected as being uninstalled
+	 * yet still "activated" within the context of this Integration
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	protected function beaver_builder_deactivated(): void {
+		if (!$this->is_beaver_builder_installed() && $this->is_beaver_builder_activated()) {
+			// Do tasks when Beaver Builder is first disabled
+
+			
+			$this->delete_all_options();
+		}
+	}
+
+
+
+	protected function delete_all_options(): void {
+		delete_option('infinitum_integrations_beaver_builder_activated');
+	}
+
+
+
+	/**
+	 * Disable Google Fonts for Beaver Builder
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	protected function disable_google_fonts() {
+		update_option('_fl_builder_google_enabled', '0');
+	}
+
+
+
+	public function get_theme_font_options() {
+		$fonts = $this->theme->get_theme_fonts();
+		$options = array();
+
+		if (!empty($fonts)) {
+			foreach ($fonts as $font_key => $font_variations) {
+				$fallback = 'sans-serif';
+				$weights = array('100', '200', '300', '400', '500', '600', '700', '800', '900');
+
+				foreach ($font_variations as $font_variation) {
+					// Only use the "normal" variation
+					if (!isset($font_variation['font-style']) || $font_variation['font-style'] != 'normal') continue;
+
+					$weight = '400';
+					
+					if (!empty($font_variation['font-weight'])) {
+						$weight = trim($font_variation['font-weight']);
+					}
+
+					// Parse weight range if it's set
+					if (stripos($weight, ' ') !== false) {
+						$weight_min = intval(explode(' ', $weight, )[0]);
+						$weight_max = intval(explode(' ', $weight, )[1]);
+
+						foreach ($weights as $key => $val) {
+							if (intval($val) < $weight_min || intval($val) > $weight_max) {
+								unset($weights[$key]);
+							}
+						}
+					}
+
+					$options[$font_variation['font-family']] = array(
+						'fallback' => $fallback,
+						'weights' => $weights
+					);
+				}
+			}
+		}
+
+		return $options;
+	}
+
+
+
+	/**
 	 * Inserts a new field array into an existing Beaver Builder $form
 	 * 
 	 * @since 0.0.1
@@ -73,6 +173,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 		}
 
 		/*
+		// Example $form structure
 		$form => array(
 			'tabs' => array( // Not all $forms have this array
 				'tab_name' => array(
@@ -225,11 +326,24 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	public function is_beaver_builder_active() {
 		$active = false;
 
-		if (class_exists('\FLBuilderModel') && \FLBuilderModel::is_builder_active()) {
+		if ($this->is_beaver_builder_installed() && \FLBuilderModel::is_builder_active()) {
 			$active = true;
 		}
 
 		return apply_filters('infinitum_beaver_builder_active', $active);
+	}
+
+
+
+	/**
+	 * Check if this integration has done it's Beaver Builder activation process
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return bool
+	 */
+	public function is_beaver_builder_activated():bool {
+		return get_option('infinitum_integrations_beaver_builder_activated', false) ? true : false;
 	}
 
 
@@ -249,7 +363,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 		if (is_numeric($post_id)) {
 			// Beaver Builder is_builder_enabled doesn't allow for passing a post ID, wo check the post meta manually
 			$enabled = get_post_meta($post_id, '_fl_builder_enabled');
-		} else if (class_exists('\FLBuilderModel') && \FLBuilderModel::is_builder_enabled()) {
+		} else if ($this->is_beaver_builder_installed() && \FLBuilderModel::is_builder_enabled()) {
 			$enabled = true;
 		}
 
@@ -265,15 +379,29 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	 * 
 	 * @return boolean
 	 */
-	public function is_beaver_builder_installed() {
-		return class_exists('FLBuilderModel') ? true : false;
+	public function is_beaver_builder_installed(): bool {
+		return class_exists('\FLBuilderModel') ? true : false;
+	}
+
+
+
+	protected function load_modules() {
+		$breadcrumbs_module_path = $this->dir . 'modules/infinitum-breadcrumbs/infinitum-breadcrumbs.php';
+
+		if ($this->is_beaver_builder_installed()) {
+			if (file_exists($breadcrumbs_module_path)) {
+				require_once $breadcrumbs_module_path;
+
+				modules\infinitum_breadcrumbs\Infinitum_Breadcrumbs_Module::register($this->theme);
+			}
+		}
 	}
 
 
 
 	protected function maybe_set_page_template() {
 		// Check if Beaver Builder is allowed to edit this post type
-		if (class_exists('\FLBuilderModel') && !in_array(get_post_type(), \FLBuilderModel::get_post_types())) return false;
+		if ($this->is_beaver_builder_installed() && !in_array(get_post_type(), \FLBuilderModel::get_post_types())) return false;
 
 		// Check if Beaver Builder is active
 		if (!$this->is_beaver_builder_active()) return false;
@@ -334,16 +462,40 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 
 
-	protected function set_hooks() {
+	protected function set_hooks(): void {
+		
 		add_filter('fl_builder_custom_fields', array($this, 'wp_hook_fl_builder_custom_fields'));
+		add_filter('fl_builder_font_families_system', array($this, 'wp_hook_fl_builder_font_families_system'));
+		add_filter('fl_builder_global_colors_json', array($this, 'wp_hook_fl_builder_global_colors_json'));
+		add_filter('fl_builder_post_types', array($this, 'wp_hook_fl_builder_post_types'));
 		add_filter('fl_builder_register_settings_form', array($this, 'wp_hook_fl_builder_register_settings_form'), 10, 2);
 		add_filter('fl_builder_render_css', array($this, 'wp_hook_fl_builder_render_css'), 10, 3);
 		add_filter('fl_builder_settings_form_defaults', array($this, 'wp_hook_fl_builder_settings_form_defaults'), 10, 2);
 		add_action('fl_builder_ui_enqueue_scripts', array($this, 'wp_hook_fl_builder_ui_enqueue_scripts'));
 		add_filter('fl_builder_ui_js_config', array($this, 'wp_hook_fl_builder_ui_js_config'));
+		add_filter('fl_wp_core_global_colors', array($this, 'wp_hook_fl_wp_core_global_colors'));
 		add_action('init', array($this, 'wp_hook_init'));
 		add_action('wp', array($this, 'wp_hook_wp'));
 		add_action('wp_enqueue_scripts', array($this, 'wp_hook_wp_enqueue_scripts'), 10);
+	}
+
+
+
+	/**
+	 * Theme activation
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @see Theme::theme_activation
+	 */
+	public function theme_activation($old_theme_name = null, $old_theme = null): void {
+		$this->beaver_builder_activated();
+	}
+
+
+
+	public function theme_deactivation($new_name, $new_theme, $old_theme): void {
+		$this->delete_all_options();
 	}
 
 
@@ -353,6 +505,53 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 		$fields['infinitum-typography'] = $this->dir . 'fields/infinitum-typography/infinitum-typography.php';
 
 		return $fields;
+	}
+
+
+
+	public function wp_hook_fl_builder_font_families_system($system) {
+		// TODO: Add this to the "Theme Typography" form instead of using the built-in Beaver Builder font family settings
+		$system = $this->get_theme_font_options();
+
+		return $system;
+	}
+
+
+
+	/**
+	 * Filters Beaver Builder json JS config specifically the 'themeJSON' object to remove the
+	 * core WP colors so only the theme colors are listed in the Beaver Builder color picker
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param array	$colors
+	 * @return array
+	 */
+	public function wp_hook_fl_builder_global_colors_json($config) {
+		if (isset($config['themeJSON']['color']['palette']['default'])) {
+			unset($config['themeJSON']['color']['palette']['default']);
+		}
+
+		return $config;
+	}
+
+
+
+	/**
+	 * Enable Beaver Builder for other post types
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param array	$post_types
+	 * @return array
+	 */
+	public function wp_hook_fl_builder_post_types($post_types): array {
+		if (is_array($post_types)) {
+            // Add Drawers
+            $post_types[] = $this->theme->drawers->get_post_type_slug();
+        }
+
+        return $post_types;
 	}
 
 
@@ -397,99 +596,21 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 			$defaults->row_width = $content_width;
 
 			// Large Breakpoint
-			$defaults->large_breakpoint = 1200;
+			$defaults->large_breakpoint = $content_width;
 			$defaults->medium_breakpoint = 992;
 			$defaults->responsive_breakpoint = 768;
-
-			// Row Margins
-			$defaults->row_margins_top = 0;
-			$defaults->row_margins_right = 0;
-			$defaults->row_margins_bottom = 0;
-			$defaults->row_margins_left = 0;
-			$defaults->row_margins_top_large = 0;
-			$defaults->row_margins_right_large = 0;
-			$defaults->row_margins_bottom_large = 0;
-			$defaults->row_margins_left_large = 0;
-			$defaults->row_margins_top_medium = 0;
-			$defaults->row_margins_right_medium = 0;
-			$defaults->row_margins_bottom_medium = 0;
-			$defaults->row_margins_left_medium = 0;
-			$defaults->row_margins_top_responsive = 0;
-			$defaults->row_margins_right_responsive = 0;
-			$defaults->row_margins_bottom_responsive = 0;
-			$defaults->row_margins_left_responsive = 0;
 
 			// Row Padding
 	        $defaults->row_padding_top = 0;
 			$defaults->row_padding_right = 0;
 			$defaults->row_padding_bottom = 0;
 			$defaults->row_padding_left = 0;
-			$defaults->row_padding_top_large = 0;
-			$defaults->row_padding_right_large = 0;
-			$defaults->row_padding_bottom_large = 0;
-			$defaults->row_padding_left_large = 0;
-			$defaults->row_padding_top_medium = 0;
-			$defaults->row_padding_right_medium = 0;
-			$defaults->row_padding_bottom_medium = 0;
-			$defaults->row_padding_left_medium = 0;
-			$defaults->row_padding_top_responsive = 0;
-			$defaults->row_padding_right_responsive = 0;
-			$defaults->row_padding_bottom_responsive = 0;
-			$defaults->row_padding_left_responsive = 0;
-
-			// Column Margins
-			$defaults->column_margins_top = 0;
-			$defaults->column_margins_right = 0;
-			$defaults->column_margins_bottom = 0;
-			$defaults->column_margins_left = 0;
-			$defaults->column_margins_top_large = 0;
-			$defaults->column_margins_right_large = 0;
-			$defaults->column_margins_bottom_large = 0;
-			$defaults->column_margins_left_large = 0;
-			$defaults->column_margins_top_medium = 0;
-			$defaults->column_margins_right_medium = 0;
-			$defaults->column_margins_bottom_medium = 0;
-			$defaults->column_margins_left_medium = 0;
-			$defaults->column_margins_top_responsive = 0;
-			$defaults->column_margins_right_responsive = 0;
-			$defaults->column_margins_bottom_responsive = 0;
-			$defaults->column_margins_left_responsive = 0;
-
-			// Column Padding
-			$defaults->column_padding_top = 0;
-			$defaults->column_padding_right = 0;
-			$defaults->column_padding_bottom = 0;
-			$defaults->column_padding_left = 0;
-			$defaults->column_padding_top_large = 0;
-			$defaults->column_padding_right_large = 0;
-			$defaults->column_padding_bottom_large = 0;
-			$defaults->column_padding_left_large = 0;
-			$defaults->column_padding_top_medium = 0;
-			$defaults->column_padding_right_medium = 0;
-			$defaults->column_padding_bottom_medium = 0;
-			$defaults->column_padding_left_medium = 0;
-			$defaults->column_padding_top_responsive = 0;
-			$defaults->column_padding_right_responsive = 0;
-			$defaults->column_padding_bottom_responsive = 0;
-			$defaults->column_padding_left_responsive = 0;
 
 			// Module Margins
 			$defaults->module_margins_top = 0;
 			$defaults->module_margins_right = 0;
 			$defaults->module_margins_bottom = 0;
 			$defaults->module_margins_left = 0;
-			$defaults->module_margins_top_large = 0;
-			$defaults->module_margins_right_large = 0;
-			$defaults->module_margins_bottom_large = 0;
-			$defaults->module_margins_left_large = 0;
-			$defaults->module_margins_top_medium = 0;
-			$defaults->module_margins_right_medium = 0;
-			$defaults->module_margins_bottom_medium = 0;
-			$defaults->module_margins_left_medium = 0;
-			$defaults->module_margins_top_responsive = 0;
-			$defaults->module_margins_right_responsive = 0;
-			$defaults->module_margins_bottom_responsive = 0;
-			$defaults->module_margins_left_responsive = 0;
 		}
 
 		return $defaults;
@@ -515,21 +636,40 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 
 
+	/**
+	 * Filters the WP Core Global colors that are used by Beaver Builder to add to the FLPageData
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param array	$colors
+	 * @return array
+	 */
+	public function wp_hook_fl_wp_core_global_colors($colors): array {
+		// Set $colors to an empty array so the core WP colors aren't used
+		$colors = array();
+		
+		return $colors;
+	}
+
+
+
 	public function wp_hook_init() {
-		$breadcrumbs_module_path = $this->dir . 'modules/infinitum-breadcrumbs/infinitum-breadcrumbs.php';
+		// Check if Beaver Builder is active and activation process has already complete
+		$this->beaver_builder_activated();
 
-		if ($this->is_beaver_builder_installed()) {
-			if (file_exists($breadcrumbs_module_path)) {
-				require_once $breadcrumbs_module_path;
+		// Check if Beaver Builder is uninstalled and if the deactivation process has already complete
+		$this->beaver_builder_deactivated();
 
-				modules\infinitum_breadcrumbs\Infinitum_Breadcrumbs_Module::register($this->theme);
-			}
-		}
+		// Load modules
+		$this->load_modules();
 	}
 
 
 
 	public function wp_hook_wp() {
+		// Beaver Builder Activation
+		$this->beaver_builder_activated();
+
 		// Maybe set the page template
 		$this->maybe_set_page_template();
 	}
@@ -539,10 +679,6 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	public function wp_hook_wp_enqueue_scripts() {
 		if ($this->is_beaver_builder_installed()) {
 			wp_enqueue_style('infinitum-beaver-builder', $this->uri . 'css/beaver-builder.css', '0.0.1');
-
-			if ($this->is_beaver_builder_active()) {
-				
-			}
 		}
 	}
 }
