@@ -8,7 +8,7 @@
 
 namespace infinitum\inc\integrations;
 
-abstract class Integration {
+abstract class Integration extends \infinitum\inc\classes\Addon {
 	protected readonly \infinitum\inc\Theme $theme;
 	public readonly string $dir;
 	public readonly string $uri;
@@ -27,12 +27,6 @@ abstract class Integration {
 		$this->uri = $uri;
 
 		$this->set_hooks();
-	}
-	
-	
-	
-	protected function set_hooks() {
-
 	}
 }
 
