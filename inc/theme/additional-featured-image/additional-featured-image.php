@@ -10,7 +10,7 @@
 
 namespace infinitum\inc\theme\additional_featured_image;
 
-class Additional_Featured_Image {
+class Additional_Featured_Image extends \infinitum\inc\classes\Addon {
 
 	protected $additional_images = array();
 	protected $current_post_type = null;
@@ -491,6 +491,18 @@ class Additional_Featured_Image {
 		add_action('delete_attachment', array($this, 'delete_attachment'));
 		add_filter('is_protected_meta', array($this, 'is_protected_meta'), 20, 2);
 		add_filter('save_post', array($this, 'save_post'));
+	}
+
+
+
+	public function theme_activation($old_theme_name = null, $old_theme = null): void {
+
+	}
+
+
+
+	public function theme_deactivation($new_name, $new_theme, $old_theme): void {
+
 	}
 
 
