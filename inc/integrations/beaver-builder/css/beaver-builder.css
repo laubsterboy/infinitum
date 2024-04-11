@@ -1,13 +1,20 @@
 /**
  * Block Theme / Beaver Builder Uniformity
  */
+/*
+/* First approach to getting WP Block theme to match Beaver Builder layout
 .has-global-padding {
 	padding-left: initial;
 	padding-right: initial;
 }
-:where(.has-global-padding) > :where(div, article, section, aside, header, footer, menu, nav, blockquote, p, caption, ul, ol, span, h1, h2, h3, h4, h5, h6, table, figure, figcaption, img, audio, video) {
+:is(.has-global-padding) > :where(div, article, section, aside, header, footer, menu, nav, blockquote, p, caption, ul, ol, span, h1, h2, h3, h4, h5, h6, table, figure, figcaption, img, audio, video) {
 	padding-left: var(--wp--style--root--padding-left);
 	padding-right: var(--wp--style--root--padding-right);
+}
+*/
+/* Second approach to match WP Block Theme with Beaver Builder layout */
+body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+	max-width: calc(var(--wp--style--global--content-size) - var(--wp--style--root--padding-left) - var(--wp--style--root--padding-right));
 }
 
 .fl-module-content {
