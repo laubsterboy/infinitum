@@ -2,7 +2,7 @@
 
 if ($id !== 'row' && $id !== 'col' && $id !== 'module_advanced') return $form;
 
-$wp_global_settings = wp_get_global_settings();
+$wp_global_settings = wp_get_global_settings(array(), array('origin' => 'base'));
 $default_spacing = array(
 	'row' => array(
 		'margin' => '0',
@@ -39,7 +39,7 @@ foreach ($spacing_sizes as $spacing_size) {
 	}
 }
 
-$spacing_options['custom'] = __('Custom', $this->theme->get_text_domain());
+$spacing_options['custom'] = __('Custom', $this->theme->get_textdomain());
 
 $margin_fields = array();
 

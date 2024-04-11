@@ -77,9 +77,9 @@ class Theme {
 	 * 
 	 * @since 0.0.1
 	 * @access protected
-	 * @var string $text_domain
+	 * @var string $textdomain
 	 */
-	public readonly string $text_domain;
+	public readonly string $textdomain;
 
 	/**
 	 * URI
@@ -114,7 +114,7 @@ class Theme {
 	 * @since 0.0.1
 	 */
     protected function __construct() {
-		$this->text_domain = 'infinitum';
+		$this->textdomain = 'infinitum';
 		$this->version = '0.0.0infinitum';
 		$this->dir = trailingslashit(get_template_directory());
 		$this->uri = trailingslashit(get_template_directory_uri());
@@ -153,6 +153,28 @@ class Theme {
 			'priority' => 'default',
 			'callback_args' => null
 		));
+	}
+
+
+
+	/**
+	 * Block Binding Callback for "copyright"
+	 * 
+	 * This is used so the copyright symbol and date can be dynamically updated to reflect the current year
+	 * and all of the text can be internationalized.
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param array $source_args
+	 * @param WP_Block $block_instance
+	 * @param string $attribute_name
+	 * @return string
+	 */
+	public function block_binding_callback_copyright(array $source_args, \WP_Block $block_instance, string $attribute_name): string {
+		$copyright_holder = apply_filters('infinitum_block_binding_copyright_holder', get_bloginfo('name'));
+		$copyright = __('Copyright &copy; ' . date('Y') . ' ' . $copyright_holder, $this->get_textdomain());
+
+		return apply_filters('infinitum_block_binding_copyright', $copyright);
 	}
 
 
@@ -241,8 +263,23 @@ class Theme {
 
 
 
-	public function get_text_domain() {
-		return $this->text_domain;
+	public function get_textdomain() {
+		return $this->textdomain;
+	}
+
+
+
+	/**
+	 * Get the fonts defined in theme.json
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return array
+	 */
+	public function get_theme_fonts(): array {
+		$fonts = \WP_Font_Face_Resolver::get_fonts_from_theme_json();
+
+		return $fonts;
 	}
 
 
@@ -285,7 +322,7 @@ class Theme {
 	 * @return array
 	 */
 	public function get_theme_settings() {
-		$global_settings = wp_get_global_settings();
+		$global_settings = wp_get_global_settings(array(), array('origin' => 'base'));
 		$theme_settings = array();
 
 		if (!empty($global_settings['custom']['infinitum'])) {
@@ -298,21 +335,59 @@ class Theme {
 
 
 	protected function load() {
+		// Load Interfaces
+		require_once get_theme_file_path('inc/interfaces/addon.php');
+		
+		// Load Classes
+		require_once get_theme_file_path('inc/classes/addon.php');
+
+		// Load Theme Features
 		require_once get_theme_file_path('inc/theme/additional-featured-image/additional-featured-image.php');
 		require_once get_theme_file_path('inc/theme/breadcrumbs/breadcrumbs.php');
 		require_once get_theme_file_path('inc/theme/drawers/drawers.php');
 
+		// Load Theme Updater
 		if (!class_exists('EDD_Theme_Updater_Admin')) {
 			require_once get_theme_file_path('inc/theme/updater/theme-updater-admin.php');
 		}
 
+		// Load 3rd Party Integrations
 		require_once get_theme_file_path('inc/integrations/integrations.php');
+	}
+
+
+
+	/**
+	 * Loads the theme textdomain if it's available
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	protected function load_textdomain(): void {
+		load_theme_textdomain($this->textdomain, $this->dir . 'languages');
 	}
 
 
 
 	public function get_uri() {
 		return $this->uri;
+	}
+
+
+
+	/**
+	 * Register block bindings sources (added in WP 6.5)
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	protected function register_block_bindings_sources(): void {
+		register_block_bindings_source('infinitum/copyright', array(
+			'label' => __('Copyright', $this->get_textdomain()),
+			'get_value_callback' => array($this, 'block_binding_callback_copyright')
+		));
 	}
 
 
@@ -326,7 +401,7 @@ class Theme {
 		register_block_pattern_category(
 			'infinitum',
 			array(
-				'label' => __('Infinitum', $this->text_domain)
+				'label' => __('Infinitum', $this->textdomain)
 			)
 		);
 	}
@@ -340,6 +415,23 @@ class Theme {
 		// Styles
 		wp_register_style('infinitum-modal-css', get_template_directory_uri() . '/assets/css/modal.css', array(), $this->version);
         wp_register_style('infinitum', get_template_directory_uri() . '/style.css', array(), $this->version);
+	}
+
+
+
+	/**
+	 * Remove theme features that are unwanted
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	protected function remove_theme_support(): void {
+		// Hide core patterns
+		remove_theme_support('core-block-patterns');
+		
+		// Don't create starter content
+		remove_theme_support('starter-content');
 	}
 
 
@@ -411,7 +503,7 @@ class Theme {
 		}
 		
 
-		$size_names['infinitum-extra-large'] = __('Extra Large', $this->text_domain);
+		$size_names['infinitum-extra-large'] = __('Extra Large', $this->textdomain);
 
 		if (!empty($full)) {
 			$size_names['full'] = $full;
@@ -509,43 +601,50 @@ class Theme {
 			'item_id'			=> ''
 		),
 		array(
-			'theme-license'             => __('Theme License', $this->text_domain),
-			'enter-key'                 => __('Enter your theme license key.', $this->text_domain),
-			'license-key'               => __('License Key', $this->text_domain),
-			'license-action'            => __('License Action', $this->text_domain),
-			'deactivate-license'        => __('Deactivate License', $this->text_domain),
-			'activate-license'          => __('Activate License', $this->text_domain),
-			'status-unknown'            => __('License status is unknown.', $this->text_domain),
-			'renew'                     => __('Renew?', $this->text_domain),
-			'unlimited'                 => __('unlimited', $this->text_domain),
-			'license-key-is-active'     => __('License key is active.', $this->text_domain),
+			'theme-license'             => __('Theme License', $this->textdomain),
+			'enter-key'                 => __('Enter your theme license key.', $this->textdomain),
+			'license-key'               => __('License Key', $this->textdomain),
+			'license-action'            => __('License Action', $this->textdomain),
+			'deactivate-license'        => __('Deactivate License', $this->textdomain),
+			'activate-license'          => __('Activate License', $this->textdomain),
+			'status-unknown'            => __('License status is unknown.', $this->textdomain),
+			'renew'                     => __('Renew?', $this->textdomain),
+			'unlimited'                 => __('unlimited', $this->textdomain),
+			'license-key-is-active'     => __('License key is active.', $this->textdomain),
 			/* translators: the license expiration date */
-			'expires%s'                 => __('Expires %s.', $this->text_domain),
-			'expires-never'             => __('Lifetime License.', $this->text_domain),
+			'expires%s'                 => __('Expires %s.', $this->textdomain),
+			'expires-never'             => __('Lifetime License.', $this->textdomain),
 			/* translators: 1. the number of sites activated 2. the total number of activations allowed. */
-			'%1$s/%2$-sites'            => __('You have %1$s / %2$s sites activated.', $this->text_domain),
-			'activation-limit'          => __('Your license key has reached its activation limit.', $this->text_domain),
+			'%1$s/%2$-sites'            => __('You have %1$s / %2$s sites activated.', $this->textdomain),
+			'activation-limit'          => __('Your license key has reached its activation limit.', $this->textdomain),
 			/* translators: the license expiration date */
-			'license-key-expired-%s'    => __('License key expired %s.', $this->text_domain),
-			'license-key-expired'       => __('License key has expired.', $this->text_domain),
+			'license-key-expired-%s'    => __('License key expired %s.', $this->textdomain),
+			'license-key-expired'       => __('License key has expired.', $this->textdomain),
 			/* translators: the license expiration date */
-			'license-expired-on'        => __('Your license key expired on %s.', $this->text_domain),
-			'license-keys-do-not-match' => __('License keys do not match.', $this->text_domain),
-			'license-is-inactive'       => __('License is inactive.', $this->text_domain),
-			'license-key-is-disabled'   => __('License key is disabled.', $this->text_domain),
-			'license-key-invalid'       => __('Invalid license.', $this->text_domain),
-			'site-is-inactive'          => __('Site is inactive.', $this->text_domain),
+			'license-expired-on'        => __('Your license key expired on %s.', $this->textdomain),
+			'license-keys-do-not-match' => __('License keys do not match.', $this->textdomain),
+			'license-is-inactive'       => __('License is inactive.', $this->textdomain),
+			'license-key-is-disabled'   => __('License key is disabled.', $this->textdomain),
+			'license-key-invalid'       => __('Invalid license.', $this->textdomain),
+			'site-is-inactive'          => __('Site is inactive.', $this->textdomain),
 			/* translators: the theme name */
-			'item-mismatch'             => __('This appears to be an invalid license key for %s.', $this->text_domain),
-			'license-status-unknown'    => __('License status is unknown.', $this->text_domain),
-			'update-notice'             => __("Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", $this->text_domain),
-			'error-generic'             => __('An error occurred, please try again.', $this->text_domain),
+			'item-mismatch'             => __('This appears to be an invalid license key for %s.', $this->textdomain),
+			'license-status-unknown'    => __('License status is unknown.', $this->textdomain),
+			'update-notice'             => __("Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", $this->textdomain),
+			'error-generic'             => __('An error occurred, please try again.', $this->textdomain),
 		));
 	}
 
 
 
-    public function theme_activation($old_theme_name = null, $old_theme = null) {
+	/**
+	 * Theme activation
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @see wp_hook_after_switch_theme
+	 */
+    public function theme_activation($old_theme_name = null, $old_theme = null): void {
 		$content_width = $this->get_theme_setting('contentWidth');
 		$content_width_wide_ratio = $this->get_theme_setting('contentWidthWideRatio');
 
@@ -559,23 +658,51 @@ class Theme {
 		update_option('medium_size_h', strval(round($content_width * 0.5)));
 		update_option('large_size_w', strval(round($content_width * $content_width_wide_ratio)));
 		update_option('large_size_h', strval(round($content_width * $content_width_wide_ratio)));
+
+		// Trigger Theme Features
+		$this->additional_featured_image->theme_activation($old_theme_name, $old_theme);
+		$this->breadcrumbs->theme_activation($old_theme_name, $old_theme);
+		$this->drawers->theme_activation($old_theme_name, $old_theme);
+
+		// Trigger Integrations
+		$this->integrations->theme_activation($old_theme_name, $old_theme);
 	}
 
 
 
-    public function theme_deactivation($new_name, $new_theme, $old_theme) {
+	/**
+	 * Theme deactivation
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @see wp_hook_switch_theme
+	 */
+    public function theme_deactivation($new_name, $new_theme, $old_theme): void {
 		delete_option('infinitum_version');
+
+		// Trigger Integrations
+		$this->integrations->theme_deactivation($new_name, $new_theme, $old_theme);
 	}
 
 
 
     public function wp_hook_after_setup_theme() {
+		$this->load_textdomain();
+		$this->remove_theme_support();
         $this->enqueue_block_styles();
 		$this->set_updater_config();
     }
 
 
 
+	/**
+	 * WordPress action for after a theme has been switched and is called on the theme code being activated
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param string	$old_name	The name of the old theme
+	 * @param WP_Theme	$old_theme	The WP_Theme instance of the old theme, if the old theme is still installed
+	 */
     public function wp_hook_after_switch_theme($old_name, $old_theme) {
         $this->theme_activation($old_name, $old_theme);
     }
@@ -602,12 +729,15 @@ class Theme {
 
 
 
-    public function wp_hook_init() {
+    public function wp_hook_init(): void {
 		// Featured Images
 		$this->add_featured_images_support();
 
 		// Image Sizes
 		$this->set_image_sizes();
+
+		// Register Block Bindings Sources
+		$this->register_block_bindings_sources();
 
 		// Register Block Pattern Categories
 		$this->register_block_pattern_categories();
@@ -626,7 +756,8 @@ class Theme {
 
 
 
-	public function wp_hook_render_block_core__pattern($block_content, $parsed_block, $block) {
+	public function wp_hook_render_block_core__pattern($block_content, $parsed_block, $block): string {
+		// TODO: Remove this method if it's not needed
 		//$block_content = $this->render_block_pattern_post_header_image($block_content, $parsed_block, $block);
 
 		return $block_content;
@@ -634,19 +765,36 @@ class Theme {
 
 
 
-    public function wp_hook_switch_theme($new_name, $new_theme, $old_theme) {
+	/**
+	 * WordPress action for when a theme is switched, but runs on the theme code being deactivated NOT on the new/activated theme code
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param string	$new_name	The name of the theme being activated
+	 * @param WP_Theme	$new_theme	The WP_Theme object for the theme being activated
+	 * @param WP_Theme	$old_theme	The WP_Theme object for the theme being deactivated
+	 * @return void
+	 */
+    public function wp_hook_switch_theme($new_name, $new_theme, $old_theme): void {
         $this->theme_deactivation($new_name, $new_theme, $old_theme);
     }
 
 
 
-    public function wp_hook_wp_enqueue_scripts() {
+    public function wp_hook_wp_enqueue_scripts(): void {
         $this->enqueue_scripts_styles();
     }
 
 
 
-	public function wp_hook_wp() {
+	/**
+	 * WordPress action that is triggered after plugins are loaded, the theme is loaded, and the current post/page/url query is set, but before the page template is loaded
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	public function wp_hook_wp(): void {
 		$this->set_post_id();
 	}
 }

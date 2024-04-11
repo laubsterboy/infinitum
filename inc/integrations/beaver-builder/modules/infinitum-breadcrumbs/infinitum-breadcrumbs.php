@@ -15,9 +15,9 @@ class Infinitum_Breadcrumbs_Module extends \FLBuilderModule {
 		$this->theme = \infinitum\inc\Theme::get_instance();
 
 		parent::__construct(array(
-			'name'				=> __('Breadcrumbs', $this->theme->get_text_domain()),
-			'description'		=> __('Show the breadcrumbs for the current post or page.', $this->theme->get_text_domain()),
-			'category'			=> __('Theme', $this->theme->get_text_domain()),
+			'name'				=> __('Breadcrumbs', $this->theme->get_textdomain()),
+			'description'		=> __('Show the breadcrumbs for the current post or page.', $this->theme->get_textdomain()),
+			'category'			=> __('Theme', $this->theme->get_textdomain()),
 			'dir'				=> $this->theme->get_dir() . 'inc/theme/integrations/beaver-builder/modules/infinitum-breadcrumbs/',
 			'url'				=> $this->theme->get_uri() . 'inc/theme/integrations/beaver-builder/modules/infinitum-breadcrumbs/',
 			'partial_refresh'	=> true,
@@ -38,14 +38,14 @@ class Infinitum_Breadcrumbs_Module extends \FLBuilderModule {
 
 		\FLBuilder::register_module(__NAMESPACE__ . '\Infinitum_Breadcrumbs_Module', array(
 			'general'		=> array(
-				'title'			=> __('General', $theme->get_text_domain()),
+				'title'			=> __('General', $theme->get_textdomain()),
 				'sections'		=> array(
 					'content'		=> array(
-						'title'			=> __('Content', $theme->get_text_domain()),
+						'title'			=> __('Content', $theme->get_textdomain()),
 						'fields'			=> array(
 							'separator'		=> array(
 								'type'			=> 'text',
-								'label'			=> __('Separator', $theme->get_text_domain()),
+								'label'			=> __('Separator', $theme->get_textdomain()),
 								'default'		=> $theme->breadcrumbs->defaults['separator']
 							)
 						)

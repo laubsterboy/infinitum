@@ -4,7 +4,7 @@
 if (in_array($id, array('styles'), true)) return $form;
 
 // Check if this $form contains a "typography" field
-$wp_global_settings = wp_get_global_settings();
+$wp_global_settings = wp_get_global_settings(array(), array('origin' => 'base'));
 $font_sizes = array();
 $font_size_options = array('0' => '(inherited)');
 $line_height_options = array(
