@@ -1,7 +1,7 @@
 REQUIRED FEATURES
 	Theme Config (theme.json)
 		[!] Add shadow presets
-		[+] Add duotones and gradients
+		[!] Add duotones and gradients
 	Header
 		[!] Styles
 			[!] Background color
@@ -9,9 +9,11 @@ REQUIRED FEATURES
 		[!] Locations (left, middle, right, etc)
 			This should almost entirely be handled by the Block editor being able to
 				add/remove Group, Row, Stack, Column blocks
+		[!] Set the "Site Title" block to be the "Site Logo" with the default logo being the infinitum logo in the assets/images folder
 	Navigation
 		[!] Drawers: Ability to create drawer (custom post type) menus, OR at minimum 
 			need to be able to create "mega" menus that are full screen
+			[!] Add a "site search" as the first block in the "starter content" for the starter drawer
 	Featured Image
 		[!] Add a second "Featured Image" called "Header Image" that only displays on the top
 			of "single" pages/posts
@@ -45,23 +47,30 @@ REQUIRED FEATURES
 		[+] Hook
 			A block to trigger WP PHP actions or filters so plugins can output content
 				in specific locations on templates, template parts, or page/post content
-		[+] Social Icons
-			This may be able to be done with existing blocks
-			[+] Social Icons for showing links for specific accounts
-			[+] Social Share Icons/Links to be able to drop into Templates/Patterns for things like posts/events/etc
 		[+] Social Share Links
-	Templates
-		[+] 
+			Can use the existing Social Icons block to display the icons and simply only need to update the URLs to be the proper "share" URLs for each platform
+			This may be an opportunity to take advantage of the "block bindings API"
+		[+] Add "Interactivity" support to all blocks
+	Block bindings
+		[!] Copyright
+			Just need to be able to adjust the copyright holder name - default to the site title
 	Patterns / Template Parts
-		[+] 
+		[+] Create some starter content for common full page layouts (page-about.php, or page-contact.php for example)
+	Templates
+		[+] Create some starter content for common page templates on a website and set them up so they'll show up in the pop-up when creating a new page (template-home-blog.php for example)
 	Hooks
 		[+] Add to this list all of the filters and actions that will be needed throughout
 			various areas of the theme to maintain backward compatibility/functionality
 	Integrations
 		Beaver Builder
 			[!] Custom "Advanced" tab settings for "Margin" and "Padding" that use the WP Theme preset values (1, 2, 3, 4, etc)
+				[+] Thoroughly test overrides from full desktop size down to tablet and mobile
+				[+] Improve the user experience by setting all settings for sizes smaller than desktop/default to "(inherit)" (which shouldn't render a CSS property) 
+					so the values can properly cascade and its easy to tell what has been changed (regarding margins or padding at different responsive sizes)
 			[!] Customize the "Font" settings to remove the font size and add in the WP Theme preset (80, 90, 100, 200, 300, etc)
 			[!] Automatically set the page template to "Blank Full Width" when activating Beaver Builder so the full content space can be utilized
 			[+] Filter the available fonts and add the theme.json fonts so they're the only ones that can be selected (or add to the "Theme Typography" field)
+				[!] To disable Google Fonts it's probably best to use the Beaver Builder Advanced setting that's built in and disable using the toggle (by setting _fl_builder_google_enabled = '0')
+					Upon theme activation run: update_option('_fl_builder_google_enabled', '0');
 		Auto Updates
 			[!] Integrate EDD to distribute updates using integrated methods
