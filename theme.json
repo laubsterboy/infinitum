@@ -86,6 +86,16 @@
 			"heading": true,
 			"link": true,
 			"palette": [
+				{
+					"name": "Black",
+					"slug": "black",
+					"color": "#000000"
+				},
+				{
+					"name": "White",
+					"slug": "white",
+					"color": "#ffffff"
+				},
                 {
                     "name": "Base",
                     "slug": "base",
