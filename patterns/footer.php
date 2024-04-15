@@ -38,10 +38,10 @@
 			<!-- wp:heading {"fontSize":"100"} --><h2 class="wp-block-heading has-100-font-size">Social</h2><!-- /wp:heading -->
 			<!-- wp:social-links -->
 			<ul class="wp-block-social-links">
-				<!-- wp:social-link {"url":"#","service":"facebook"} /-->
-				<!-- wp:social-link {"url":"#","service":"instagram"} /-->
-				<!-- wp:social-link {"url":"#","service":"x"} /-->
-				<!-- wp:social-link {"url":"#","service":"youtube"} /-->
+				<!-- wp:social-link {"url":"https://www.facebook.com","service":"facebook"} /-->
+				<!-- wp:social-link {"url":"https://www.instagram.com","service":"instagram"} /-->
+				<!-- wp:social-link {"url":"https://twitter.com","service":"x"} /-->
+				<!-- wp:social-link {"url":"https://youtube.com","service":"youtube"} /-->
 			</ul>
 			<!-- /wp:social-links -->
 		</div>
