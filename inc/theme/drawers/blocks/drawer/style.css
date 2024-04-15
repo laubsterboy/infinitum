@@ -39,9 +39,13 @@
 }
 
 .wp-block-infinitum-drawer__modal {
+	position: fixed;
 	padding-top: var(--wp--preset--spacing--1);
 	padding-bottom: var(--wp--preset--spacing--1);
 	color: initial;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
 }
 .wp-block-infinitum-drawer__modal :where(a) {
 	color: initial;

@@ -16,6 +16,7 @@
 			"link": false,
 			"text": true
 		},
+		"shadow": true,
 		"interactivity": true
 	},
 	"textdomain": "infinitum",

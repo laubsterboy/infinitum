@@ -17,7 +17,7 @@
 	pointer-events: none;
 	transition: opacity 500ms, visibility 500ms;
 }
-.is-infinitum-modal-open {
+.infinitum-modal.is-infinitum-modal-open {
 	opacity: 1;
 	visibility: visible;
 	pointer-events: all;

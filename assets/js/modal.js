@@ -31,17 +31,18 @@ class InfinitumModal {
 		} else if (typeof settings.openElement === 'string') {
 			this.openElement = document.querySelector(settings.openElement);
 		}
-		
+
 		if (settings.modalElement instanceof HTMLElement) {
 			this.modalElement = settings.modalElement;
 		} else if (typeof settings.modalElement === 'string') {
 			this.modalElement = document.querySelector(settings.modalElement);
 		} else {
-			throw new Error('InfinitumModal requires settings.modalElement to be an HTMLElement or a selector string.');
+			console.log('InfinitumModal requires settings.modalElement to be an HTMLElement or a selector string. This may mean that the Drawer has been been removed.');
+			return;
 		}
 
-		// Move the modal to be a direct child of the body
-		document.body.appendChild(this.modalElement);
+		// Move the modal to be a direct child of the body (ideally want to avoid this, but need to ensure CSS inheritance isn't causing problems)
+		//document.body.appendChild(this.modalElement);
 
 		// Make the modal focusable
 		this.modalElement.setAttribute('tabindex', '-1');
