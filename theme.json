@@ -138,6 +138,7 @@
 			"infinitum": {
 				"contentWidth": 1200,
 				"contentWidthPx": "calc(var(--wp--custom--infinitum--content-width) * 1px)",
+				"contentWidthResponsiveRatio": 0.8,
 				"contentWidthWideRatio": 1.2,
 				"featuredImageDisplayRatio": 2,
 				"featuredImageDisplayFit": "cover",
