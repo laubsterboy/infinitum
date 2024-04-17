@@ -29,12 +29,18 @@ if (!empty($font_size_options)) {
 	$field = array(
 		'type'			=> 'infinitum-typography',
 		'label'			=> 'Theme Typography',
-		'default'		=> '0',
 		'options'		=> array(
 			'font_size' 	=> $font_size_options,
 			'line_height'	=> $line_height_options
 		),
-		'responsive'	=> true
+		'responsive'	=> array(
+			'default'		=> array(
+				'default'		=> '0',
+				'large'			=> '0',
+				'medium'		=> '0',
+				'responsive'	=> '0'
+			)
+		)
 	);
 
 	$form = $this->insert_form_item($form, 'infinitum_typography', $field, 'field', 'type', '', '', 'typography', 'before');
