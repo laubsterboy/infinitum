@@ -4,15 +4,40 @@ $directions = array('top', 'right', 'bottom', 'left');
 $media_sizes = array('default', 'large', 'medium', 'responsive');
 $default_spacing = array(
 	'row' => array(
-		'margin' => 0,
-		'padding' => 0
+		'margin' => array(
+			'default' => 0,
+			'large' => 'inherit',
+			'medium' => 'inherit',
+			'responsive' => 'inherit'
+		),
+		'padding' => array(
+			'default' => 0,
+			'large' => 'inherit',
+			'medium' => 'inherit',
+			'responsive' => 'inherit'
+		)
 	),
 	'column' => array(
-		'margin' => 0,
-		'padding' => 0
+		'margin' => array(
+			'default' => 0,
+			'large' => 'inherit',
+			'medium' => 'inherit',
+			'responsive' => 'inherit'
+		),
+		'padding' => array(
+			'default' => 0,
+			'large' => 'inherit',
+			'medium' => 'inherit',
+			'responsive' => 'inherit'
+		)
 	),
 	'module' => array(
-		'margin' => 1
+		'margin' => array(
+			'default' => 1,
+			'large' => 'inherit',
+			'medium' => 'inherit',
+			'responsive' => 'inherit'
+		)
 	)
 );
 $properties = array(
@@ -47,7 +72,7 @@ foreach ($nodes as $node_types_key => $node_types) {
 						if (isset($node->settings->{$setting_name})) {
 							$setting_value = $node->settings->{$setting_name};
 
-							if ($setting_value != '' && $setting_value != $default_spacing[$node->type][$property_name_singular] && $setting_value != 'custom') {
+							if ($setting_value != '' && $setting_value != $default_spacing[$node->type][$property_name_singular][$media_size] && $setting_value != 'inherit') {
 								\FLBuilderCSS::rule(array(
 									'selector'					=> $selector,
 									'media'						=> $media_size,

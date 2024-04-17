@@ -1,7 +1,7 @@
 <#
 
 var names = data.names;
-var defaultValue = '';
+var defaultValue = 'inherit';
 var options = data.field.options;
 var values = data.values;
 var keys = data.field.keys;

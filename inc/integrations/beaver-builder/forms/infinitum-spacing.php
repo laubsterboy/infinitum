@@ -39,14 +39,14 @@ foreach ($spacing_sizes as $spacing_size) {
 	}
 }
 
-$spacing_options['custom'] = __('Custom', $this->theme->get_textdomain());
+$spacing_options['inherit'] = __('(inherited)', $this->theme->get_textdomain());
 
 $margin_fields = array();
 
 $margin_fields['infinitum_advanced_margins'] = array(
 	'type'				=> 'infinitum-spacing',
 	'label'				=> 'Margins',
-	'default'			=> $default_spacing[$id]['margin'],
+	//'default'			=> $default_spacing[$id]['margin'],
 	'options'			=> $spacing_options,
 	// TODO: Add instant preview so adjustments to the spacing can be seen without a delay
 	/*'preview'			=> array(
@@ -54,8 +54,19 @@ $margin_fields['infinitum_advanced_margins'] = array(
 		'selector'			=> $selector,
 		'property'			=> 'margin',
 		//'format_value'		=> 'var(--wp--preset--spacing--%s)'
+	),
+	'preview'			=> array(
+		'type'				=> 'none'
 	),*/
-	'responsive'		=> true
+	//'responsive'		=> true
+	'responsive'		=> array(
+		'default'			=> array(
+			'default'			=> $default_spacing[$id]['margin'],
+			'large'				=> 'inherit',
+			'medium'			=> 'inherit',
+			'responsive'		=> 'inherit'
+		)
+	)
 );
 
 $padding_fields = array();
@@ -64,7 +75,7 @@ if ($id === 'row' || $id === 'col') {
 	$padding_fields['infinitum_advanced_padding'] = array(
 		'type'				=> 'infinitum-spacing',
 		'label'				=> 'Padding',
-		'default'			=> $default_spacing[$id]['padding'],
+		//'default'			=> $default_spacing[$id]['padding'],
 		'options'			=> $spacing_options,
 		// TODO: Add instant preview so adjustments to the spacing can be seen without a delay
 		/*'preview'			=> array(
@@ -72,8 +83,19 @@ if ($id === 'row' || $id === 'col') {
 			'selector'			=> $selector,
 			'property'			=> 'padding',
 			//'format_value'		=> 'var(--wp--preset--spacing--%s)'
+		),
+		'preview'			=> array(
+			'type'				=> 'none'
 		),*/
-		'responsive'		=> true
+		//'responsive'		=> true
+		'responsive'		=> array(
+			'default'			=> array(
+				'default'			=> $default_spacing[$id]['padding'],
+				'large'				=> 'inherit',
+				'medium'			=> 'inherit',
+				'responsive'		=> 'inherit'
+			)
+		)
 	);
 }
 
@@ -83,7 +105,7 @@ if ($id === 'row' || $id === 'col') {
 	 */
 	$spacing_section = array(
 		'infinitum_spacing'	=> array(
-			'title'				=> 'Theme Spacing',
+			'title'				=> __('Theme Spacing', $this->theme->get_textdomain()),
 			'fields'			=> array_merge($margin_fields, $padding_fields)
 		)
 	);
@@ -97,7 +119,7 @@ if ($id === 'row' || $id === 'col') {
 	 */
 	$spacing_section = array(
 		'infinitum_spacing'	=> array(
-			'title'				=> 'Theme Spacing',
+			'title'				=> __('Theme Spacing', $this->theme->get_textdomain()),
 			'fields'			=> $margin_fields
 		)
 	);
