@@ -232,10 +232,10 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 					} else if ($type === 'section' && $position === 'end' && !empty($tab_match) && $tab_match === $tab_name) {
 						$form[$tab_name]['sections'][$name] = $item;
 					} else if (($type === 'section' || $type === 'field') && ($position !== 'start' && $position !== 'end') && ($position === 'before' || $position === 'after')) {
-						$new_sections = array();
-	
 						if ($type === 'section') {
-							foreach ($tab['sections'] as $section_name => $section) {
+							$new_sections = array();
+
+							foreach ($form[$tab_name]['sections'] as $section_name => $section) {
 								if ($section_match === $section_name) {
 									if ($position === 'before') {
 										$new_sections[$name] = $item;
@@ -258,7 +258,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 						}
 	
 						if ($type === 'field') {
-							foreach ($tab['sections'] as $section_name => $section) {
+							foreach ($form[$tab_name]['sections'] as $section_name => $section) {
 								if (isset($section['fields'])) {
 									// Fields
 									if ($position === 'start' && !empty($tab_match) && $tab_match === $tab_name && !empty($section_match) && $section_match === $section_name) {
@@ -270,7 +270,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 									} else if (($position !== 'start' && $position !== 'end') && ($position === 'before' || ($position === 'replace' && $match_type === 'type') || $position === 'after')) {
 										$new_fields = array();
 			
-										foreach ($section['fields'] as $field_name => $field) {
+										foreach ($form[$tab_name]['sections'][$section_name]['fields'] as $field_name => $field) {
 											if ($match_type === 'type' && !isset($field['type'])) {
 												$new_fields[$field_name] = $field;
 												continue;
