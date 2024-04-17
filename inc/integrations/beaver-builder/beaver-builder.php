@@ -252,10 +252,10 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 									$new_sections[$section_name] = $section;
 								}
 							}
+
+							// Update the sections prior to looping through the fields
+							$form[$tab_name]['sections'] = $new_sections;
 						}
-	
-						// Update the sections prior to looping through the fields
-						$form[$tab_name]['sections'] = $new_sections;
 	
 						if ($type === 'field') {
 							foreach ($tab['sections'] as $section_name => $section) {
@@ -477,6 +477,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 		add_action('init', array($this, 'wp_hook_init'));
 		add_action('wp', array($this, 'wp_hook_wp'));
 		add_action('wp_enqueue_scripts', array($this, 'wp_hook_wp_enqueue_scripts'), 10);
+		add_filter('wp_theme_json_data_theme', array($this, 'wp_hook_wp_theme_json_data_theme'));
 	}
 
 
@@ -576,7 +577,12 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 	public function wp_hook_fl_builder_settings_form_defaults($defaults, $form_type) {
 		$content_width = $this->theme->get_theme_setting('contentWidth');
+		$content_width_responsive_ratio = $this->theme->get_theme_setting('contentWidthResponsiveRatio');
 		$typography = $this->theme->get_theme_setting('typography');
+
+		$large_breakpoint = $content_width;
+		$medium_breakpoint = intval($large_breakpoint * $content_width_responsive_ratio);
+		$responsive_breakpoint = intval($medium_breakpoint * $content_width_responsive_ratio);
 		
 		if ($form_type === 'global') {
 			$defaults->auto_spacing = 0;
@@ -596,9 +602,9 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 			$defaults->row_width = $content_width;
 
 			// Large Breakpoint
-			$defaults->large_breakpoint = $content_width;
-			$defaults->medium_breakpoint = 992;
-			$defaults->responsive_breakpoint = 768;
+			$defaults->large_breakpoint = $large_breakpoint;
+			$defaults->medium_breakpoint = $medium_breakpoint;
+			$defaults->responsive_breakpoint = $responsive_breakpoint;
 
 			// Row Padding
 	        $defaults->row_padding_top = 0;
@@ -680,6 +686,53 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 		if ($this->is_beaver_builder_installed()) {
 			wp_enqueue_style('infinitum-beaver-builder', $this->uri . 'css/beaver-builder.css', '0.0.1');
 		}
+	}
+
+
+
+	/**
+	 * Filter theme.json data to add Beaver Builder breakpoints so they're output as CSS variables
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param WP_Theme_JSON_Data
+	 * @return WP_Theme_JSON_Data
+	 */
+	public function wp_hook_wp_theme_json_data_theme($theme_json) {
+		$content_width = 1200; // Default, but theme.json could change this value so it's just a default value
+		$content_width_responsive_ratio = 0.8; // Default, but theme.json could change this value so it's just a default value
+		$old_data = $theme_json->get_data();
+
+		if (!empty($old_data['settings']['custom']['infinitum']['contentWidth']) && !empty($old_data['settings']['custom']['infinitum']['contentWidthResponsiveRatio'])) {
+			$content_width = floatval($old_data['settings']['custom']['infinitum']['contentWidth']);
+			$content_width_responsive_ratio = floatval($old_data['settings']['custom']['infinitum']['contentWidthResponsiveRatio']);
+		} else {
+			return $theme_json;
+		}
+
+		$large_breakpoint = $content_width;
+		$medium_breakpoint = intval($large_breakpoint * $content_width_responsive_ratio);
+		$responsive_breakpoint = intval($medium_breakpoint * $content_width_responsive_ratio);
+
+		$new_data = array(
+			'version' 	=> 2,
+			'settings' 	=> array(
+				'custom' 	=> array(
+					'beaverBuilder'	=> array(
+						'breakpoints'	=> array(
+							'large'			=> $large_breakpoint,
+							'largePx'		=> "calc(var(--wp--custom--beaver-builder--breakpoints--large) * 1px)",
+							'medium'		=> $medium_breakpoint,
+							"mediumPx"		=> "calc(var(--wp--custom--beaver-builder--breakpoints--medium) * 1px)",
+							'responsive'	=> $responsive_breakpoint,
+							"responsivePx"	=> "calc(var(--wp--custom--beaver-builder--breakpoints--responsive) * 1px)"
+						)
+					)
+				)
+			)
+		);
+
+		return $theme_json->update_with($new_data);
 	}
 }
 
