@@ -31,7 +31,6 @@ REQUIRED FEATURES
 		May need to create some custom blocks to replace some template Tags
 			or carry over some template tags that cannot be recreated as blocks
 		[+] tag
-		[+] tag
 	Styles
 		This should be a replacement for "dependencies" that are compiled PHP files into CSS/JS.
 		CSS variables will be critical to replace the need for PHP to generate dynamic CSS
@@ -69,8 +68,10 @@ REQUIRED FEATURES
 					so the values can properly cascade and its easy to tell what has been changed (regarding margins or padding at different responsive sizes)
 			[!] Customize the "Font" settings to remove the font size and add in the WP Theme preset (80, 90, 100, 200, 300, etc)
 			[!] Automatically set the page template to "Blank Full Width" when activating Beaver Builder so the full content space can be utilized
-			[+] Filter the available fonts and add the theme.json fonts so they're the only ones that can be selected (or add to the "Theme Typography" field)
+			[!] Filter the available fonts and add the theme.json fonts so they're the only ones that can be selected (or add to the "Theme Typography" field)
 				[!] To disable Google Fonts it's probably best to use the Beaver Builder Advanced setting that's built in and disable using the toggle (by setting _fl_builder_google_enabled = '0')
 					Upon theme activation run: update_option('_fl_builder_google_enabled', '0');
+			[!] Add the Beaver Builder responsive size values (large, medium, responsive) as CSS variables to be used for media queries
 		Auto Updates
 			[!] Integrate EDD to distribute updates using integrated methods
+				[!] Test to ensure that auto-updates are actually working

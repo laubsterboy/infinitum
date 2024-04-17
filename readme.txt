@@ -16,6 +16,14 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 0.0.1-beta-1 - 2024-04-15 =
+
+* Added: Beaver Builder CSS breakpoints are now available as CSS variables (--wp--custom--beaver-builder--breakpoints--large-px, --wp--custom--beaver-builder--breakpoints--medium-px, --wp--custom--beaver-builder--breakpoints--responsive-px)
+* Added: The Drawer block now supports "Shadows", which will apply to the open button.
+* Fixed: The Drawer block was causing a CLS (cumulative layout shift) on page load due to default styles not being applied to the modal and is now fixed.
+* Fixed: Beaver Builder spacing and typography now have proper default values (including responsive values)
+* Fixed: Beaver_Builder::insert_form_item method removing section titles for all forms (rows, columns, modules, etc) and this has been fixed.
+
 = 0.0.1-alpha-2 - 2024-03-27 =
 
 * Added: front-page.html template with the page meta data (featured image, title, and breadcrumb) hidden.
