@@ -22,6 +22,7 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 * Added: The Drawer block now supports "Shadows", which will apply to the open button.
 * Fixed: The Drawer block was causing a CLS (cumulative layout shift) on page load due to default styles not being applied to the modal and is now fixed.
 * Fixed: Beaver Builder spacing and typography now have proper default values (including responsive values)
+* Fixed: Beaver Builder FLBuilderPreview._getDefaultValue has been overridden with a custom method to prevent margin, padding, font-size, and line-height (all properties that we're managing with "Theme" fields) from being used in the inline preview CSS (particularly when switching responsive sizes).
 * Fixed: Beaver_Builder::insert_form_item method removing section titles for all forms (rows, columns, modules, etc) and this has been fixed.
 
 = 0.0.1-alpha-2 - 2024-03-27 =
@@ -45,6 +46,10 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Upgrade Notice ==
+
+= 0.0.1-beta-1 =
+
+* This includes breaking changes for older versions that used Beaver Builder and set module, column, or row spacing using the "Theme Spacing". These values will need to be set again.
 
 = 0.0.1-alpha-1 =
 
