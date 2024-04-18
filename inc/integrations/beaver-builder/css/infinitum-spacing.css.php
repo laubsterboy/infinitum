@@ -72,7 +72,7 @@ foreach ($nodes as $node_types_key => $node_types) {
 						if (isset($node->settings->{$setting_name})) {
 							$setting_value = $node->settings->{$setting_name};
 
-							if ($setting_value != '' && $setting_value != $default_spacing[$node->type][$property_name_singular][$media_size] && $setting_value != 'inherit') {
+							if ($setting_value != '' && $setting_value != $default_spacing[$node->type][$property_name_singular][$media_size]) {
 								\FLBuilderCSS::rule(array(
 									'selector'					=> $selector,
 									'media'						=> $media_size,
