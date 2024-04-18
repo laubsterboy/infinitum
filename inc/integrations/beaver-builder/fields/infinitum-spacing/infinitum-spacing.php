@@ -1,17 +1,21 @@
 <#
+var defaults = {
+	top: 'inherit',
+	right: 'inherit',
+	bottom: 'inherit',
+	left: 'inherit'
+};
 
-var names = data.names;
-var defaultValue = 'inherit';
+if (Object.hasOwn(data.field, 'default') && typeof data.field.default === 'object') {
+	defaults = {...defaults, ...data.field.default};
+}
+
+var name = data.name;
 var options = data.field.options;
-var values = data.values;
+var value = data.value === '' ? defaults : {...defaults, ...data.value};
 var keys = data.field.keys;
 var labels = [];
 var i;
-var responsive = data.name.replace(data.rootName, '');
-
-if (Object.hasOwn(data.field, 'default') && typeof data.field.default === 'string') {
-	defaultValue = data.field.default;
-}
 
 if (typeof keys !== 'object') {
 	keys = {
@@ -28,32 +32,18 @@ for (i in keys) {
 
 keys = Object.keys(keys);
 
-if (typeof names !== 'object') {
-	names = {};
-	for (i in keys) {
-		names[keys[i]] = data.rootName + '_' + keys[i] + responsive;
-	}
-}
-
-if (typeof values !== 'object') {
-	values = {};
-	for (i in keys) {
-		values[keys[i]] = data.settings[data.rootName + '_' + keys[i] + responsive];
-	}
-}
-
 var labelClass = '';
 #>
 <div class="infinitum-spacing-field-units">
 	<# for (i = 0; i < keys.length; i++) { #>
 	<div class="infinitum-spacing-field-unit">
-		<select name="{{names[keys[i]]}}">
+		<select name="{{name}}[][{{keys[i]}}]">
 			<# for (var optionKey in options) {
 				var optionVal = options[optionKey];
 				var label = typeof optionVal === 'object' ? optionVal.label : optionVal;
 				var selected = '';
 
-				if ((values[keys[i]] !== undefined && optionKey == values[keys[i]]) || (values[keys[i]] === undefined && optionKey == defaultValue)) {
+				if (value[keys[i]] !== undefined && optionKey == value[keys[i]]) {
 					selected = ' selected="selected"';
 				}
 				#>

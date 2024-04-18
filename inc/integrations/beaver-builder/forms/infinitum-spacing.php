@@ -52,10 +52,10 @@ $margin_fields['infinitum_advanced_margins'] = array(
 	),
 	'responsive'		=> array(
 		'default'			=> array(
-			'default'			=> $default_spacing[$id]['margin'],
-			'large'				=> 'inherit',
-			'medium'			=> 'inherit',
-			'responsive'		=> 'inherit'
+			'default'			=> array('top' => $default_spacing[$id]['margin'], 'right' => $default_spacing[$id]['margin'], 'bottom' => $default_spacing[$id]['margin'], 'left' => $default_spacing[$id]['margin']),
+			'large'				=> array('top' => 'inherit', 'right' => 'inherit', 'bottom' => 'inherit', 'left' => 'inherit'),
+			'medium'			=> array('top' => 'inherit', 'right' => 'inherit', 'bottom' => 'inherit', 'left' => 'inherit'),
+			'responsive'		=> array('top' => 'inherit', 'right' => 'inherit', 'bottom' => 'inherit', 'left' => 'inherit')
 		)
 	)
 );

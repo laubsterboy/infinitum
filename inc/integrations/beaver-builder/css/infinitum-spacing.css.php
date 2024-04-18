@@ -60,18 +60,18 @@ foreach ($nodes as $node_types_key => $node_types) {
 				$selector .= '.fl-module-content';
 			}
 
-			foreach ($directions as $direction) {
-				foreach ($media_sizes as $media_size) {
-					foreach ($properties as $property_name_singular => $property_name_plural) {
-						$setting_name = 'infinitum_advanced_' . $property_name_plural . '_' . $direction;
+			foreach ($media_sizes as $media_size) {
+				foreach ($properties as $property_name_singular => $property_name_plural) {
+					$setting_name = 'infinitum_advanced_' . $property_name_plural;
 
-						if ($media_size !== 'default') {
-							$setting_name .= '_' . $media_size;
-						}
+					if ($media_size !== 'default') {
+						$setting_name .= '_' . $media_size;
+					}
 
-						if (isset($node->settings->{$setting_name})) {
-							$setting_value = $node->settings->{$setting_name};
+					if (isset($node->settings->{$setting_name}) && is_array($node->settings->{$setting_name})) {
+						$node_settings = $node->settings->{$setting_name};
 
+						foreach ($node_settings as $direction => $setting_value) {
 							if ($setting_value != '' && $setting_value != $default_spacing[$node->type][$property_name_singular][$media_size]) {
 								\FLBuilderCSS::rule(array(
 									'selector'					=> $selector,
