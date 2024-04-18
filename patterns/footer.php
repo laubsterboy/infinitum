@@ -14,7 +14,7 @@
 	<div class="wp-block-columns">
 		<!-- wp:column {"width":"25%"} -->
 		<div class="wp-block-column" style="flex-basis:25%">
-			<!-- wp:site-logo {"align":"center"} /-->
+			<!-- wp:site-logo {"align":"center","width":100,"shouldSyncIcon":false,"className":"is-style-default","style":{"color":{}}} /-->
 			<!-- wp:site-title {"level":0,"fontSize":"500","style":{"spacing":{"margin":{"top":"var:preset|spacing|1-2"}}},"textAlign":"center"} /-->
 		</div>
 		<!-- /wp:column -->
