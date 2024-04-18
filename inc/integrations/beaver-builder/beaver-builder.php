@@ -626,7 +626,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 	public function wp_hook_fl_builder_ui_enqueue_scripts() {
 		// Infinitum Spacing field
-		wp_enqueue_style('infinitum-spacing-field', $this->uri . 'fields/infinitum-spacing/infinitum-spacing.css', '0.0.1');
+		wp_enqueue_style('infinitum-spacing-field', $this->uri . 'fields/infinitum-spacing/infinitum-spacing.css', $this->theme->version);
 	}
 
 
@@ -685,6 +685,14 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	public function wp_hook_wp_enqueue_scripts() {
 		if ($this->is_beaver_builder_installed()) {
 			wp_enqueue_style('infinitum-beaver-builder', $this->uri . 'css/beaver-builder.css', '0.0.1');
+
+			if ($this->is_beaver_builder_active()) {
+				wp_enqueue_script('infinitum-beaver-builder', $this->uri . 'js/beaver-builder-editor.js', array('fl-builder'), $this->theme->version);
+
+				// Infinitum Spacing field
+				// TODO: Add support for instance previews
+				//wp_enqueue_script('infinitum-spacing-field', $this->uri . 'fields/infinitum-spacing/infinitum-spacing.js', array('fl-builder'), $this->theme->version);
+			}
 		}
 	}
 
