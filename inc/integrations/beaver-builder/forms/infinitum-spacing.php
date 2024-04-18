@@ -46,19 +46,10 @@ $margin_fields = array();
 $margin_fields['infinitum_advanced_margins'] = array(
 	'type'				=> 'infinitum-spacing',
 	'label'				=> 'Margins',
-	//'default'			=> $default_spacing[$id]['margin'],
 	'options'			=> $spacing_options,
-	// TODO: Add instant preview so adjustments to the spacing can be seen without a delay
-	/*'preview'			=> array(
-		'type'				=> 'css',
-		'selector'			=> $selector,
-		'property'			=> 'margin',
-		//'format_value'		=> 'var(--wp--preset--spacing--%s)'
-	),
 	'preview'			=> array(
-		'type'				=> 'none'
-	),*/
-	//'responsive'		=> true
+		'type'				=> 'refresh'
+	),
 	'responsive'		=> array(
 		'default'			=> array(
 			'default'			=> $default_spacing[$id]['margin'],
@@ -75,26 +66,17 @@ if ($id === 'row' || $id === 'col') {
 	$padding_fields['infinitum_advanced_padding'] = array(
 		'type'				=> 'infinitum-spacing',
 		'label'				=> 'Padding',
-		//'default'			=> $default_spacing[$id]['padding'],
 		'options'			=> $spacing_options,
-		// TODO: Add instant preview so adjustments to the spacing can be seen without a delay
-		/*'preview'			=> array(
-			'type'				=> 'css',
-			'selector'			=> $selector,
-			'property'			=> 'padding',
-			//'format_value'		=> 'var(--wp--preset--spacing--%s)'
-		),
 		'preview'			=> array(
-			'type'				=> 'none'
-		),*/
-		//'responsive'		=> true
+			'type'				=> 'refresh'
+		),
 		'responsive'		=> array(
 			'default'			=> array(
 				'default'			=> $default_spacing[$id]['padding'],
 				'large'				=> 'inherit',
 				'medium'			=> 'inherit',
 				'responsive'		=> 'inherit'
-			)
+			),
 		)
 	);
 }
