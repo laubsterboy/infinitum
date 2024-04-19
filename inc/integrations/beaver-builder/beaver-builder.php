@@ -483,6 +483,55 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 
 	/**
+	 * Removes the placeholder values on Rows and Columns for Margins and Padding if the placeholder is zero.
+	 * This is necessary to prevent the FLBuilderPreview from creating inline CSS with margin or padding of 0px when
+	 * this value needs to not be set at all if it's "empty". See fl-builder-preview.js FLBuilderPreview._getDimensionValue
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @param array		$form
+	 * @param string	$id
+	 * @return array
+	 */
+	protected function settings_form_remove_spacing_placeholders($form, $id): array {
+		if ($id === 'col' || $id === 'row') {
+			// Margins
+			if (isset($form['tabs']['advanced']['sections']['margins']['fields']['margin']['responsive']['placeholder']['default']) && is_array($form['tabs']['advanced']['sections']['margins']['fields']['margin']['responsive']['placeholder']['default'])) {
+				$remove = true;
+				
+				foreach ($form['tabs']['advanced']['sections']['margins']['fields']['margin']['responsive']['placeholder']['default'] as $direction_value) {
+					if ($direction_value != '0') {
+						$remove = false;
+					}
+				}
+
+				if ($remove) {
+					unset($form['tabs']['advanced']['sections']['margins']['fields']['margin']['responsive']['placeholder']);
+				}
+			}
+
+			// Padding
+			if (isset($form['tabs']['advanced']['sections']['margins']['fields']['padding']['responsive']['placeholder']['default']) && is_array($form['tabs']['advanced']['sections']['margins']['fields']['padding']['responsive']['placeholder']['default'])) {
+				$remove = true;
+				
+				foreach ($form['tabs']['advanced']['sections']['margins']['fields']['padding']['responsive']['placeholder']['default'] as $direction_value) {
+					if ($direction_value != '0') {
+						$remove = false;
+					}
+				}
+
+				if ($remove) {
+					unset($form['tabs']['advanced']['sections']['margins']['fields']['padding']['responsive']['placeholder']);
+				}
+			}
+		}
+
+		return $form;
+	}
+
+
+
+	/**
 	 * Theme activation
 	 * 
 	 * @since 0.0.1
@@ -558,8 +607,12 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 
 	public function wp_hook_fl_builder_register_settings_form($form, $id) {
+		// Append forms with custom forms fields
 		$form = $this->register_settings_form('infinitum-spacing', $form, $id);
 		$form = $this->register_settings_form('infinitum-typography', $form, $id);
+
+		// Remove spacing placeholders
+		$form = $this->settings_form_remove_spacing_placeholders($form, $id);
 
 		return $form;
 	}
@@ -606,17 +659,35 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 			$defaults->medium_breakpoint = $medium_breakpoint;
 			$defaults->responsive_breakpoint = $responsive_breakpoint;
 
+			// Row Margins
+			$defaults->row_margins_top = '';
+			$defaults->row_margins_right = '';
+			$defaults->row_margins_bottom = '';
+			$defaults->row_margins_left = '';
+
 			// Row Padding
-	        $defaults->row_padding_top = 0;
-			$defaults->row_padding_right = 0;
-			$defaults->row_padding_bottom = 0;
-			$defaults->row_padding_left = 0;
+	        $defaults->row_padding_top = '';
+			$defaults->row_padding_right = '';
+			$defaults->row_padding_bottom = '';
+			$defaults->row_padding_left = '';
+
+			// Column Margins
+			$defaults->column_margins_top = '';
+			$defaults->column_margins_right = '';
+			$defaults->column_margins_bottom = '';
+			$defaults->column_margins_left = '';
+
+			// Column Padding
+	        $defaults->column_padding_top = '';
+			$defaults->column_padding_right = '';
+			$defaults->column_padding_bottom = '';
+			$defaults->column_padding_left = '';
 
 			// Module Margins
-			$defaults->module_margins_top = 0;
-			$defaults->module_margins_right = 0;
-			$defaults->module_margins_bottom = 0;
-			$defaults->module_margins_left = 0;
+			$defaults->module_margins_top = '';
+			$defaults->module_margins_right = '';
+			$defaults->module_margins_bottom = '';
+			$defaults->module_margins_left = '';
 		}
 
 		return $defaults;
