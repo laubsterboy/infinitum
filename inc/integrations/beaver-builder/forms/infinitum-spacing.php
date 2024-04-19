@@ -19,16 +19,6 @@ $default_spacing = array(
 $spacing_sizes = array();
 $spacing_options = array('0' => '0');
 
-$selector = '';
-
-if ($id === 'row') {
-	$selector .= '.fl-row-content-wrap';
-} else if ($id === 'col') {
-	$selector .= '.fl-col-content';
-} else if ($id === 'module_advanced') {
-	$selector .= '.fl-module-content';
-}
-
 if (!empty($wp_global_settings['spacing']['spacingSizes']['theme']) && is_array($wp_global_settings['spacing']['spacingSizes']['theme'])) {
 	$spacing_sizes = $wp_global_settings['spacing']['spacingSizes']['theme'];
 }
@@ -72,10 +62,10 @@ if ($id === 'row' || $id === 'col') {
 		),
 		'responsive'		=> array(
 			'default'			=> array(
-				'default'			=> $default_spacing[$id]['padding'],
-				'large'				=> 'inherit',
-				'medium'			=> 'inherit',
-				'responsive'		=> 'inherit'
+				'default'			=> array('top' => $default_spacing[$id]['padding'], 'right' => $default_spacing[$id]['padding'], 'bottom' => $default_spacing[$id]['padding'], 'left' => $default_spacing[$id]['padding']),
+				'large'				=> array('top' => 'inherit', 'right' => 'inherit', 'bottom' => 'inherit', 'left' => 'inherit'),
+				'medium'			=> array('top' => 'inherit', 'right' => 'inherit', 'bottom' => 'inherit', 'left' => 'inherit'),
+				'responsive'		=> array('top' => 'inherit', 'right' => 'inherit', 'bottom' => 'inherit', 'left' => 'inherit')
 			),
 		)
 	);
