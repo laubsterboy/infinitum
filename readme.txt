@@ -16,7 +16,7 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
-= 0.0.1-beta-1 - 2024-04-15 =
+= 0.0.1-beta-1 - 2024-04-19 =
 
 * Added: Beaver Builder CSS breakpoints are now available as CSS variables (--wp--custom--beaver-builder--breakpoints--large-px, --wp--custom--beaver-builder--breakpoints--medium-px, --wp--custom--beaver-builder--breakpoints--responsive-px)
 * Added: The Drawer block now supports "Shadows", which will apply to the open button.
