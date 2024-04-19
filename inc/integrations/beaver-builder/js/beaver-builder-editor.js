@@ -26,13 +26,11 @@
 
 
 
-		FLBuilder.addHook( 'preview-init', function(event, _preview) {
+		FLBuilder.addHook('preview-init', function(event, _preview) {
 			preview = _preview;
 
-			// Save the original so if this function changes in the BB plugin the current version will always be used
+			// _getDefaultValue
 			preview._originalGetDefaultValue = preview._getDefaultValue;
-
-			// Set the new that will reference the original
 			preview._getDefaultValue = _getDefaultValue;
 		});
 	});
