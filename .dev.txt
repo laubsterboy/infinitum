@@ -63,8 +63,8 @@ REQUIRED FEATURES
 	Integrations
 		Beaver Builder
 			[!] Custom "Advanced" tab settings for "Margin" and "Padding" that use the WP Theme preset values (1, 2, 3, 4, etc)
-				[+] Thoroughly test overrides from full desktop size down to tablet and mobile
-				[+] Improve the user experience by setting all settings for sizes smaller than desktop/default to "(inherit)" (which shouldn't render a CSS property) 
+				[!] Thoroughly test overrides from full desktop size down to tablet and mobile
+				[!] Improve the user experience by setting all settings for sizes smaller than desktop/default to "(inherit)" (which shouldn't render a CSS property) 
 					so the values can properly cascade and its easy to tell what has been changed (regarding margins or padding at different responsive sizes)
 			[!] Customize the "Font" settings to remove the font size and add in the WP Theme preset (80, 90, 100, 200, 300, etc)
 			[!] Automatically set the page template to "Blank Full Width" when activating Beaver Builder so the full content space can be utilized
@@ -72,6 +72,9 @@ REQUIRED FEATURES
 				[!] To disable Google Fonts it's probably best to use the Beaver Builder Advanced setting that's built in and disable using the toggle (by setting _fl_builder_google_enabled = '0')
 					Upon theme activation run: update_option('_fl_builder_google_enabled', '0');
 			[!] Add the Beaver Builder responsive size values (large, medium, responsive) as CSS variables to be used for media queries
+			[+] Add theme spacing to the new "Box" module for "Spacing" > "Gap" and "Padding" and "Children" > "Padding"
 		Auto Updates
 			[!] Integrate EDD to distribute updates using integrated methods
 				[!] Test to ensure that auto-updates are actually working
+	Child Theme
+		[+] Create a VERY basic child theme with the necessary config/setup to override basic parent theme settings (mostly theme.json)
