@@ -12,15 +12,18 @@ foreach ($nodes as $node_types_key => $node_types) {
 			$node_id = '.fl-node-' . $node->node;
 
 			$selector = $node_id . ' > ';
-			
+
 			if ($node->type === 'row') {
 				$selector .= '.fl-row-content-wrap';
 			} else if ($node->type === 'column') {
 				$selector .= '.fl-col-content';
 			} else if ($node->type === 'module') {
 				$selector .= '.fl-module-content';
-				
-				if ($node->name === 'Heading') {
+
+				if ($node->name === 'Button' || $node->name === 'Button Group') {
+					$selector .= ' a.fl-button';
+					$selector .= ', ' . $selector . ':visited';
+				} else if ($node->name === 'Heading') {
 					$selector .= ' > .fl-heading';
 				}
 			}
