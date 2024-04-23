@@ -1,8 +1,12 @@
 /**
  * Block Theme / Beaver Builder Uniformity
  */
-body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+ body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
 	max-width: calc(var(--wp--style--global--content-size) - var(--wp--style--root--padding-left) - var(--wp--style--root--padding-right));
+}
+
+.fl-row-fixed-width {
+	max-width: calc(var(--wp--style--global--content-size));
 }
 
 .fl-module-content {
@@ -14,4 +18,11 @@ body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alig
 
 :where(.fl-module) p:where(:last-of-type) {
 	margin-bottom: 0;
+}
+
+.fl-node-ifndlhwpuamt .fl-pricing-table .fl-pricing-table-wrap:first-of-type {
+	padding-left:0;
+}
+.fl-node-ifndlhwpuamt .fl-pricing-table .fl-pricing-table-wrap:last-of-type {
+	padding-right:0;
 }
