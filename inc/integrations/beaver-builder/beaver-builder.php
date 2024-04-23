@@ -52,8 +52,6 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	protected function beaver_builder_deactivated(): void {
 		if (!$this->is_beaver_builder_installed() && $this->is_beaver_builder_activated()) {
 			// Do tasks when Beaver Builder is first disabled
-
-			
 			$this->delete_all_options();
 		}
 	}
@@ -130,6 +128,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	 * 
 	 * @param $form 				array|object	The form to insert the new items into
 	 * @param $name					string			The name of the item
+	 * @param $name					bool			If set to true AND $type === 'field AND $match_type === 'type' the $name will adapt to prepend or append the difference between the $name and the matched name that already exists in the form
 	 * @param $item 				array			The item (tab, section, field) to insert
 	 * @param $type					string			The type of item being inserted into the form. Can be 'tab', 'section', or 'field'. Default is 'field'.
 	 * @param $match_type			string			The search paramter to determine a match. For $type of 'tab' and 'section' this should be set to 'name'. For $type of 'field' this can be 'name' or 'type' (to match a field type)
@@ -138,7 +137,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 	 * @param $field_match			string			The field name to insert the item before, into, or after.
 	 * @param $position				string			To position to insert the new item. Can be 'start', 'before', 'replace', 'after', or 'end'. 'start' and 'end' generally require $tab_match and $section_match to have valid values. Default is 'end'.
 	 */
-	public function insert_form_item($form, $name = '', $item = array(), $type = 'field', $match_type = 'name', $tab_match = '', $section_match = '', $field_match = '', $position = 'end') {
+	public function insert_form_item($form, $name = '', $adaptive_name = false, $item = array(), $type = 'field', $match_type = 'name', $tab_match = '', $section_match = '', $field_match = '', $position = 'end') {
 		$form = (array) $form;
 		$_form = $form;
 		$has_tabs = false;
@@ -277,14 +276,22 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 											}
 			
 											if (($match_type === 'name' && $field_match === $field_name) || ($match_type === 'type' && $field_match === $field['type'])) {
+												$new_name = $name;
+
+												// Adaptive Name
+												if ($adaptive_name === true && $match_type === 'type') {
+													$new_name = str_replace($field['type'], $name, $field_name);
+												}
+
+												// Insert
 												if ($position === 'before') {
-													$new_fields[$name] = $item;
+													$new_fields[$new_name] = $item;
 													$new_fields[$field_name] = $field;
 												} else if ($position === 'replace') {
 													$new_fields[$field_name] = $item;
 												} else if ($position === 'after') {
 													$new_fields[$field_name] = $field;
-													$new_fields[$name] = $item;
+													$new_fields[$new_name] = $item;
 												} else {
 													// No $position match, add the field without any change
 													$new_fields[$field_name] = $field;
@@ -474,6 +481,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 		add_action('fl_builder_ui_enqueue_scripts', array($this, 'wp_hook_fl_builder_ui_enqueue_scripts'));
 		add_filter('fl_builder_ui_js_config', array($this, 'wp_hook_fl_builder_ui_js_config'));
 		add_filter('fl_wp_core_global_colors', array($this, 'wp_hook_fl_wp_core_global_colors'));
+		add_action('after_setup_theme', array($this, 'wp_hook_after_setup_theme'));
 		add_action('init', array($this, 'wp_hook_init'));
 		add_action('wp', array($this, 'wp_hook_wp'));
 		add_action('wp_enqueue_scripts', array($this, 'wp_hook_wp_enqueue_scripts'), 10);
@@ -730,6 +738,22 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 
 
+	/**
+	 * If Beaver Builder is installed and activated then add theme support for "menus" so the Menu module can be used
+	 * 
+	 * @since 0.0.1
+	 * 
+	 * @return void
+	 */
+	public function wp_hook_after_setup_theme(): void {
+		if ($this->is_beaver_builder_installed()) {
+			// The Full Site Editor doesn't use, or need, this support, but for the sake of the "Menu module this is added.
+			add_theme_support('menus');
+		}
+	}
+
+
+
 	public function wp_hook_init() {
 		// Check if Beaver Builder is active and activation process has already complete
 		$this->beaver_builder_activated();
@@ -755,7 +779,7 @@ class Beaver_Builder extends \infinitum\inc\integrations\Integration {
 
 	public function wp_hook_wp_enqueue_scripts() {
 		if ($this->is_beaver_builder_installed()) {
-			wp_enqueue_style('infinitum-beaver-builder', $this->uri . 'css/beaver-builder.css', '0.0.1');
+			wp_enqueue_style('infinitum-beaver-builder', $this->uri . 'css/beaver-builder.css', $this->theme->version);
 
 			if ($this->is_beaver_builder_active()) {
 				wp_enqueue_script('infinitum-beaver-builder', $this->uri . 'js/beaver-builder-editor.js', array('fl-builder'), $this->theme->version);

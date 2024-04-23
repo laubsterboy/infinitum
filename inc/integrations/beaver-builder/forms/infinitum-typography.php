@@ -43,5 +43,5 @@ if (!empty($font_size_options)) {
 		)
 	);
 
-	$form = $this->insert_form_item($form, 'infinitum_typography', $field, 'field', 'type', '', '', 'typography', 'before');
+	$form = $this->insert_form_item($form, 'infinitum_typography', true, $field, 'field', 'type', '', '', 'typography', 'before');
 }
