@@ -16,6 +16,13 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 0.0.1-beta-2 - 2024-04-23 =
+
+* Added: Added theme support for "menus" when the Beaver Builder plugin is installed and activated.
+* Updated: The Beaver_Builder::insert_form_item method has been updated to add a new $adaptive parameter
+* Updated: Beaver Builder CSS to set fixed row max width to be the same fluid value that is used for block content (this helps make content look more appealing at high resolutions such as 2K and 4K).
+* Fixed: Beaver Builder infinitum-typography CSS has been completely re-written to automatically work with MOST modules by using the module form preview selector (as long as a module typography field has ['preview']['selector'] this will work automatically). All other modules have been manually coded for, so all Beaver Builder modules are now supported.
+
 = 0.0.1-beta-1 - 2024-04-19 =
 
 * Added: Beaver Builder CSS breakpoints are now available as CSS variables (--wp--custom--beaver-builder--breakpoints--large-px, --wp--custom--beaver-builder--breakpoints--medium-px, --wp--custom--beaver-builder--breakpoints--responsive-px)
@@ -46,6 +53,10 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Upgrade Notice ==
+
+= 0.0.1-beta-2 =
+
+* This includes breaking changes to the Beaver_Builder::insert_form_item method.
 
 = 0.0.1-beta-1 =
 
