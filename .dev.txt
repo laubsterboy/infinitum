@@ -14,6 +14,8 @@ REQUIRED FEATURES
 		[!] Drawers: Ability to create drawer (custom post type) menus, OR at minimum 
 			need to be able to create "mega" menus that are full screen
 			[!] Add a "site search" as the first block in the "starter content" for the starter drawer
+		[!] Check to see if "menus" should be enabled/supported by the theme - right now they're not (BB Menu module doesn't work and also nav/drawers are just static links)
+			Added it only when Beaver Builder is installed since it's not needed for the base theme
 	Featured Image
 		[!] Add a second "Featured Image" called "Header Image" that only displays on the top
 			of "single" pages/posts
