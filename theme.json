@@ -150,7 +150,7 @@
 					"fontSizeRoot": 16,
 					"fontSizeRootPx": "calc(var(--wp--custom--infinitum--typography--font-size-root) * 1px)",
 					"fontSizeRootRem": "1rem",
-					"fontSize100": "calc(var(--wp--custom--infinitum--typography--font-size-root-rem) + 0.3vw)",
+					"fontSize100": "calc(var(--wp--custom--infinitum--typography--font-size-root-px) + 0.3vw)",
 					"fontSize200": "calc(var(--wp--custom--infinitum--typography--font-size-100) * var(--wp--custom--infinitum--typography--type-ratio))",
 					"fontSize300": "calc(var(--wp--custom--infinitum--typography--font-size-200) * var(--wp--custom--infinitum--typography--type-ratio))",
 					"fontSize400": "calc(var(--wp--custom--infinitum--typography--font-size-300) * var(--wp--custom--infinitum--typography--type-ratio))",
@@ -166,7 +166,7 @@
 					"headingLineHeight": 1.1,
 					"lineHeightRootRatio": 1.25,
 					"lineHeight": "calc((100% * var(--wp--custom--infinitum--typography--line-height-root-ratio)) + 0.3vw)",
-					"lineHeightPx": "calc(var(--wp--custom--infinitum--typography--font-size-root-rem) * var(--wp--custom--infinitum--typography--line-height-root-ratio) + 0.3vw)"
+					"lineHeightPx": "calc(var(--wp--custom--infinitum--typography--font-size-root-px) * var(--wp--custom--infinitum--typography--line-height-root-ratio) + 0.3vw)"
 				}
 			}
 		},
@@ -236,6 +236,10 @@
             },
 			"spacingSizes": [
 				{
+					"name": "1 / 8",
+					"size": "calc(var(--wp--style--block-gap) * 0.125)",
+					"slug": "1-8"
+				},{
 					"name": "1 / 4",
 					"size": "calc(var(--wp--style--block-gap) * 0.25)",
 					"slug": "1-4"
@@ -567,9 +571,9 @@
 					},
 					"outline": {
 						"style": "dashed",
-						"offset": "1rem",
+						"offset": "var(--wp--preset--spacing--1-4)",
 						"color": "var(--wp--preset--color--accent)",
-						"width": "0.125rem"
+						"width": "var(--wp--preset--spacing--1-8)"
 					}
 				}
 			}
