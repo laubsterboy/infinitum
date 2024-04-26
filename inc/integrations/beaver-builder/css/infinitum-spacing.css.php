@@ -48,9 +48,9 @@ $properties = array(
 foreach ($nodes as $node_types_key => $node_types) {
 	if (!empty($node_types)) {
 		foreach ($node_types as $key => $node) {
-			$node_id = '.fl-node-' . $node->node;
+			$node_selector = '.fl-node-' . $node->node;
 
-			$selector = $node_id . ' > ';
+			$selector = $node_selector . ' > ';
 			
 			if ($node->type === 'row') {
 				$selector .= '.fl-row-content-wrap';
@@ -58,6 +58,10 @@ foreach ($nodes as $node_types_key => $node_types) {
 				$selector .= '.fl-col-content';
 			} else if ($node->type === 'module') {
 				$selector .= '.fl-module-content';
+
+				if ($node->slug === 'box') {
+					$selector = $node_selector;
+				}
 			}
 
 			foreach ($media_sizes as $media_size) {
