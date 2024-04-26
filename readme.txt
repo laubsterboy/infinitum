@@ -16,6 +16,11 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 0.0.1-beta-3 - 2024-04-26 =
+
+* Added: Initial child theme support.
+* Added: Added a new theme spacing for 1/8 to allow for thin borders
+
 = 0.0.1-beta-2 - 2024-04-23 =
 
 * Added: Added theme support for "menus" when the Beaver Builder plugin is installed and activated.
