@@ -201,6 +201,10 @@ class Theme {
 	 */
 	protected function enqueue_block_assets() {
 		wp_enqueue_style('infinitum');
+
+		if (is_child_theme()) {
+			wp_enqueue_style('infinitum-child-theme');
+		}
     }
 
 
@@ -415,6 +419,10 @@ class Theme {
 		// Styles
 		wp_register_style('infinitum-modal-css', get_template_directory_uri() . '/assets/css/modal.css', array(), $this->version);
         wp_register_style('infinitum', get_template_directory_uri() . '/style.css', array(), $this->version);
+
+		if (is_child_theme()) {
+			wp_register_style('infinitum-child-theme', get_stylesheet_directory_uri() . '/style.css', array('infinitum'), $this->version);
+		}
 	}
 
 
