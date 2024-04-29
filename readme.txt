@@ -16,6 +16,11 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 0.0.1-beta-4 - 2024-04-29 =
+
+* Added: Spacing to the bottom of the core/list block to match paragraphs and headings.
+* Fixed: The parent infinitum theme will attempt to enqueue the child theme style.css if the current theme is a child theme and now the "version" matches the version of the child theme rather than the parent theme version.
+
 = 0.0.1-beta-3 - 2024-04-26 =
 
 * Added: Initial child theme support.
