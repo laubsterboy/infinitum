@@ -421,7 +421,9 @@ class Theme {
         wp_register_style('infinitum', get_template_directory_uri() . '/style.css', array(), $this->version);
 
 		if (is_child_theme()) {
-			wp_register_style('infinitum-child-theme', get_stylesheet_directory_uri() . '/style.css', array('infinitum'), $this->version);
+			$child_theme = wp_get_theme();
+
+			wp_register_style('infinitum-child-theme', get_stylesheet_directory_uri() . '/style.css', array('infinitum'), $child_theme->get('Version'));
 		}
 	}
 
