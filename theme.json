@@ -444,8 +444,13 @@
 					}
 				}
 			},
-			"core/post-comments-form": {
-
+			"core/list": {
+				"spacing": {
+					"margin": {
+						"top": "0",
+						"bottom": "var(--wp--style--block-gap)"
+					}
+				}
 			},
 			"core/paragraph": {
 				"spacing": {
