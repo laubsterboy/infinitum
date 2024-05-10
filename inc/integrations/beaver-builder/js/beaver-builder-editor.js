@@ -33,5 +33,11 @@
 			preview._originalGetDefaultValue = preview._getDefaultValue;
 			preview._getDefaultValue = _getDefaultValue;
 		});
+
+		// Disable margin placeholders
+		FLBuilder._initModuleMarginPlaceholders = () => {};
+
+		// Disable margin/padding placeholders when switching responsive modes
+		//FLBuilderResponsiveEditing._setMarginPaddingPlaceholders = () => {};
 	});
 })(jQuery);
