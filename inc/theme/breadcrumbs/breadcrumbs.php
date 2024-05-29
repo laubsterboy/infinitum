@@ -53,7 +53,7 @@ class Breadcrumbs extends \infinitum\inc\classes\Addon {
 	 * @param string	$separator	The separator to use between each breadcrumb
 	 * @return string
 	 */
-	public function render_breadcrumbs($separator) {
+	public function render_breadcrumbs($separator = ''): string {
 	    global $wp, $post, $wp_locale;
 		$post_type_object = get_post_type_object(get_post_type());
 		$post_type_archive_link = false;
