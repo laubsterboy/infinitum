@@ -52,7 +52,11 @@ REQUIRED FEATURES
 			Can use the existing Social Icons block to display the icons and simply only need to update the URLs to be the proper "share" URLs for each platform
 			This may be an opportunity to take advantage of the "block bindings API"
 		[+] Add "Interactivity" support to all blocks
-	Block bindings
+	Block Styles
+		[+] Look into adding Block Styles to various blocks and what it would entail
+	Block Variations
+		[+] Look into adding Block Variations
+	Block bindings (https://developer.wordpress.org/reference/functions/register_block_bindings_source/)
 		[!] Copyright
 			Just need to be able to adjust the copyright holder name - default to the site title
 	Patterns / Template Parts
