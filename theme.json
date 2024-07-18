@@ -137,6 +137,7 @@
 		"custom": {
 			"infinitum": {
 				"contentWidth": 1200,
+				"contentWidthMax": "62.5vw",
 				"contentWidthPx": "calc(var(--wp--custom--infinitum--content-width) * 1px)",
 				"contentWidthResponsiveRatio": 0.8,
 				"contentWidthWideRatio": 1.2,
@@ -175,8 +176,8 @@
 			"minHeight": true
 		},
         "layout": {
-            "contentSize": "max(var(--wp--custom--infinitum--content-width-px), 62.5vw)",
-            "wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), 75vw)"
+            "contentSize": "max(var(--wp--custom--infinitum--content-width-px), var(--wp--custom--infinitum--content-width-max))",
+            "wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), calc(var(--wp--custom--infinitum--content-width-max) * var(--wp--custom--infinitum--content-width-wide-ratio))"
         },
 		"shadow": {
 			"defaultPresets": false,
@@ -339,7 +340,7 @@
                             ]
                         }
                     ],
-                    "fontFamily": "\"Raleway\", serif",
+                    "fontFamily": "\"Raleway\", sans-serif",
                     "name": "Raleway",
                     "slug": "sans-serif-1"
                 }
@@ -512,7 +513,7 @@
 			"heading": {
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--sans-serif-1)",
-					"lineHeight": "1.2"
+					"lineHeight": "var(--wp--custom--infinitum--typography--heading-line-height)"
 				},
 				"spacing": {
 					"margin": {
