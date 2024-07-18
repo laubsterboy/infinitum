@@ -49,7 +49,7 @@ class Theme {
 	 * Dir
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var string $dir
 	 */
 	public readonly string $dir;
@@ -76,7 +76,7 @@ class Theme {
 	 * Text Domain
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var string $textdomain
 	 */
 	public readonly string $textdomain;
@@ -85,7 +85,7 @@ class Theme {
 	 * URI
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var string $uri
 	 */
 	public readonly string $uri;
@@ -103,7 +103,7 @@ class Theme {
 	 * Version
 	 * 
 	 * @since 0.0.1
-	 * @access protected
+	 * @access public
 	 * @var string $version
 	 */
 	public readonly string $version;
