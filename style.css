@@ -60,7 +60,7 @@ h6,
 .has-300-font-size,
 .has-200-font-size {
 	overflow-wrap: break-word;
-	hyphens: auto;
+	hyphens: manual;
 }
 
 .has-1000-font-size,
