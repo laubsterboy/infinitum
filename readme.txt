@@ -16,6 +16,11 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 1.0.0 - 2024-09-18 =
+
+* Updated: style.css for the .has-<#>-font-size classes to exclude h# tags
+* Fixed: theme.json settings.layout.wideSize so that it properly automatically adjusts when the settings.custom.infinitum.contentWidth or settings.custom.infinitum.contentWidthWideRatio
+
 = 0.0.1-beta-4 - 2024-04-29 =
 
 * Added: Spacing to the bottom of the core/list block to match paragraphs and headings.
