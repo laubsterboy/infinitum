@@ -58,20 +58,22 @@ h6,
 .has-500-font-size,
 .has-400-font-size,
 .has-300-font-size,
-.has-200-font-size {
+.has-200-font-size,
+.has-100-font-size {
 	overflow-wrap: break-word;
 	hyphens: manual;
 }
 
-.has-1000-font-size,
-.has-900-font-size,
-.has-800-font-size,
-.has-700-font-size,
-.has-600-font-size,
-.has-500-font-size,
-.has-400-font-size,
-.has-300-font-size,
-.has-200-font-size {
+.has-1000-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-900-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-800-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-700-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-600-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-500-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-400-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-300-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-200-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-100-font-size:not(h1, h2, h3, h4, h5, h6) {
 	line-height: var(--wp--custom--infinitum--typography--line-height);
 }
 
