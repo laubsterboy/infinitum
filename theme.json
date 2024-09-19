@@ -177,7 +177,7 @@
 		},
         "layout": {
             "contentSize": "max(var(--wp--custom--infinitum--content-width-px), var(--wp--custom--infinitum--content-width-max))",
-            "wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), calc(var(--wp--custom--infinitum--content-width-max) * var(--wp--custom--infinitum--content-width-wide-ratio))"
+            "wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), calc(var(--wp--custom--infinitum--content-width-max) * var(--wp--custom--infinitum--content-width-wide-ratio)))"
         },
 		"shadow": {
 			"defaultPresets": false,
