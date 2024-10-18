@@ -1,6 +1,6 @@
 === Infinitum ===
 Contributors: laubsterboy
-Requires at least: 6.5
+Requires at least: 6.6
 Requires PHP: 8.1
 Stable tag: 0.0.1
 License: GPLv2 or later
@@ -15,6 +15,10 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.1.0 - 2024-10-18 =
+
+* Fixed: The CSS rule for images (and other media) to set the height to auto so the proportions are maintained
 
 = 1.0.0 - 2024-09-18 =
 
