@@ -6,8 +6,8 @@ Author URI: https://www.johnrussell.dev
 Description: A starter theme that uses the full site editor capabilities of WordPress with fluid type treatment, fluid spacing, and fluid content widths
 Tags: 
 Version: 0.0.0infinitum
-Requires at least: 6.5
-Tested up to: 6.5
+Requires at least: 6.6
+Tested up to: 6.6
 Requires PHP: 8.1
 License: GNU General Public License v2 or Later
 License URI: http://www.gnu.org/license/gpl-2.0.html
@@ -29,6 +29,7 @@ body {
 img, picture, video, canvas, svg {
 	display: block;
 	max-width: 100%;
+	height: auto;
 }
 
 input, button, textarea, select {
