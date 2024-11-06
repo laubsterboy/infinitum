@@ -74,7 +74,9 @@ h6,
 .has-400-font-size:not(h1, h2, h3, h4, h5, h6),
 .has-300-font-size:not(h1, h2, h3, h4, h5, h6),
 .has-200-font-size:not(h1, h2, h3, h4, h5, h6),
-.has-100-font-size:not(h1, h2, h3, h4, h5, h6) {
+.has-100-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-90-font-size:not(h1, h2, h3, h4, h5, h6),
+.has-80-font-size:not(h1, h2, h3, h4, h5, h6) {
 	line-height: var(--wp--custom--infinitum--typography--line-height);
 }
 
