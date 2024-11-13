@@ -16,6 +16,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 1.1.2 - 2024-11-12 =
+* Updated: style.css to add WCAG related custom properties so they can be used in theme development and updated in one place
+
 = 1.1.1 - 2024-11-05 =
 * Updated: style.css for the .has-<#>-font-size classes to include the 90 and 80 sizes
 

@@ -14,6 +14,10 @@ License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 Text Domain: infinitum
 */
 
+:root {
+	--wcag--operable--input-modalities--minimum-target-size: 24px;
+}
+
 *, *::before, *::after {
 	box-sizing: border-box;
 }
