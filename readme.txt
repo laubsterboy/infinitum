@@ -16,6 +16,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 1.1.3 - 2024-11-12 =
+* Updated: The color palette to increase the contrast of the accent color against white so it can be used as a link/target
+
 = 1.1.2 - 2024-11-12 =
 * Updated: style.css to add WCAG related custom properties so they can be used in theme development and updated in one place
 

@@ -56,7 +56,7 @@
 					"slug": "primary-and-white"
 				},
 				{
-					"colors": ["#F5006E", "#ffffff"],
+					"colors": ["#E60067", "#ffffff"],
 					"name": "Accent and White",
 					"slug": "accent-and-white"
 				}
@@ -129,7 +129,7 @@
                 {
                     "name": "Accent",
                     "slug": "accent",
-                    "color": "#F5006E"
+                    "color": "#E60067"
                 }
             ],
 			"text": true
