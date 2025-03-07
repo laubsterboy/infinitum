@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.2.0 - 2025-03-06 =
+* Updated: infinitum/drawer block to add a toggle to be able to place the close button in the modal or have it be a sibling of the open button, and cleaned up the interactivity API
 
 = 1.1.3 - 2024-11-12 =
 * Updated: The color palette to increase the contrast of the accent color against white so it can be used as a link/target
