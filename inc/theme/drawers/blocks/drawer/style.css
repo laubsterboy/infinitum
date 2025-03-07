@@ -33,7 +33,8 @@
 	background-color:transparent;
 }
 .wp-block-infinitum-drawer__button[disabled="true"] {
-	display: none;
+	visibility: hidden;
+	pointer-events: none;
 }
 .wp-block-infinitum-drawer__button:focus,
 .wp-block-infinitum-drawer__button:hover {

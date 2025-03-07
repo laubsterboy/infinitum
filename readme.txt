@@ -2,9 +2,9 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.2.1 - 2025-03-07 =
+* Updated: infinitum/drawer CSS for disabled open/close buttons
 
 = 1.2.0 - 2025-03-06 =
 * Updated: infinitum/drawer block to add a toggle to be able to place the close button in the modal or have it be a sibling of the open button, and cleaned up the interactivity API
