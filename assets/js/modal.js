@@ -15,6 +15,7 @@ class InfinitumModal {
 		this.openElement = null;
 		this.closeElement = null;
 		this.modalElement = null;
+		this.nestedCloseElement = true;
 
 		if (settings.isOpen) {
 			this.isOpen = true;
@@ -51,9 +52,16 @@ class InfinitumModal {
 		this.openElement.classList.add('infinitum-modal__button', 'infinitum-modal__button--open');
 		this.modalElement.classList.add('infinitum-modal');
 
+		// Initialize close button hierarchy
+		if (!this.modalElement.contains(this.closeElement)) {
+			this.nestedCloseElement = false;
+		}
+
 		// Initialize open/close state
 		if (this.isOpen) {
 			this.open();
+		} else {
+			this.close();
 		}
 
 		// Add Event Listeners
@@ -93,6 +101,12 @@ class InfinitumModal {
 			this.lastFocusableElement.removeEventListener('blur', this.lastFocusableElementBlurListener.bind(this));
 		}
 
+		if (this.nestedCloseElement === false) {
+			this.openElement.removeAttribute('disabled');
+			this.closeElement.setAttribute('disabled', true);
+			this.closeElement.removeEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
+		}
+
 		this.focusOpenElement();
 		
 		this.isOpen = false;
@@ -112,7 +126,11 @@ class InfinitumModal {
 		if (this.shiftKeyDown === true) {
 			event.preventDefault();
 
-			this.focusLast();
+			if (this.nestedCloseElement) {
+				this.focusLast();
+			} else {
+				this.focusCloseElement();
+			}
 		}
 	}
 
@@ -195,7 +213,12 @@ class InfinitumModal {
 	lastFocusableElementBlurListener(event) {
 		if (this.shiftKeyDown !== true) {
 			event.preventDefault();
-			this.focusFirst();
+
+			if (this.nestedCloseElement) {
+				this.focusFirst();
+			} else {
+				this.focusCloseElement();
+			}
 		}
 	}
 
@@ -215,6 +238,18 @@ class InfinitumModal {
 			if (hrefParts[0] == windowHref) {
 				this.close();
 			}
+		}
+	}
+
+
+
+	nestedCloseElementBlurListener(event) {
+		event.preventDefault();
+
+		if (this.shiftKeyDown) {
+			this.focusLast();
+		} else {
+			this.focus();
 		}
 	}
 
@@ -248,6 +283,12 @@ class InfinitumModal {
 
 				this.firstFocusableElement.addEventListener('blur', this.firstFocusableElementBlurListener.bind(this));
 				this.lastFocusableElement.addEventListener('blur', this.lastFocusableElementBlurListener.bind(this));
+			}
+
+			if (this.nestedCloseElement === false) {
+				this.openElement.setAttribute('disabled', true);
+				this.closeElement.removeAttribute('disabled');
+				this.closeElement.addEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
 			}
 
 			this.focus();

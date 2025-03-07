@@ -200,12 +200,12 @@ class Drawers extends \infinitum\inc\classes\Addon {
 
 
 	public function render_drawer_block($block_attributes, $content) {
+		$classes = array();
 		$drawer_id = 0;
 		$drawer_post = null;
 		$content = 'Select a drawer';
 		$context = '';
-		$markup = '';
-		$wrapper = '<div ' . get_block_wrapper_attributes() . ' %s data-wp-interactive="infinitumDrawer">%s</div>';
+		$wrapper = '<div %s %s data-wp-interactive="infinitum/drawer">%s</div>';
 		$interactivity_data_context = array('isOpen' => false);
 
 		// Interactivity Data Context
@@ -226,15 +226,25 @@ class Drawers extends \infinitum\inc\classes\Addon {
 			$drawer_post = $this->get_first_post();
 		}
 
+		// Open / Close Buttons
+		if ($block_attributes['nestCloseButton']) {
+			$classes[] = 'wp-block-infinitum-drawer--nested-close-button';
+		} else {
+			$classes[] = 'wp-block-infinitum-drawer--sibling-close-button';
+		}
+
 		// Render Drawer if $post is a WP_Post object
 		if (is_a($drawer_post, '\WP_Post') && !empty($drawer_post->ID)) {
 			$content = $this->render_drawer_button_open($drawer_post, $block_attributes);
+			if ($block_attributes['nestCloseButton'] !== true) {
+				$content .= $this->render_drawer_button_close($drawer_post, $block_attributes);
+			}
 			$content .= $this->render_drawer_modal($drawer_post, $block_attributes);
 		} else {
 			$content = 'Drawer not found';
 		}
 
-		return sprintf($wrapper, $context, $content);
+		return sprintf($wrapper, get_block_wrapper_attributes(array('class' => implode(' ', $classes))), $context, $content);
 	}
 
 
@@ -296,7 +306,9 @@ class Drawers extends \infinitum\inc\classes\Addon {
 		}
 
 		$markup = '<aside ' . implode(' ', $normalized_attributes) . ' data-wp-interactive="infinitumDrawer" aria-label="' . $drawer_post->post_title . ' Modal" role="dialog">';
-		$markup .= '<div class="wp-block-infinitum-drawer__button--close-container wp-block-group">' . $this->render_drawer_button_close($drawer_post, $block_attributes) . '</div>';
+		if ($block_attributes['nestCloseButton']) {
+			$markup .= '<div class="wp-block-infinitum-drawer__button--close-container wp-block-group">' . $this->render_drawer_button_close($drawer_post, $block_attributes) . '</div>';
+		}
 		$markup .= $content;
 		$markup .= '</aside>';
 

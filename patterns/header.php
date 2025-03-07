@@ -19,7 +19,7 @@
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:infinitum/drawer {"drawerID:"0"} /-->
+		<!-- wp:infinitum/drawer {"drawerID:"0","nestCloseButton":true} /-->
 	</div>
 	<!-- /wp:group -->
 </div>

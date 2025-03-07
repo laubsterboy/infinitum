@@ -1,31 +1,14 @@
 import { store, getContext } from "@wordpress/interactivity";
 
-const { state } = store('infinitumDrawer', {
-	state: {
-		_isOpen: false,
-		get isOpen() {
-			return this._isOpen;
-		},
-		set isOpen(value) {
-			if (typeof value === 'boolean') {
-				this._isOpen = value;
-			}
-		}
-	},
+const { state } = store('infinitum/drawer', {
 	actions: {
 		open: () => {
-			console.log('yay it opened');
-			state.isOpen = true;
-			console.log(state.isOpen);
-			console.log(getContext());
+			const context = getContext();
+			context.isOpen = true;
 		},
 		close: () => {
-			console.log('it closed');
-			state.isOpen = false;
-			console.log(state.isOpen);
-			console.log(getContext('infinitumDrawer'));
+			const context = getContext();
+			context.isOpen = false;
 		}
 	}
 });
-console.log(state);
-			

@@ -37,6 +37,10 @@
 			"type": "string",
 			"default": "Open"
 		},
+		"nestCloseButton": {
+			"type":  "boolean",
+			"default": true
+		},
 		"showIconClose": {
 			"type": "boolean",
 			"default": true

@@ -95,6 +95,17 @@
 										}
 									}
 								),
+								el(ToggleControl,
+									{
+										key: 'nestCloseButton',
+										label: 'Nest Close Button',
+										help: props.attributes.nestCloseButton ? 'The close button is nested inside the popup modal, which is recommended' : 'The close button is a sibling of the open button, which should only be used in very specific situations',
+										checked: props.attributes.nestCloseButton,
+										onChange: (newChecked) => {
+											props.setAttributes({nestCloseButton: newChecked});
+										}
+									}
+								)
 							]
 						)
 					)
