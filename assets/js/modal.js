@@ -7,6 +7,8 @@ class InfinitumModal {
 			modalElement: null
 		}, settings);
 
+		this.openEvent = new Event('open');
+		this.closeEvent = new Event('close');
 		this.focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex]:not([tabindex="-1"]), *[contenteditable]';
 		this.firstFocusableElement = null;
 		this.lastFocusableElement = null;
@@ -61,7 +63,9 @@ class InfinitumModal {
 		if (this.isOpen) {
 			this.open();
 		} else {
-			this.close();
+			if (this.nestedCloseElement === false) {
+				this.disableCloseElement();
+			}
 		}
 
 		// Add Event Listeners
@@ -76,7 +80,7 @@ class InfinitumModal {
 
 
 
-	close() {
+	close(setFocus = true) {
 		this.modalElement.classList.remove('is-infinitum-modal-open');
 
 		// Add a class to the body
@@ -102,14 +106,17 @@ class InfinitumModal {
 		}
 
 		if (this.nestedCloseElement === false) {
-			this.openElement.removeAttribute('disabled');
-			this.closeElement.setAttribute('disabled', true);
-			this.closeElement.removeEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
+			this.disableCloseElement();
 		}
 
-		this.focusOpenElement();
+		if (setFocus === true) {
+			this.focusOpenElement();
+		}
 		
 		this.isOpen = false;
+
+		// Dispatch close event on the modal container
+		this.modalElement.dispatchEvent(this.closeEvent);
 	}
 
 
@@ -118,6 +125,22 @@ class InfinitumModal {
 		event.preventDefault();
 
 		this.close();
+	}
+
+
+
+	disableCloseElement() {
+		this.openElement.removeAttribute('disabled');
+		this.closeElement.setAttribute('disabled', true);
+		this.closeElement.removeEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
+	}
+
+
+
+	disableOpenElement() {
+		this.openElement.setAttribute('disabled', true);
+		this.closeElement.removeAttribute('disabled');
+		this.closeElement.addEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
 	}
 
 
@@ -255,12 +278,19 @@ class InfinitumModal {
 
 
 
-	open() {
+	open(setFocus = true) {
 		// Change the class to open the modal, and also trigger any possible animations or transitions
 		this.modalElement.classList.add('is-infinitum-modal-open');
 		
 		// Add a class to the body
 		document.body.classList.add('has-infinitum-modal-open');
+
+		if (this.nestedCloseElement === false) {
+			this.disableOpenElement();
+		}
+
+		// Dispatch open event on the modal container
+		this.modalElement.dispatchEvent(this.openEvent);
 
 		Promise.all(this.modalElement.getAnimations({subtree: true}).map((animation) => animation.finished)).then(() => {
 			// Set aria expanded state
@@ -285,13 +315,9 @@ class InfinitumModal {
 				this.lastFocusableElement.addEventListener('blur', this.lastFocusableElementBlurListener.bind(this));
 			}
 
-			if (this.nestedCloseElement === false) {
-				this.openElement.setAttribute('disabled', true);
-				this.closeElement.removeAttribute('disabled');
-				this.closeElement.addEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
+			if (setFocus === true) {
+				this.focus();
 			}
-
-			this.focus();
 
 			this.isOpen = true;
 		}).catch(error => {

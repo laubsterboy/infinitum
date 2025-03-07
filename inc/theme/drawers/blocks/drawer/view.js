@@ -1,5 +1,7 @@
 class InfinitumDrawers {
 	constructor() {
+		this.modalObjects = [];
+
 		if (document.readyState === 'loading') {
 			document.addEventListener('DOMContentLoaded', this.DOMContentLoadedListener.bind(this));
 		} else {
@@ -16,7 +18,7 @@ class InfinitumDrawers {
 
 
 	init() {
-		var drawers = document.querySelectorAll('.wp-block-infinitum-drawer');
+		let drawers = document.querySelectorAll('.wp-block-infinitum-drawer');
 
 		drawers.forEach((drawer) => {
 			let buttonOpen = drawer.querySelector('.wp-block-infinitum-drawer__button--open');
@@ -28,6 +30,20 @@ class InfinitumDrawers {
 				openElement: buttonOpen,
 				modalElement: modal
 			});
+
+			modal.addEventListener('open', this.modalOpenListener.bind(this));
+
+			this.modalObjects.push(modalObject);
+		});
+	}
+
+
+
+	modalOpenListener(event) {
+		this.modalObjects.forEach((modalObject) => {
+			if (modalObject.isOpen && event.target !== modalObject.modalElement) {
+				modalObject.close(false);
+			}
 		});
 	}
 }
