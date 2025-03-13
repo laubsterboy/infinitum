@@ -25,6 +25,22 @@
 	"viewScriptModule": "file:./view-module.js",
 	"style": ["infinitum-modal-css", "file:./style.css"],
 	"attributes": {
+		"autoOffsetBottom": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoOffsetLeft": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoOffsetRight": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoOffsetTop": {
+			"type": "boolean",
+			"default": false
+		},
 		"drawerID": {
 			"type": "string",
 			"default": "0"
@@ -40,6 +56,10 @@
 		"nestCloseButton": {
 			"type":  "boolean",
 			"default": true
+		},
+		"scrollToViewModal": {
+			"type": "boolean",
+			"default": false
 		},
 		"showIconClose": {
 			"type": "boolean",

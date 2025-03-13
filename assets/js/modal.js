@@ -1,12 +1,21 @@
 class InfinitumModal {
 	constructor(settings) {
-		var settings = Object.assign({
-			closeElement: null,
-			isOpen: false,
-			openElement: null,
-			modalElement: null
-		}, settings);
+		var settings = {...{
+			autoOffsetBottom: false,	// Offset the top of the modal based on the position of the open element
+			autoOffsetLeft: false,		// Offset the left of the modal based on the position of the open element
+			autoOffsetRight: false,		// Offset the right of the modal based on the position of the open element
+			autoOffsetTop: false,		// Offset the top of the modal based on the position of the open element
+			closeElement: null,			// The close element for the modal
+			isOpen: false,				// Whether the modal is open by default or closed
+			openElement: null,			// The open element for the modal
+			modalElement: null,			// The modal element
+			scrollToViewModal: false	// Scroll the window to get the open element to the edge of the window based on the auto offset that is enabled
+		}, ...settings};
 
+		this.autoOffsetBottom = settings.autoOffsetBottom;
+		this.autoOffsetLeft = settings.autoOffsetLeft;
+		this.autoOffsetRight = settings.autoOffsetRight;
+		this.autoOffsetTop = settings.autoOffsetTop;
 		this.openEvent = new Event('open');
 		this.closeEvent = new Event('close');
 		this.focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex]:not([tabindex="-1"]), *[contenteditable]';
@@ -18,6 +27,15 @@ class InfinitumModal {
 		this.closeElement = null;
 		this.modalElement = null;
 		this.nestedCloseElement = true;
+		this.scrollToViewModalEnabled = settings.scrollToViewModal;
+
+		// Proxy functions
+		this.firstFocusableElementBlurListenerProxy = this.firstFocusableElementBlurListener.bind(this);
+		this.lastFocusableElementBlurListenerProxy = this.lastFocusableElementBlurListener.bind(this);
+		this.linkClickListenerProxy = this.linkClickListener.bind(this);
+		this.keyboardDownListenerProxy = this.keyboardDownListener.bind(this);
+		this.keyboardUpListenerProxy = this.keyboardUpListener.bind(this);
+		this.nestedCloseElementBlurListenerProxy = this.nestedCloseElementBlurListener.bind(this);
 
 		if (settings.isOpen) {
 			this.isOpen = true;
@@ -69,13 +87,15 @@ class InfinitumModal {
 		}
 
 		// Add Event Listeners
-		if (this.closeElement !== null) {
+		if (this.closeElement instanceof HTMLElement) {
 			this.closeElement.addEventListener('click', this.closeElementClickListener.bind(this));
 		}
 
-		if (this.openElement !== null) {
+		if (this.openElement instanceof HTMLElement) {
 			this.openElement.addEventListener('click', this.openElementClickListener.bind(this));
 		}
+
+		window.addEventListener('scroll', this.windowScrollListener.bind(this));
 	}
 
 
@@ -89,20 +109,20 @@ class InfinitumModal {
 		// Set aria expanded state
 		this.modalElement.setAttribute('aria-expanded', false);
 
-		document.removeEventListener('keydown', this.keyboardDownListener.bind(this));
-		document.removeEventListener('keyup', this.keyboardUpListener.bind(this));
+		document.removeEventListener('keydown', this.keyboardDownListenerProxy);
+		document.removeEventListener('keyup', this.keyboardUpListenerProxy);
 
 		var modalLinks = this.modalElement.querySelectorAll('a[href]');
 
 		modalLinks.forEach((link) => {
-			link.removeEventListener('click', this.linkClickListener.bind(this));
+			link.removeEventListener('click', this.linkClickListenerProxy);
 		});
 
 		var visibleElements = this.getVisibleElements();
 
 		if (visibleElements.length > 0) {
-			this.firstFocusableElement.removeEventListener('blur', this.firstFocusableElementBlurListener.bind(this));
-			this.lastFocusableElement.removeEventListener('blur', this.lastFocusableElementBlurListener.bind(this));
+			this.firstFocusableElement.removeEventListener('blur', this.firstFocusableElementBlurListenerProxy);
+			this.lastFocusableElement.removeEventListener('blur', this.lastFocusableElementBlurListenerProxy);
 		}
 
 		if (this.nestedCloseElement === false) {
@@ -132,7 +152,7 @@ class InfinitumModal {
 	disableCloseElement() {
 		this.openElement.removeAttribute('disabled');
 		this.closeElement.setAttribute('disabled', true);
-		this.closeElement.removeEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
+		this.closeElement.removeEventListener('blur', this.nestedCloseElementBlurListenerProxy);
 	}
 
 
@@ -140,7 +160,7 @@ class InfinitumModal {
 	disableOpenElement() {
 		this.openElement.setAttribute('disabled', true);
 		this.closeElement.removeAttribute('disabled');
-		this.closeElement.addEventListener('blur', this.nestedCloseElementBlurListener.bind(this));
+		this.closeElement.addEventListener('blur', this.nestedCloseElementBlurListenerProxy);
 	}
 
 
@@ -279,6 +299,19 @@ class InfinitumModal {
 
 
 	open(setFocus = true) {
+		this.isOpen = true;
+
+		// Set aria expanded state
+		this.modalElement.setAttribute('aria-expanded', true);
+
+		// Set focus
+		if (setFocus === true) {
+			this.focus();
+		}
+
+		document.addEventListener('keydown', this.keyboardDownListenerProxy);
+		document.addEventListener('keyup', this.keyboardUpListenerProxy);
+
 		// Change the class to open the modal, and also trigger any possible animations or transitions
 		this.modalElement.classList.add('is-infinitum-modal-open');
 		
@@ -292,17 +325,20 @@ class InfinitumModal {
 		// Dispatch open event on the modal container
 		this.modalElement.dispatchEvent(this.openEvent);
 
+		// Update modal offsets
+		this.updateModalOffsets();
+
+		// Scroll to modal
+		if (this.scrollToViewModalEnabled) {
+			this.scrollToViewModal();
+		}
+
+		// Wait on animations to complete since elements inside are not considered "visible" under certain circumstances
 		Promise.all(this.modalElement.getAnimations({subtree: true}).map((animation) => animation.finished)).then(() => {
-			// Set aria expanded state
-			this.modalElement.setAttribute('aria-expanded', true);
-
-			document.addEventListener('keydown', this.keyboardDownListener.bind(this));
-			document.addEventListener('keyup', this.keyboardUpListener.bind(this));
-
 			var modalLinks = this.modalElement.querySelectorAll('a[href]');
 
 			modalLinks.forEach((link) => {
-				link.addEventListener('click', this.linkClickListener.bind(this));
+				link.addEventListener('click', this.linkClickListenerProxy);
 			});
 
 			var visibleElements = this.getVisibleElements();
@@ -311,18 +347,13 @@ class InfinitumModal {
 				this.firstFocusableElement = visibleElements[0];
 				this.lastFocusableElement = visibleElements[visibleElements.length - 1];
 
-				this.firstFocusableElement.addEventListener('blur', this.firstFocusableElementBlurListener.bind(this));
-				this.lastFocusableElement.addEventListener('blur', this.lastFocusableElementBlurListener.bind(this));
+				this.firstFocusableElement.addEventListener('blur', this.firstFocusableElementBlurListenerProxy);
+				this.lastFocusableElement.addEventListener('blur', this.lastFocusableElementBlurListenerProxy);
 			}
-
-			if (setFocus === true) {
-				this.focus();
-			}
-
-			this.isOpen = true;
 		}).catch(error => {
 			if (error.name === 'AbortError') {
 				// Modal open promise was aborted before the animations finished
+				this.close(false);
 			}
 		});
 	}
@@ -333,5 +364,49 @@ class InfinitumModal {
 		event.preventDefault();
 
 		this.open();
+	}
+
+
+
+	scrollToViewModal() {
+		if (this.autoOffsetBottom) {
+			this.openElement.scrollIntoView({behavior: 'smooth', block: 'end'});
+		}
+
+		if (this.autoOffsetTop) {
+			this.openElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+		}
+	}
+
+
+
+	updateModalOffsets() {
+		let windowWidth = document.documentElement.clientWidth;
+		let windowHeight = document.documentElement.clientHeight;
+		let openElementRect = this.openElement.getBoundingClientRect();
+
+		if (this.autoOffsetBottom) {
+			this.modalElement.style.bottom = (windowHeight - openElementRect.top) + 'px';
+		}
+
+		if (this.autoOffsetLeft) {
+			this.modalElement.style.left = openElementRect.right + 'px';
+		}
+
+		if (this.autoOffsetRight) {
+			this.modalElement.style.right = (windowWidth - openElementRect.left) + 'px';
+		}
+
+		if (this.autoOffsetTop) {
+			this.modalElement.style.top = openElementRect.bottom + 'px';
+		}
+	}
+
+
+
+	windowScrollListener(event) {
+		if (this.isOpen) {
+			this.updateModalOffsets();
+		}
 	}
 }

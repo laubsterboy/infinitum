@@ -201,11 +201,12 @@ class Drawers extends \infinitum\inc\classes\Addon {
 
 	public function render_drawer_block($block_attributes, $content) {
 		$classes = array();
+		$data_attributes = array();
 		$drawer_id = 0;
 		$drawer_post = null;
 		$content = 'Select a drawer';
 		$context = '';
-		$wrapper = '<div %s %s data-wp-interactive="infinitum/drawer">%s</div>';
+		$wrapper = '<div %s %s data-wp-interactive="infinitum/drawer" %s>%s</div>';
 		$interactivity_data_context = array('isOpen' => false);
 
 		// Interactivity Data Context
@@ -233,6 +234,27 @@ class Drawers extends \infinitum\inc\classes\Addon {
 			$classes[] = 'wp-block-infinitum-drawer--sibling-close-button';
 		}
 
+		// Data attributes
+		if (!empty($block_attributes['autoOffsetBottom'])) {
+			$data_attributes[] = 'data-auto-offset-bottom="true"';
+		}
+
+		if (!empty($block_attributes['autoOffsetLeft'])) {
+			$data_attributes[] = 'data-auto-offset-left="true"';
+		}
+
+		if (!empty($block_attributes['autoOffsetRight'])) {
+			$data_attributes[] = 'data-auto-offset-right="true"';
+		}
+
+		if (!empty($block_attributes['autoOffsetTop'])) {
+			$data_attributes[] = 'data-auto-offset-top="true"';
+		}
+
+		if (!empty($block_attributes['scrollToViewModal'])) {
+			$data_attributes[] = 'data-scroll-to-view-modal="true"';
+		}
+
 		// Render Drawer if $post is a WP_Post object
 		if (is_a($drawer_post, '\WP_Post') && !empty($drawer_post->ID)) {
 			$content = $this->render_drawer_button_open($drawer_post, $block_attributes);
@@ -244,7 +266,7 @@ class Drawers extends \infinitum\inc\classes\Addon {
 			$content = 'Drawer not found';
 		}
 
-		return sprintf($wrapper, get_block_wrapper_attributes(array('class' => implode(' ', $classes))), $context, $content);
+		return sprintf($wrapper, get_block_wrapper_attributes(array('class' => implode(' ', $classes))), $context, implode(' ', $data_attributes), $content);
 	}
 
 
