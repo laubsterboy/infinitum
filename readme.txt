@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,10 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.3.0 - 2025-03-12 =
+* Updated: modal.js to add a new feature to automatically add offsets to the modalElement (top, right, bottom, and/or left) based on the position of the openElement, also another feature to allow for scrolling to reveal the open button and maximize the space available for the modal
+* Updated: infinitum/drawer block to support the new modal.js features
 
 = 1.2.2 - 2025-03-07 =
 * Updated: modal.js and infinitum/drawer view.js so that when one modal is opened it will close all others that are currently open, in case open/close buttons are in a fixed position and visible when modals are open
