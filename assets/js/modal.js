@@ -96,6 +96,8 @@ class InfinitumModal {
 		}
 
 		window.addEventListener('scroll', this.windowScrollListener.bind(this));
+
+		window.addEventListener('resize', this.windowResizeListener.bind(this));
 	}
 
 
@@ -121,8 +123,13 @@ class InfinitumModal {
 		var visibleElements = this.getVisibleElements();
 
 		if (visibleElements.length > 0) {
-			this.firstFocusableElement.removeEventListener('blur', this.firstFocusableElementBlurListenerProxy);
-			this.lastFocusableElement.removeEventListener('blur', this.lastFocusableElementBlurListenerProxy);
+			if (this.firstFocusableElement instanceof HTMLElement) {
+				this.firstFocusableElement.removeEventListener('blur', this.firstFocusableElementBlurListenerProxy);
+			}
+
+			if (this.lastFocusableElement instanceof HTMLElement) {
+				this.lastFocusableElement.removeEventListener('blur', this.lastFocusableElementBlurListenerProxy);
+			}
 		}
 
 		if (this.nestedCloseElement === false) {
@@ -405,6 +412,14 @@ class InfinitumModal {
 
 
 	windowScrollListener(event) {
+		if (this.isOpen) {
+			this.updateModalOffsets();
+		}
+	}
+
+
+
+	windowResizeListener(event) {
 		if (this.isOpen) {
 			this.updateModalOffsets();
 		}
