@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.3.1 - 2025-03-21 =
+* Updated: modal.js to fix console errors when closing before the open animation has finished and added a window resize listener to update the modal offsets.
 
 = 1.3.0 - 2025-03-12 =
 * Updated: modal.js to add a new feature to automatically add offsets to the modalElement (top, right, bottom, and/or left) based on the position of the openElement, also another feature to allow for scrolling to reveal the open button and maximize the space available for the modal
