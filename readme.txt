@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,10 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.3.2 - 2025-03-25 =
+* Updated: modal.js to fix an order of operations issue where opening one modal while another was open would cause the body class to be removed and full page scrolling is allowed, but it should have overflow hidden.
+* Updated: infinitum/drawer block to change the modal element from "aside" to "div" since aside cannot have aria-expanded. Also, added aria-modal="true" to the modal element.
 
 = 1.3.1 - 2025-03-21 =
 * Updated: modal.js to fix console errors when closing before the open animation has finished and added a window resize listener to update the modal offsets.
