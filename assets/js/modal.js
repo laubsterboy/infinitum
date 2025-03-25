@@ -321,9 +321,6 @@ class InfinitumModal {
 
 		// Change the class to open the modal, and also trigger any possible animations or transitions
 		this.modalElement.classList.add('is-infinitum-modal-open');
-		
-		// Add a class to the body
-		document.body.classList.add('has-infinitum-modal-open');
 
 		if (this.nestedCloseElement === false) {
 			this.disableOpenElement();
@@ -331,6 +328,9 @@ class InfinitumModal {
 
 		// Dispatch open event on the modal container
 		this.modalElement.dispatchEvent(this.openEvent);
+
+		// Add a class to the body (must be after dispatchEvent in case other modals are closed on that event)
+		document.body.classList.add('has-infinitum-modal-open');
 
 		// Update modal offsets
 		this.updateModalOffsets();
