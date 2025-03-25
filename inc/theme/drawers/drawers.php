@@ -327,12 +327,12 @@ class Drawers extends \infinitum\inc\classes\Addon {
 			}
 		}
 
-		$markup = '<aside ' . implode(' ', $normalized_attributes) . ' data-wp-interactive="infinitumDrawer" aria-label="' . $drawer_post->post_title . ' Modal" role="dialog">';
+		$markup = '<div ' . implode(' ', $normalized_attributes) . ' data-wp-interactive="infinitumDrawer" aria-label="' . $drawer_post->post_title . ' Modal" aria-modal="true" role="dialog">';
 		if ($block_attributes['nestCloseButton']) {
 			$markup .= '<div class="wp-block-infinitum-drawer__button--close-container wp-block-group">' . $this->render_drawer_button_close($drawer_post, $block_attributes) . '</div>';
 		}
 		$markup .= $content;
-		$markup .= '</aside>';
+		$markup .= '</div>';
 
 		return $markup;
 	}
