@@ -16,6 +16,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 1.3.3 - 2025-04-25 =
+* Updated: theme.json to add two additional spacing options for 1/3 and 2/3
+
 = 1.3.2 - 2025-03-25 =
 * Updated: modal.js to fix an order of operations issue where opening one modal while another was open would cause the body class to be removed and full page scrolling is allowed, but it should have overflow hidden.
 * Updated: infinitum/drawer block to change the modal element from "aside" to "div" since aside cannot have aria-expanded. Also, added aria-modal="true" to the modal element.
