@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.3.4 - 2025-06-26 =
+* Updated: theme.json to add two new custom properties (settings.custom.infinitum.contentSize and settings.custom.infinitum.wideSize) under the infinitum namespace that are then used for settings.layout.contentSize and settings.layout.wideSize rather than the direct value being applied to them. This was necessary to make it easy to override the settings.layout values in CSS by overriding the appropriate custom property since WordPress uses the value of settings.layout to set the max-width property rather than using the --wp--style--global--content-size custom property.
 
 = 1.3.3 - 2025-04-25 =
 * Updated: theme.json to add two additional spacing options for 1/3 and 2/3
