@@ -141,6 +141,8 @@
 				"contentWidthPx": "calc(var(--wp--custom--infinitum--content-width) * 1px)",
 				"contentWidthResponsiveRatio": 0.8,
 				"contentWidthWideRatio": 1.2,
+				"contentSize": "max(var(--wp--custom--infinitum--content-width-px), var(--wp--custom--infinitum--content-width-max))",
+				"wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), calc(var(--wp--custom--infinitum--content-width-max) * var(--wp--custom--infinitum--content-width-wide-ratio)))",
 				"featuredImageDisplayRatio": 2,
 				"featuredImageDisplayFit": "cover",
 				"featuredImageSizeRatio": 0.666666,
@@ -176,8 +178,8 @@
 			"minHeight": true
 		},
         "layout": {
-            "contentSize": "max(var(--wp--custom--infinitum--content-width-px), var(--wp--custom--infinitum--content-width-max))",
-            "wideSize": "max(calc(var(--wp--custom--infinitum--content-width-px) * var(--wp--custom--infinitum--content-width-wide-ratio)), calc(var(--wp--custom--infinitum--content-width-max) * var(--wp--custom--infinitum--content-width-wide-ratio)))"
+            "contentSize": "var(--wp--custom--infinitum--content-size)",
+			"wideSize": "var(--wp--custom--infinitum--wide-size)"
         },
 		"shadow": {
 			"defaultPresets": false,
