@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.3.5
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.4.0 - 2026-01-31 =
+* Updated: Theme class to add the maybe_update_theme_versions method to keep track of parent and child theme version numbers and if they ever change then call wp_clean_theme_json_cache
 
 = 1.3.5 - 2025-08-05 =
 * Updated: patterns/post-meta.php to allow the post meta elements to wrap
