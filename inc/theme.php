@@ -335,6 +335,12 @@ class Theme {
 
 		return $theme_settings;
 	}
+	
+	
+	
+	public function get_uri() {
+		return $this->uri;
+	}
 
 
 
@@ -374,8 +380,83 @@ class Theme {
 
 
 
-	public function get_uri() {
-		return $this->uri;
+	/**
+	 * Check parent/child theme versions and clean theme.json cache when needed
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return void
+	 */
+	protected function maybe_update_theme_versions(): void {
+		$option_name = 'infinitum_theme_versions';
+		$stored_versions = get_option($option_name, array());
+
+		$parent_theme = wp_get_theme(get_template());
+		$child_theme = wp_get_theme(get_stylesheet());
+
+		$parent_version = $parent_theme->get('Version');
+		$child_version = is_child_theme() ? $child_theme->get('Version') : '';
+
+		$stored_parent_version = $stored_versions['parent'] ?? '';
+		$stored_child_version = $stored_versions['child'] ?? '';
+
+		$parent_changed = $parent_version !== $stored_parent_version;
+		$child_changed = $child_version !== $stored_child_version;
+
+		if (!$parent_changed && !$child_changed) {
+			return;
+		}
+
+		// Clear theme.json cache if either version has changed since this is a block theme
+		if (function_exists('wp_clean_theme_json_cache')) {
+			wp_clean_theme_json_cache();
+		}
+
+		$updated_versions = array(
+			'parent' => $parent_version,
+			'child' => $child_version,
+			'parent_stylesheet' => $parent_theme->get_stylesheet(),
+			'child_stylesheet' => is_child_theme() ? $child_theme->get_stylesheet() : '',
+			'updated_at' => current_time('mysql')
+		);
+
+		update_option($option_name, $updated_versions);
+
+		/**
+		 * Fires when the parent and/or child theme version changes.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array $updated_versions The updated versions array stored in the DB.
+		 * @param array $stored_versions  The previous versions array from the DB.
+		 * @param bool  $parent_changed   Whether the parent theme version changed.
+		 * @param bool  $child_changed    Whether the child theme version changed.
+		 */
+		do_action('infinitum_theme_versions_updated', $updated_versions, $stored_versions, $parent_changed, $child_changed);
+
+		if ($parent_changed) {
+			/**
+			 * Fires when the parent theme version changes.
+			 *
+			 * @since 1.4.0
+			 *
+			 * @param string $parent_version The current parent theme version.
+			 * @param string $stored_version The previous parent theme version.
+			 */
+			do_action('infinitum_parent_theme_version_updated', $parent_version, $stored_parent_version);
+		}
+
+		if ($child_changed) {
+			/**
+			 * Fires when the child theme version changes.
+			 *
+			 * @since 1.4.0
+			 *
+			 * @param string $child_version The current child theme version.
+			 * @param string $stored_version The previous child theme version.
+			 */
+			do_action('infinitum_child_theme_version_updated', $child_version, $stored_child_version);
+		}
 	}
 
 
@@ -661,6 +742,9 @@ class Theme {
 		// Set Infinitum version
 		update_option('infinitum_version', $this->version);
 
+		// Store parent/child theme versions
+		$this->maybe_update_theme_versions();
+
 		// Set Image sizes
 		update_option('thumbnail_size_w', strval(round($content_width * 0.25)));
 		update_option('thumbnail_size_h', strval(round($content_width * 0.25)));
@@ -689,6 +773,7 @@ class Theme {
 	 */
     public function theme_deactivation($new_name, $new_theme, $old_theme): void {
 		delete_option('infinitum_version');
+		delete_option('infinitum_theme_versions');
 
 		// Trigger Integrations
 		$this->integrations->theme_deactivation($new_name, $new_theme, $old_theme);
@@ -701,6 +786,7 @@ class Theme {
 		$this->remove_theme_support();
         $this->enqueue_block_styles();
 		$this->set_updater_config();
+		$this->maybe_update_theme_versions();
     }
 
 
