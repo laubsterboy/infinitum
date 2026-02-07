@@ -16,6 +16,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 == Changelog ==
 
+= 1.5.0 - 2026-02-06 =
+* Updated: theme.json to remove block based styling for margins to instead let core WordPress layout framework CSS classes handle margins, which also provides more control to child themes.
+
 = 1.4.0 - 2026-01-31 =
 * Updated: Theme class to add the maybe_update_theme_versions method to keep track of parent and child theme version numbers and if they ever change then call wp_clean_theme_json_cache
 

@@ -444,41 +444,10 @@
 					"lineHeight": "1"
 				}
 			},
-			"core/columns": {
-				"spacing": {
-					"margin": {
-						"bottom": "var(--wp--style--block-gap)"
-					}
-				}
-			},
 			"core/comments-title": {
 				"spacing": {
 					"margin": {
 						"bottom": "var(--wp--preset--spacing--1-2)"
-					}
-				}
-			},
-			"core/list": {
-				"spacing": {
-					"margin": {
-						"top": "0",
-						"bottom": "var(--wp--style--block-gap)"
-					}
-				}
-			},
-			"core/paragraph": {
-				"spacing": {
-					"margin": {
-						"top": "0",
-						"bottom": "var(--wp--style--block-gap)"
-					}
-				}
-			},
-			"core/separator": {
-				"spacing": {
-					"margin": {
-						"top": "var(--wp--style--block-gap)",
-						"bottom": "var(--wp--style--block-gap)"
 					}
 				}
 			},
