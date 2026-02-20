@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.4.0
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.6.0 - 2026-02-20 =
+* Updated: theme.json to add settings.border.radiusSizes that match the sizes for spacing
 
 = 1.5.0 - 2026-02-06 =
 * Updated: theme.json to remove block based styling for margins to instead let core WordPress layout framework CSS classes handle margins, which also provides more control to child themes.
