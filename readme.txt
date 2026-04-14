@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.7.0 - 2026-04-13 =
+* Updated: additional featured image to only use add_meta_box in the classic editor and otherwise use registered post meta and a registerPlugin in the Document sidebar. This is to prepare for WordPress 7.0 Real Time Collaboration (which is disabled when there are classic add_meta_box calls)
 
 = 1.6.0 - 2026-02-20 =
 * Updated: theme.json to add settings.border.radiusSizes that match the sizes for spacing
