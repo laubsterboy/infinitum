@@ -50,6 +50,11 @@ class Additional_Featured_Image extends \infinitum\inc\classes\Addon {
 	 * @return void
 	 */
 	public function add_meta_box($post_type, $post) {
+		$current_screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if ($current_screen && $current_screen->is_block_editor()) {
+			return;
+		}
+
 		foreach ($this->additional_images as $image) {
 			add_meta_box($image['id'], $image['title'], array($this, 'meta_box_callback'), $image['screen'], $image['context'], $image['priority'], $image['callback_args']);
 		}
@@ -89,14 +94,55 @@ class Additional_Featured_Image extends \infinitum\inc\classes\Addon {
 	 * @return void
 	 */
     public function enqueue_block_editor_assets() {
-		wp_enqueue_style($this->namespace . '-additional-featured-image', $this->uri . 'assets/css/additional-featured-image.css', array(), '0.0.1');
-		wp_enqueue_script($this->namespace . '-additional-featured-image', $this->uri . 'assets/js/additional-featured-image.js', array('jquery'), '0.0.1');
+		if (empty($this->additional_images)) {
+			return;
+		}
 
+		wp_enqueue_style($this->namespace . '-additional-featured-image', $this->uri . 'assets/css/additional-featured-image.css', array(), '0.0.1');
+		wp_enqueue_script(
+			$this->namespace . '-additional-featured-image-block-editor',
+			$this->uri . 'assets/js/additional-featured-image-block-editor.js',
+			array('wp-block-editor', 'wp-components', 'wp-core-data', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins'),
+			'0.0.1',
+			true
+		);
+
+		wp_add_inline_script($this->namespace . '-additional-featured-image-block-editor', 'const AFI_BLOCK_EDITOR = ' . json_encode(array(
+			'additionalImages' => $this->get_additional_images_for_js(),
+			'namespace' => $this->namespace
+		)), 'before');
+    }
+
+
+
+	/**
+	 * Enqueues scripts and styles in the classic editor
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return void
+	 */
+	public function enqueue_classic_editor_assets() {
+		if (empty($this->additional_images)) {
+			return;
+		}
+
+		$current_screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if (!$current_screen || $current_screen->is_block_editor()) {
+			return;
+		}
+
+		if (!in_array($current_screen->base, array('post', 'post-new'), true)) {
+			return;
+		}
+
+		wp_enqueue_style($this->namespace . '-additional-featured-image', $this->uri . 'assets/css/additional-featured-image.css', array(), '0.0.1');
+		wp_enqueue_script($this->namespace . '-additional-featured-image', $this->uri . 'assets/js/additional-featured-image.js', array('jquery'), '0.0.1', true);
 		wp_add_inline_script($this->namespace . '-additional-featured-image', 'const AFI = ' . json_encode(array(
 			'ajaxUrl' => admin_url('admin-ajax.php'),
 			'namespace' => $this->namespace
 		)), 'before');
-    }
+	}
 
 
 
@@ -217,6 +263,38 @@ class Additional_Featured_Image extends \infinitum\inc\classes\Addon {
 		}
 
 		return $is_block_editor;
+	}
+
+
+
+	/**
+	 * Registers additional featured image meta for the REST API
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return void
+	 */
+	public function register_post_meta() {
+		if (empty($this->additional_images)) {
+			return;
+		}
+
+		foreach ($this->additional_images as $image) {
+			$meta_key = $this->get_meta_key($image['id']);
+			$post_types = $this->normalize_screens($image['screen']);
+
+			foreach ($post_types as $post_type) {
+				register_post_meta($post_type, $meta_key, array(
+					'type' => 'integer',
+					'single' => true,
+					'show_in_rest' => true,
+					'sanitize_callback' => 'absint',
+					'auth_callback' => function($allowed, $meta_key, $post_id) {
+						return current_user_can('edit_post', $post_id);
+					}
+				));
+			}
+		}
 	}
 
 
@@ -485,12 +563,73 @@ class Additional_Featured_Image extends \infinitum\inc\classes\Addon {
 	 * @return void
 	 */
 	protected function set_hooks() {
-		add_action('enqueue_block_editor_assets', array($this, 'enqueue_block_editor_assets'));
+		add_action('init', array($this, 'register_post_meta'), 20);
+		add_action('enqueue_block_editor_assets', array($this, 'enqueue_block_editor_assets'), 20);
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_classic_editor_assets'));
 		add_action('add_meta_boxes', array($this, 'add_meta_box'), 10, 2);
 		add_action('wp_ajax_' . $this->namespace . '_additional_featured_image_update', array($this, 'update_meta_box_ajax'));
 		add_action('delete_attachment', array($this, 'delete_attachment'));
 		add_filter('is_protected_meta', array($this, 'is_protected_meta'), 20, 2);
 		add_filter('save_post', array($this, 'save_post'));
+	}
+
+
+
+	/**
+	 * Normalizes the registered screens to a list of post type slugs
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param mixed $screens
+	 * @return array
+	 */
+	protected function normalize_screens($screens) {
+		if (empty($screens)) {
+			return array();
+		}
+
+		if (is_string($screens)) {
+			return array($screens);
+		}
+
+		if (!is_array($screens)) {
+			return array();
+		}
+
+		$normalized = array();
+		foreach ($screens as $key => $value) {
+			if (is_string($key)) {
+				$normalized[] = $key;
+			} else if (is_string($value)) {
+				$normalized[] = $value;
+			}
+		}
+
+		return array_values(array_unique(array_filter($normalized)));
+	}
+
+
+
+	/**
+	 * Builds the additional featured image config for the block editor
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return array
+	 */
+	protected function get_additional_images_for_js() {
+		$images = array();
+
+		foreach ($this->additional_images as $image) {
+			$images[] = array(
+				'id' => $image['id'],
+				'title' => $image['title'],
+				'metaKey' => $this->get_meta_key($image['id']),
+				'screen' => $this->normalize_screens($image['screen'])
+			);
+		}
+
+		return $images;
 	}
 
 

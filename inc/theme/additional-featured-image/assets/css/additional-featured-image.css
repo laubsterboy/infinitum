@@ -1,6 +1,9 @@
 .jrd-additional-featured-image-meta-box {
 	position: relative;
 }
+.jrd-additional-featured-image-meta-box + .jrd-additional-featured-image-meta-box {
+	margin-top: 16px;
+}
 .jrd-additional-featured-image-meta-box > a,
 .jrd-additional-featured-image-meta-box > button {
 	margin: 1em 0;
@@ -18,19 +21,22 @@ button.jrd-additional-featured-image__set {
 	border-radius: 2px;
     padding: 8px 0;
     width: 100%;
-	min-height: 90px;
+	min-height: 40px;
     line-height: 20px;
     text-align: center;
-    background-color: #f0f0f0;
+    box-shadow: inset 0 0 0 1px #ccc;
 }
 button.jrd-additional-featured-image__set:focus,
 button.jrd-additional-featured-image__set:hover {
-	background-color: #dddddd;
+	
 }
 .jrd-additional-featured-image__preview {
 	margin: 0;
 	padding: 0;
 	border-radius: 2px;
+	display: block;
+	width: auto;
+	height: auto;
 	overflow: hidden;
 }
 .jrd-additional-featured-image__preview img {
@@ -57,4 +63,11 @@ button.jrd-additional-featured-image__set:hover {
 .jrd-additional-featured-image-meta-box:focus-within .jrd-additional-featured-image__actions,
 .jrd-additional-featured-image-meta-box:hover .jrd-additional-featured-image__actions {
 	opacity:1;
+}
+.jrd-additional-featured-image__replace,
+.jrd-additional-featured-image__remove {
+	flex-grow: 1;
+	justify-content: center;
+	backdrop-filter: blur(16px) saturate(180%);
+  	background: #ffffffbf;
 }
