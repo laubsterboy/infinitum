@@ -2,7 +2,7 @@
 Contributors: laubsterboy
 Requires at least: 6.6
 Requires PHP: 8.1
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,9 @@ A clean and elegant starter theme, or framework, used to build beautiful website
 
 
 == Changelog ==
+
+= 1.9.0 - 2026-04-17 =
+* Updated: Theme class to switch from pattern based analytics snippets to a Settings > Analytics page to control access and not clutter patterns
 
 = 1.8.0 - 2026-04-17 =
 * Updated: Theme class to inject synced patterns for Analytics <head> and <body> snippets for easy inclusion of snippets. Empty by default.
