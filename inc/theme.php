@@ -221,112 +221,6 @@ class Theme {
     }
 
 
-	/**
-	 * Ensure theme-managed synced analytics patterns exist.
-	 *
-	 * These are stored as wp_block posts so site admins can edit them in the Site Editor.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @return void
-	 */
-	protected function ensure_analytics_synced_patterns(): void {
-		$patterns = array(
-			array(
-				'slug' => 'infinitum-analytics-head',
-				'title' => __('Analytics - Head Snippet', $this->textdomain),
-				'content' => $this->get_analytics_synced_pattern_default_content('infinitum-analytics-head'),
-			),
-			array(
-				'slug' => 'infinitum-analytics-body-open',
-				'title' => __('Analytics - Body Open Snippet', $this->textdomain),
-				'content' => $this->get_analytics_synced_pattern_default_content('infinitum-analytics-body-open'),
-			),
-		);
-
-		foreach ($patterns as $pattern) {
-			$this->ensure_synced_pattern($pattern['slug'], $pattern['title'], $pattern['content']);
-		}
-	}
-
-
-	/**
-	 * Ensure a synced pattern exists as a wp_block post.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param string $slug
-	 * @param string $title
-	 * @param string $default_content
-	 * @return void
-	 */
-	protected function ensure_synced_pattern(string $slug, string $title, string $default_content): void {
-		$pattern = get_page_by_path($slug, OBJECT, 'wp_block');
-
-		if ($pattern instanceof \WP_Post) {
-			$this->set_synced_pattern_categories((int) $pattern->ID);
-			return;
-		}
-
-		if (empty($default_content)) {
-			return;
-		}
-
-		$pattern_post_id = wp_insert_post(array(
-			'post_type' => 'wp_block',
-			'post_status' => 'publish',
-			'post_name' => $slug,
-			'post_title' => $title,
-			'post_content' => $default_content,
-		), true);
-
-		if (is_wp_error($pattern_post_id) || empty($pattern_post_id)) {
-			return;
-		}
-
-		$this->set_synced_pattern_categories((int) $pattern_post_id);
-	}
-
-
-	/**
-	 * Get default content for supported analytics synced patterns.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param string $slug
-	 * @return string
-	 */
-	protected function get_analytics_synced_pattern_default_content(string $slug): string {
-		switch ($slug) {
-			case 'infinitum-analytics-head':
-				return '<!-- wp:html --><!-- Replace this with snippet for the <head> section --><!-- /wp:html -->';
-
-			case 'infinitum-analytics-body-open':
-				return '<!-- wp:html --><!-- Replace this with snippet immediately after opening <body> tag, such as a noscript tag for analytics that require it --><!-- /wp:html -->';
-
-			default:
-				return '';
-		}
-	}
-
-
-	/**
-	 * Assign categories to synced analytics patterns.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param int $pattern_post_id
-	 * @return void
-	 */
-	protected function set_synced_pattern_categories(int $pattern_post_id): void {
-		if ($pattern_post_id <= 0 || !taxonomy_exists('wp_pattern_category')) {
-			return;
-		}
-
-		wp_set_object_terms($pattern_post_id, array('analytics', 'infinitum'), 'wp_pattern_category', false);
-	}
-
-
 
     protected function enqueue_block_styles() {
         // Array of block slugs
@@ -342,6 +236,43 @@ class Theme {
             wp_enqueue_block_style('core/' . $block_slug, $args);
         }
     }
+
+
+
+	/**
+	 * Get analytics settings option name.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return string
+	 */
+	protected function get_analytics_settings_option_name(): string {
+		return 'infinitum_analytics_settings';
+	}
+
+
+
+	/**
+	 * Get analytics settings values.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return array
+	 */
+	protected function get_analytics_settings(): array {
+		$defaults = array(
+			'head' => '',
+			'body_open' => '',
+		);
+
+		$settings = get_option($this->get_analytics_settings_option_name(), array());
+
+		if (!is_array($settings)) {
+			$settings = array();
+		}
+
+		return wp_parse_args($settings, $defaults);
+	}
 
 
 
@@ -375,6 +306,46 @@ class Theme {
 
 	public function get_textdomain() {
 		return $this->textdomain;
+	}
+
+
+
+	/**
+	 * Get synced pattern content for migration.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param string $slug
+	 * @return string
+	 */
+	protected function get_synced_pattern_content_for_migration(string $slug): string {
+		$pattern = get_page_by_path($slug, OBJECT, 'wp_block');
+
+		if (!$pattern instanceof \WP_Post || empty($pattern->post_content)) {
+			return '';
+		}
+
+		$content = trim((string) $pattern->post_content);
+
+		if ($content === '') {
+			return '';
+		}
+
+		$blocks = parse_blocks($content);
+
+		if (count($blocks) === 1 && !empty($blocks[0]['blockName']) && $blocks[0]['blockName'] === 'core/html') {
+			$inner_html = '';
+
+			if (!empty($blocks[0]['innerHTML']) && is_string($blocks[0]['innerHTML'])) {
+				$inner_html = trim($blocks[0]['innerHTML']);
+			}
+
+			if ($inner_html !== '') {
+				return $inner_html;
+			}
+		}
+
+		return $content;
 	}
 
 
@@ -487,6 +458,54 @@ class Theme {
 
 
 	/**
+	 * Migrate legacy synced analytics patterns into analytics settings.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return void
+	 */
+	protected function maybe_migrate_analytics_synced_patterns_to_settings(): void {
+		$migration_option_name = 'infinitum_analytics_settings_migrated_from_patterns';
+		$migration_status_option_name = 'infinitum_analytics_settings_migration_status';
+
+		if ((bool) get_option($migration_option_name, false)) {
+			return;
+		}
+
+		$settings = $this->get_analytics_settings();
+		$did_update = false;
+
+		if (empty($settings['head'])) {
+			$migrated_head = $this->get_synced_pattern_content_for_migration('infinitum-analytics-head');
+
+			if ($migrated_head !== '') {
+				$settings['head'] = $migrated_head;
+				$did_update = true;
+			}
+		}
+
+		if (empty($settings['body_open'])) {
+			$migrated_body_open = $this->get_synced_pattern_content_for_migration('infinitum-analytics-body-open');
+
+			if ($migrated_body_open !== '') {
+				$settings['body_open'] = $migrated_body_open;
+				$did_update = true;
+			}
+		}
+
+		if ($did_update) {
+			update_option($this->get_analytics_settings_option_name(), $settings);
+			update_option($migration_status_option_name, 'imported', false);
+		} else {
+			update_option($migration_status_option_name, 'not_found', false);
+		}
+
+		update_option($migration_option_name, 1, false);
+	}
+
+
+
+	/**
 	 * Check parent/child theme versions and clean theme.json cache when needed
 	 *
 	 * @since 1.4.0
@@ -568,6 +587,44 @@ class Theme {
 
 
 	/**
+	 * Register analytics settings.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return void
+	 */
+	protected function register_analytics_settings(): void {
+		register_setting('infinitum_analytics_settings_group', $this->get_analytics_settings_option_name(), array(
+			'type' => 'array',
+			'sanitize_callback' => array($this, 'sanitize_analytics_settings'),
+			'default' => array(
+				'head' => '',
+				'body_open' => '',
+			),
+		));
+	}
+
+
+	/**
+	 * Register the Analytics settings page.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return void
+	 */
+	protected function register_analytics_settings_page(): void {
+		add_options_page(
+			__('Analytics', $this->textdomain),
+			__('Analytics', $this->textdomain),
+			'manage_options',
+			'infinitum-analytics-settings',
+			array($this, 'wp_hook_admin_page_analytics')
+		);
+	}
+
+
+
+	/**
 	 * Register block bindings sources (added in WP 6.5)
 	 * 
 	 * @since 0.0.1
@@ -589,13 +646,6 @@ class Theme {
 	 * @since 0.0.1
 	 */
 	protected function register_block_pattern_categories() {
-		register_block_pattern_category(
-			'analytics',
-			array(
-				'label' => __('Analytics', $this->textdomain)
-			)
-		);
-
 		register_block_pattern_category(
 			'infinitum',
 			array(
@@ -640,6 +690,33 @@ class Theme {
 
 
 
+	/**
+	 * Render analytics snippet from settings.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param string $location
+	 * @return void
+	 */
+	protected function render_analytics_snippet(string $location): void {
+		$settings = $this->get_analytics_settings();
+		$snippet = '';
+
+		if ($location === 'head') {
+			$snippet = (string) $settings['head'];
+		} elseif ($location === 'body_open') {
+			$snippet = (string) $settings['body_open'];
+		}
+
+		if ($snippet === '') {
+			return;
+		}
+
+		echo $snippet; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+
+
 	/*
 	// Likely don't need this since it's being accomplished by filtering the featured image ID - this was needed to fix the issue of the "pattern" no longer being rendered if a template is edited in the Editor (such as single.html)
 	protected function render_block_pattern_post_header_image($block_content, $parsed_block, $block) {
@@ -662,11 +739,46 @@ class Theme {
 
 
 
+	/**
+	 * Sanitize analytics settings.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param mixed $input
+	 * @return array
+	 */
+	public function sanitize_analytics_settings($input): array {
+		$existing = $this->get_analytics_settings();
+
+		if (!is_array($input)) {
+			return $existing;
+		}
+
+		$head = array_key_exists('head', $input) ? (string) $input['head'] : '';
+		$body_open = array_key_exists('body_open', $input) ? (string) $input['body_open'] : '';
+
+		if (!current_user_can('unfiltered_html')) {
+			$head = wp_kses_post($head);
+			$body_open = wp_kses_post($body_open);
+		}
+
+		return array(
+			'head' => trim($head),
+			'body_open' => trim($body_open),
+		);
+	}
+
+
+
     protected function set_hooks() {
 		// WP Init
 		add_action('init', array($this, 'wp_hook_init'));
+		add_action('admin_init', array($this, 'wp_hook_admin_init'));
 
-		// Analytics snippets managed as synced patterns
+		// Admin Menu
+		add_action('admin_menu', array($this, 'wp_hook_admin_menu'));
+
+		// Analytics snippets from settings
 		add_action('wp_head', array($this, 'wp_hook_wp_head'), 1);
 		add_action('wp_body_open', array($this, 'wp_hook_wp_body_open'), 1);
 
@@ -745,25 +857,6 @@ class Theme {
 	 */
 	protected function set_post_id() {
 		$this->current_singular_post_id = get_the_ID();
-	}
-
-
-	/**
-	 * Render a synced pattern at runtime.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param string $slug
-	 * @return void
-	 */
-	protected function render_synced_pattern(string $slug): void {
-		$pattern = get_page_by_path($slug, OBJECT, 'wp_block');
-
-		if (!$pattern instanceof \WP_Post || empty($pattern->post_content)) {
-			return;
-		}
-
-		echo do_blocks($pattern->post_content); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 
@@ -928,6 +1021,61 @@ class Theme {
 
 
 	/**
+	 * Render Analytics settings page.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return void
+	 */
+	public function wp_hook_admin_page_analytics(): void {
+		if (!current_user_can('manage_options')) {
+			return;
+		}
+
+		$settings = $this->get_analytics_settings();
+		$migration_status = get_option('infinitum_analytics_settings_migration_status', '');
+		?>
+		<div class="wrap">
+			<h1><?php echo esc_html__('Analytics', $this->textdomain); ?></h1>
+			<?php if ($migration_status === 'imported') : ?>
+				<div class="notice notice-success inline">
+					<p><?php echo esc_html__('Legacy analytics synced patterns were found and imported into these settings.', $this->textdomain); ?></p>
+				</div>
+			<?php elseif ($migration_status === 'not_found') : ?>
+				<div class="notice notice-info inline">
+					<p><?php echo esc_html__('No legacy analytics synced pattern content was found to import.', $this->textdomain); ?></p>
+				</div>
+			<?php endif; ?>
+			<p><?php echo esc_html__('Configure snippets for the head and body-open insertion points. These snippets render only for logged-out visitors.', $this->textdomain); ?></p>
+			<form method="post" action="options.php">
+				<?php settings_fields('infinitum_analytics_settings_group'); ?>
+
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><label for="infinitum-analytics-head"><?php echo esc_html__('Head snippet', $this->textdomain); ?></label></th>
+						<td>
+							<textarea id="infinitum-analytics-head" name="<?php echo esc_attr($this->get_analytics_settings_option_name()); ?>[head]" rows="10" class="large-text code"><?php echo esc_textarea($settings['head']); ?></textarea>
+							<p class="description"><?php echo esc_html__('Rendered in wp_head.', $this->textdomain); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="infinitum-analytics-body-open"><?php echo esc_html__('Body open snippet', $this->textdomain); ?></label></th>
+						<td>
+							<textarea id="infinitum-analytics-body-open" name="<?php echo esc_attr($this->get_analytics_settings_option_name()); ?>[body_open]" rows="8" class="large-text code"><?php echo esc_textarea($settings['body_open']); ?></textarea>
+							<p class="description"><?php echo esc_html__('Rendered on wp_body_open.', $this->textdomain); ?></p>
+						</td>
+					</tr>
+				</table>
+
+				<?php submit_button(); ?>
+			</form>
+		</div>
+		<?php
+	}
+
+
+
+	/**
 	 * WordPress action for after a theme has been switched and is called on the theme code being activated
 	 * 
 	 * @since 0.0.1
@@ -974,12 +1122,36 @@ class Theme {
 		// Register Block Pattern Categories
 		$this->register_block_pattern_categories();
 
-		// Ensure admin-editable analytics patterns are available.
-		$this->ensure_analytics_synced_patterns();
+		// One-time migration from legacy synced analytics patterns.
+		$this->maybe_migrate_analytics_synced_patterns_to_settings();
 		
 		// Register Scripts and Styles
 		$this->register_scripts_styles();
     }
+
+
+	/**
+	 * WordPress admin init hook.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return void
+	 */
+	public function wp_hook_admin_init(): void {
+		$this->register_analytics_settings();
+	}
+
+
+	/**
+	 * WordPress admin menu hook.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return void
+	 */
+	public function wp_hook_admin_menu(): void {
+		$this->register_analytics_settings_page();
+	}
 
 
 	/**
@@ -994,7 +1166,7 @@ class Theme {
 			return;
 		}
 
-		$this->render_synced_pattern('infinitum-analytics-head');
+		$this->render_analytics_snippet('head');
 	}
 
 
@@ -1010,7 +1182,7 @@ class Theme {
 			return;
 		}
 
-		$this->render_synced_pattern('infinitum-analytics-body-open');
+		$this->render_analytics_snippet('body_open');
 	}
 
 
